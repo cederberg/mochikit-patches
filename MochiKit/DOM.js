@@ -103,7 +103,7 @@ MochiKit.DOM.reprDOM = function(node) {
  * @return {Array} an array containing attribute name and value
  *             pairs (as arrays)
  */
-MochiKit.DOM.attributeArray = function(node) {
+MochiKit.DOM.attributeArrayNewImpl = function(node) {
     var res = [];
     node = MochiKit.DOM.getElement(node);
     for (var i = 0; node != null && i < node.attributes.length; i++) {
