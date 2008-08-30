@@ -1,0 +1,429 @@
+/**
+ * Base Widget Style
+ */
+.widget {
+}
+.widget h3 {
+    font-family : Lucida Grande, Verdana, sans-serif;
+    font-weight: bold;
+    margin-top: 0px;
+    margin-bottom: 6px;
+    font-size: 12px;
+}
+.widgetHidden {
+    display: none;
+}
+.widgetInvalid {
+    border: 1px solid #cc3333;
+}
+
+
+/**
+ * Button Style
+ */
+.widgetButton {
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+.widgetButtonHighlight {
+    font-weight: bold;
+}
+
+
+/**
+ * Dialog Style
+ */
+.widgetDialog {
+    position: absolute;
+    background-color: threedface;
+    border-top: 1px solid threedhighlight;
+    border-bottom: 1px solid threedshadow;
+    border-left: 1px solid threedhighlight;
+    border-right: 1px solid threedshadow;
+    z-index: 100;
+    overflow: visible;
+}
+.widgetDialogClose {
+    position: absolute;
+    top: 4px;
+    right: 5px;
+    z-index: 1;
+}
+.widgetDialogResize {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    z-index: 1;
+    cursor: nw-resize;
+}
+.widgetDialogTitle {
+    margin: 2px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-left: 3px;
+    padding-right: 3px;
+    overflow: hidden;
+    color: white;
+    background-color: #7596C6;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: default;
+    -moz-user-select: none; 
+}
+.widgetDialogContent {
+    margin: 2px;
+    border-top: 1px solid threedshadow;
+    border-bottom: 1px solid threedhighlight;
+    border-left: 1px solid threedshadow;
+    border-right: 1px solid threedhighlight;
+    padding: 8px;
+    background: #f8f8f8;
+    overflow: auto;
+}
+
+
+/**
+ * Field Style
+ */
+.widgetField {
+}
+
+
+/**
+ * Form Style
+ */
+.widgetForm {
+}
+
+
+/**
+ * Form Validator Style
+ */
+.widgetFormValidator {
+    padding-left: 6px;
+    font-weight: bold;
+    color: #cc3333;
+}
+
+
+/**
+ * Icon Style
+ */
+.widgetIcon {
+    cursor: pointer;
+}
+
+
+/**
+ * Overlay Style
+ */
+.widgetOverlay {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    opacity: 0.6;
+    filter: alpha(opacity=60);
+    z-index: 1000;
+    overflow: hidden;
+}
+.widgetOverlayMessage {
+    padding-top: 25%;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    opacity: 1.0;
+    filter: alpha(opacity=100);
+}
+
+
+/**
+ * Pane Style
+ */
+.widgetPane {
+}
+
+
+/**
+ * Popup Style
+ */
+.widgetPopup {
+    position: absolute;
+    overflow: auto;
+    z-index: 20;
+    border: 1px solid #6290d2;
+    padding: 2px;
+    background: #e3edfa;
+    color: rgb(30, 70, 110);
+    cursor: default;
+}
+.widgetPopup h3 {
+    border-bottom: 2px solid #B1CDF1;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    margin-left: 4px;
+    margin-right: 4px;
+}
+.widgetPopup hr {
+    margin-top: 2px;
+    margin-bottom: 2px;
+    margin-left: 4px;
+    margin-right: 4px;
+    border-top: 0px;
+    border-bottom: 2px solid #B1CDF1;
+    border-left: 0px;
+    border-right: 0px;
+}
+.widgetPopupItem {
+    border: 1px solid #e3edfa;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    padding-left: 3px;
+    padding-right: 3px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.widgetPopupItem.selected {
+    background: white;
+    border: 1px solid #B1CDF1;
+}
+.widgetPopupDisabled,
+.widgetPopupDisabled.widgetPopupItem.selected {
+    border: 1px solid #e3edfa;
+    background: #e3edfa;
+    color: #7BABDB;
+    cursor: default;
+}
+
+
+/**
+ * Progress Bar Style
+ */
+.widgetProgressBar {
+    overflow: hidden;
+    position: relative;
+    height: 14px;
+    width: 100%;
+    background: white;
+    border: 1px solid #ccc;
+}
+.widgetProgressBarMeter {
+    height: 14px;
+    background: url(../images/backgrounds/progress-static.gif) repeat-x;
+}
+.widgetProgressBarText {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 14px;
+    color: #333;
+    font-weight: bold;
+    text-align: center;
+}
+.widgetProgressBarTextInverse {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 14px;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+}
+
+
+/**
+ * Tab Container Style
+ */
+.widgetTabContainer {
+}
+.widgetTabContainerLabels {
+    position: relative;  /* Needed for z-index to work */
+    z-index: 2;
+    display: inline; /* Fixes float padding issues for IE 6 */
+}
+.widgetTabContainer > .widgetTabContainerLabels {
+    display: block; /* Reverses previous IE fix for compliant browsers */
+}
+.widgetTabContainerLabel {
+    float: left;
+    padding-left: 9px;
+    background: url(../images/backgrounds/tab-inactive-left.gif) no-repeat left top;
+    cursor: pointer;
+    white-space: nowrap;
+    font-size: 13px;
+}
+.widgetTabContainerLabel div {
+    padding-top: 4px;
+    padding-bottom: 4px;
+    padding-left: 6px;
+    padding-right: 15px;
+    background: url(../images/backgrounds/tab-inactive-right.gif) no-repeat right top;
+}
+.widgetTabContainerLabel img {
+    margin-left: 10px;
+    margin-right: -10px;
+    cursor: default;
+}
+.widgetTabContainerLabel.selected {
+    background: url(../images/backgrounds/tab-active-left.gif) no-repeat left top;
+    border: 0; /* Fix for IE 6 */
+    color: black; /* Fix for IE 6 */
+}
+.widgetTabContainerLabel.selected div {
+    padding-bottom: 5px;
+    background: url(../images/backgrounds/tab-active-right.gif) no-repeat right top;
+}
+.widgetTabContainerContent {
+    position: relative;
+    top: -1px;
+    border: 1px solid #6290d2;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    clear: both;
+    overflow: hidden;
+    /* z-index: -1;  Required for IE6, but breaks in IE7 */ 
+}
+
+
+/**
+ * Table Style
+ */
+div.widgetTable {
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+div.widgetTable.compact {
+    max-height: 64px;
+}
+table.widgetTable {
+    width: 100%;
+    border: 1px solid #ccc;
+    border-collapse: collapse;
+    cursor: default;
+}
+table.widgetTable td {
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 4px;
+    padding-right: 10px;
+    background: white;
+}
+tr.widgetTableAlt td {
+    background: #e3edfa;
+}
+table.widgetTable tr:hover td {
+    background: #a6c2e7;
+}
+table.widgetTable tbody tr.selected td {
+    background: yellow;
+}
+table.widgetTable tbody tr.selected:hover td {
+    background: #ff9;
+}
+
+
+/**
+ * Table Column Style
+ */
+th.widgetTableColumn {
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 4px;
+    padding-right: 20px;
+    background-image: url(../images/backgrounds/table-column.gif);
+    background-repeat: no-repeat;
+    background-position: top right;
+    text-align: left;
+}
+th.widgetTableColumn.sortAsc {
+    background-image: url(../images/backgrounds/table-column-up.gif);
+}
+
+th.widgetTableColumn.sortDesc {
+    background-image: url(../images/backgrounds/table-column-down.gif);
+}
+
+
+/**
+ * Text Area Style
+ */
+.widgetTextArea {
+    font-family: Monaco, "Courier New", monospace;
+    font-size: 11px;
+}
+.widgetTextAreaHelp {
+    color: #888;
+}
+
+
+/**
+ * Text Field Style
+ */
+.widgetTextField {
+    font-family: Monaco, "Courier New", monospace;
+    font-size: 11px;
+}
+.widgetTextFieldHelp {
+    color: #888;
+}
+
+
+/**
+ * Tree Style
+ */
+.widgetTree {
+    overflow: auto;
+    border: 1px solid #ccc;
+    background: white;
+}
+
+
+/**
+ * Tree Node Style
+ */
+.widgetTreeNode {
+    margin: 0px;
+    cursor: pointer;
+}
+.widgetTreeNode .selected {
+    background: yellow;
+    font-weight: bold;
+}
+.widgetTreeNodeLabel {
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+.widgetTreeNodeText {
+    padding-left: 3px;
+}
+.widgetTreeNodeContainer {
+    padding-left: 16px;
+}
+
+
+/**
+ * Wizard Style
+ */
+.widgetWizard {
+}
+.widgetWizardTitle {
+    border-bottom: 1px solid #6290d2;
+    padding-bottom: 3px;
+}
+.widgetWizardInfo {
+    color: #888;
+}
+.widgetWizardWait {
+    margin-right: 6px;
+}
+.widgetWizardButtons {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
