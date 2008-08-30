@@ -10,6 +10,10 @@ if (typeof(MochiKit) == "undefined") {
     throw new ReferenceError("MochiKit must be loaded before loading this script");
 }
 
+/**
+ * @name MochiKit.Style
+ * @namespace Provides a painless CSS manipulation API.
+ */
 // Check for loaded MochiKit.Style
 if (typeof(MochiKit.Style) == "undefined") {
     throw new ReferenceError("MochiKit.Style must be loaded before loading this script");

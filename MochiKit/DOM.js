@@ -10,6 +10,10 @@ if (typeof(MochiKit) == "undefined") {
     throw new ReferenceError("MochiKit must be loaded before loading this script");
 }
 
+/**
+ * @name MochiKit.DOM
+ * @namespace Provides a painless DOM manipulation API.
+ */
 // Check for loaded MochiKit.DOM
 if (typeof(MochiKit.DOM) == "undefined") {
     throw new ReferenceError("MochiKit.DOM must be loaded before loading this script");

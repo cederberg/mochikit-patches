@@ -10,6 +10,10 @@ if (typeof(MochiKit) == "undefined") {
     throw new ReferenceError("MochiKit must be loaded before loading this script");
 }
 
+/**
+ * @name MochiKit.Base
+ * @namespace Provides functional programming and useful comparisons.
+ */
 // Check for loaded MochiKit.Base
 if (typeof(MochiKit.Base) == "undefined") {
     throw new ReferenceError("MochiKit.Base must be loaded before loading this script");

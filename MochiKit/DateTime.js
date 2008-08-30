@@ -10,6 +10,10 @@ if (typeof(MochiKit) == "undefined") {
     throw new ReferenceError("MochiKit must be loaded before loading this script");
 }
 
+/**
+ * @name MochiKit.DateTime
+ * @namespace Provides functions for handling date and time.
+ */
 // Check for loaded MochiKit.DateTime
 if (typeof(MochiKit.DateTime) == "undefined") {
     throw new ReferenceError("MochiKit.DateTime must be loaded before loading this script");
