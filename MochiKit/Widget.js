@@ -1,9 +1,8 @@
-/**
+/*
  * Dual-licensed under the MIT License & the Academic Free License v. 2.1.
  * See the file LICENSE for more information.
  *
- * (c) 2007-2008 by Per Cederberg & Dynabyte AB (www.dynabyte.se)
- * All rights reserved.
+ * (c) 2007-2008 by Per Cederberg & Dynabyte AB. All rights reserved.
  */
 
 // Check for loaded MochiKit
@@ -1817,7 +1816,6 @@ MochiKit.Widget.ProgressBar.prototype.setAttrs = function(attrs) {
         this.minValue = parseInt(locals.min) || 0;
         this.maxValue = parseInt(locals.max) || 100;
         this.startTime = new Date().getTime();
-        this.startValue = this.minValue;
         this.lastTime = this.startTime;
         this.timeLeft = null;
     }
@@ -1825,30 +1823,56 @@ MochiKit.Widget.ProgressBar.prototype.setAttrs = function(attrs) {
 }
 
 /**
- * Updates the progress bar value. The value should be within the
- * range previuosly established by the "min" and "max" attributes.
- * Both the progress bar meter and text will be updated by this
- * method.
+ * Updates the progress bar completion value. The value should be
+ * within the range previosly established by the "min" and "max"
+ * attributes and is used to calculate a completion ratio. The
+ * ratio is then used both for updating the progress meter and for
+ * calculating an approximate remaining time. Any previous progress
+ * bar text will be replaced by this method.
  *
  * @param {Number} value the new progress value
+ * @param {String} [text] the additional information text
  */
-MochiKit.Widget.ProgressBar.prototype.setValue = function(value) {
+MochiKit.Widget.ProgressBar.prototype.setValue = function(value, text) {
     value = Math.min(Math.max(value, this.minValue), this.maxValue);
     var pos = value - this.minValue;
     var total = this.maxValue - this.minValue;
-    var percent = Math.round(pos * 1000 / total) / 10;
+    var str = pos + " of " + total;
+    if (typeof(text) == "string" && text != "") {
+        str += " \u2014 " + text;
+    }
+    this.setRatio(pos / total, str);
+}
+
+/**
+ * Updates the progress bar completion ratio. The ratio value should
+ * be a floating-point number between 0.0 and 1.0. The ratio is used
+ * both for updating the progress meter and for calculating an
+ * approximate remaining time. Any previous progress bar text will
+ * be replaced by this method.
+ *
+ * @param {Number} ratio the new progress ratio, a floating-point number
+ *            between 0.0 and 1.0
+ * @param {String} [text] the additional information text
+ */
+MochiKit.Widget.ProgressBar.prototype.setRatio = function(ratio, text) {
+    var percent = Math.round(ratio * 1000) / 10;
     MochiKit.Style.setElementDimensions(this.firstChild, { w: percent }, "%");
     if (percent < 66) {
         this.lastChild.className = "widgetProgressBarText";
     } else {
         this.lastChild.className = "widgetProgressBarTextInverse";
     }
-    var text = Math.round(percent) + "% \u2014 " + pos + " of " + total;
-    if (new Date().getTime() - this.lastTime > 1000) {
-        this.lastTime = new Date().getTime();
-        var period = this.lastTime - this.startTime;
-        var progress = (value - this.startValue) / (this.maxValue - this.startValue);
-        period = Math.max(Math.round(period / progress - period), 0);
+    if (typeof(text) == "string" && text != "") {
+        text = Math.round(percent) + "% \u2014 " + text;
+    } else {
+        text = Math.round(percent) + "%";
+    }
+    var nowTime = new Date().getTime();
+    if (nowTime - this.lastTime > 1000) {
+        this.lastTime = nowTime;
+        var period = nowTime - this.startTime;
+        period = Math.max(Math.round(period / ratio - period), 0);
         this.timeLeft = MochiKit.DateTime.toApproxPeriod(period);
     }
     if (this.timeLeft != null && percent > 0 && percent < 100) {

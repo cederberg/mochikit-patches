@@ -1,9 +1,8 @@
-/**
+/*
  * Dual-licensed under the MIT License & the Academic Free License v. 2.1.
  * See the file LICENSE for more information.
  *
- * (c) 2007-2008 by Per Cederberg & Dynabyte AB (www.dynabyte.se)
- * All rights reserved.
+ * (c) 2007-2008 by Per Cederberg & Dynabyte AB. All rights reserved.
  */
 
 // Check for loaded MochiKit
