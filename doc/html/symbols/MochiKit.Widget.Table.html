@@ -1,0 +1,1476 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="generator" content="JsDoc Toolkit" />
+		
+		<title>JsDoc Reference - MochiKit.Widget.Table</title>
+
+		<style type="text/css">
+			/* default.css */
+body
+{
+	font: 12px "Lucida Grande", Tahoma, Arial, Helvetica, sans-serif;
+	width: 800px;
+}
+
+.header
+{
+	clear: both;
+	background-color: #ccc;
+	padding: 8px;
+}
+
+h1
+{
+	font-size: 150%;
+	font-weight: bold;
+	padding: 0;
+	margin: 1em 0 0 .3em;
+}
+
+hr
+{
+	border: none 0;
+	border-top: 1px solid #7F8FB1;
+	height: 1px;
+}
+
+pre.code
+{
+	display: block;
+	padding: 8px;
+	border: 1px dashed #ccc;
+}
+
+#index
+{
+	margin-top: 24px;
+	float: left;
+	width: 160px;
+	position: absolute;
+	left: 8px;
+	background-color: #F3F3F3;
+	padding: 8px;
+}
+
+#content
+{
+	margin-left: 190px;
+	width: 600px;
+}
+
+.classList
+{
+	list-style-type: none;
+	padding: 0;
+	margin: 0 0 0 8px;
+	font-family: arial, sans-serif;
+	font-size: 1em;
+	overflow: auto;
+}
+
+.classList li
+{
+	padding: 0;
+	margin: 0 0 8px 0;
+}
+
+.summaryTable { width: 100%; }
+
+h1.classTitle
+{
+	font-size:170%;
+	line-height:130%;
+}
+
+h2 { font-size: 110%; }
+caption, div.sectionTitle
+{
+	background-color: #7F8FB1;
+	color: #fff;
+	font-size:130%;
+	text-align: left;
+	padding: 2px 6px 2px 6px;
+	border: 1px #7F8FB1 solid;
+}
+
+div.sectionTitle { margin-bottom: 8px; }
+.summaryTable thead { display: none; }
+
+.summaryTable td
+{
+	vertical-align: top;
+	padding: 4px;
+	border-bottom: 1px #7F8FB1 solid;
+	border-right: 1px #7F8FB1 solid;
+}
+
+/*col#summaryAttributes {}*/
+.summaryTable td.attributes
+{
+	border-left: 1px #7F8FB1 solid;
+	width: 140px;
+	text-align: right;
+}
+
+td.attributes, .fixedFont
+{
+	line-height: 15px;
+	color: #002EBE;
+	font-family: "Courier New",Courier,monospace;
+	font-size: 13px;
+}
+
+.summaryTable td.nameDescription
+{
+	text-align: left;
+	font-size: 13px;
+	line-height: 15px;
+}
+
+.summaryTable td.nameDescription, .description
+{
+	line-height: 15px;
+	padding: 4px;
+	padding-left: 4px;
+}
+
+.summaryTable { margin-bottom: 8px; }
+
+ul.inheritsList
+{
+	list-style: square;
+	margin-left: 20px;
+	padding-left: 0;
+}
+
+.detailList {
+	margin-left: 20px; 
+	line-height: 15px;
+}
+.detailList dt { margin-left: 20px; }
+
+.detailList .heading
+{
+	font-weight: bold;
+	padding-bottom: 6px;
+	margin-left: 0;
+}
+
+.light, td.attributes, .light a:link, .light a:visited
+{
+	color: #777;
+	font-style: italic;
+}
+
+.fineprint
+{
+	text-align: right;
+	font-size: 10px;
+}
+		</style>
+	</head>
+
+	<body>
+<!-- ============================== header ================================= -->	
+		<!-- begin static/header.html -->
+		<div id="header">
+</div>
+		<!-- end static/header.html -->
+
+<!-- ============================== classes index ============================ -->
+		<div id="index">
+			<!-- begin publish.classesIndex -->
+			<div align="center"><a href="../index.html">Class Index</a>
+| <a href="../files.html">File Index</a></div>
+<hr />
+<h2>Classes</h2>
+<ul class="classList">
+	
+	<li><i><a href="../symbols/_global_.html">_global_</a></i></li>
+	
+	<li><a href="../symbols/MochiKit.Base.html">MochiKit.Base</a></li>
+	
+	<li><a href="../symbols/MochiKit.DateTime.html">MochiKit.DateTime</a></li>
+	
+	<li><a href="../symbols/MochiKit.DateTime.TimePeriod.html">MochiKit.DateTime.TimePeriod</a></li>
+	
+	<li><a href="../symbols/MochiKit.DOM.html">MochiKit.DOM</a></li>
+	
+	<li><a href="../symbols/MochiKit.Style.html">MochiKit.Style</a></li>
+	
+	<li><a href="../symbols/MochiKit.SVG.html">MochiKit.SVG</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.html">MochiKit.Widget</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.Button.html">MochiKit.Widget.Button</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.Dialog.html">MochiKit.Widget.Dialog</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.Field.html">MochiKit.Widget.Field</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.Form.html">MochiKit.Widget.Form</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.FormValidator.html">MochiKit.Widget.FormValidator</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.Icon.html">MochiKit.Widget.Icon</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.Overlay.html">MochiKit.Widget.Overlay</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.Pane.html">MochiKit.Widget.Pane</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.Popup.html">MochiKit.Widget.Popup</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.ProgressBar.html">MochiKit.Widget.ProgressBar</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.TabContainer.html">MochiKit.Widget.TabContainer</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.Table.html">MochiKit.Widget.Table</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.TableColumn.html">MochiKit.Widget.TableColumn</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.TextArea.html">MochiKit.Widget.TextArea</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.TextField.html">MochiKit.Widget.TextField</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.Tree.html">MochiKit.Widget.Tree</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.TreeNode.html">MochiKit.Widget.TreeNode</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.Wizard.html">MochiKit.Widget.Wizard</a></li>
+	
+</ul>
+<hr />
+			<!-- end publish.classesIndex -->
+		</div>
+		
+		<div id="content">
+<!-- ============================== class title ============================ -->
+			<h1 class="classTitle">
+				
+				Class MochiKit.Widget.Table
+			</h1>
+
+<!-- ============================== class summary ========================== -->			
+			<p class="description">
+				<br />Extends
+					<a href="../symbols/MochiKit.Widget.html#constructor">MochiKit.Widget</a>.<br />
+				
+			
+				The table widget class. Used to provide a sortable and
+    scrolling data table, using an outer &lt;div&gt; HTML
+    element around a &lt;table&gt;. The Table widget can only
+    have TableColumn child nodes, each providing a visible data
+    column in the table. In addition to standard HTML events, the
+    "onclear" and "onselect" events are triggered when data is
+    cleared or selected in the table.
+				
+				
+					<br /><i>Defined in: </i> <a href="../symbols/src/scripts_MochiKit_Widget.js.html">Widget.js</a>.
+				
+			</p>
+
+<!-- ============================== constructor summary ==================== -->			
+			
+			<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class MochiKit.Widget.Table.">
+				<caption>Class Summary</caption>
+				<thead>
+					<tr>
+						<th scope="col">Constructor Attributes</th>
+						<th scope="col">Constructor Name and Description</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td class="attributes">&nbsp;</td>
+						<td class="nameDescription" >
+							<div class="fixedFont">
+								<b><a href="../symbols/MochiKit.Widget.Table.html#constructor">MochiKit.Widget.Table</a></b>(attrs)
+							</div>
+							<div class="description">Creates a new data table widget.</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			
+
+<!-- ============================== properties summary ===================== -->
+			
+				
+				
+				
+				
+				<dl class="inheritsList">
+				<dt>Fields borrowed from class <a href="../symbols/MochiKit.Widget.html#constructor">MochiKit.Widget</a>: </dt><dd><a href="../symbols/MochiKit.Widget.html#.Classes">Classes</a></dd>
+				</dl>
+				
+			
+
+<!-- ============================== methods summary ======================== -->
+			
+				
+				
+				<table class="summaryTable" cellspacing="0" summary="A summary of the methods documented in the class MochiKit.Widget.Table.">
+					<caption>Method Summary</caption>
+					<thead>
+						<tr>
+							<th scope="col">Method Attributes</th>
+							<th scope="col">Method Name and Description</th>
+						</tr>
+					</thead>
+					<tbody>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.Table.html#_addSelectedIds">_addSelectedIds</a></b>()
+								</div>
+								<div class="description">Adds the specified row id values to the selection.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.Table.html#_handleSelect">_handleSelect</a></b>(evt)
+								</div>
+								<div class="description">Handles the mouse selection events.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.Table.html#_markSelection">_markSelection</a></b>(indexOrNull)
+								</div>
+								<div class="description">Marks selected rows.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.Table.html#_renderRows">_renderRows</a></b>()
+								</div>
+								<div class="description">Renders the table rows.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.Table.html#_unmarkSelection">_unmarkSelection</a></b>(indexOrNull)
+								</div>
+								<div class="description">Unmarks selected rows.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.Table.html#addChildNode">addChildNode</a></b>(child)
+								</div>
+								<div class="description">Adds a single child table column widget to this widget.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.Table.html#addSelectedIds">addSelectedIds</a></b>()
+								</div>
+								<div class="description">Adds the specified row id values to the selection.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.Table.html#clear">clear</a></b>()
+								</div>
+								<div class="description">Clears all the data in the table.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.Table.html#getCellElem">getCellElem</a></b>(row, col)
+								</div>
+								<div class="description">Returns a table cell element.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.Table.html#getChildNodes">getChildNodes</a></b>()
+								</div>
+								<div class="description">Returns an array with all child table column widgets.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.Table.html#getColumnIndex">getColumnIndex</a></b>(field)
+								</div>
+								<div class="description">Returns the column index of a field.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.Table.html#getData">getData</a></b>()
+								</div>
+								<div class="description">Returns an array with the data in the table.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.Table.html#getIdKey">getIdKey</a></b>()
+								</div>
+								<div class="description">Returns the unique key identifier column field, or null if none
+was set.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.Table.html#getSelectedData">getSelectedData</a></b>()
+								</div>
+								<div class="description">Returns the currently selected row data.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.Table.html#getSelectedIds">getSelectedIds</a></b>()
+								</div>
+								<div class="description">Returns the currently selected row ids.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.Table.html#getSortKey">getSortKey</a></b>()
+								</div>
+								<div class="description">Returns the current sort key for the table.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.Table.html#redraw">redraw</a></b>()
+								</div>
+								<div class="description">Redraws the table from updated source data.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.Table.html#removeChildNode">removeChildNode</a></b>(child)
+								</div>
+								<div class="description">Removes a single child table column widget from this widget.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.Table.html#removeSelectedIds">removeSelectedIds</a></b>()
+								</div>
+								<div class="description">Removes the specified row id values from the selection.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.Table.html#setAttrs">setAttrs</a></b>(attrs)
+								</div>
+								<div class="description">Updates the widget or HTML DOM node attributes.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.Table.html#setData">setData</a></b>(data)
+								</div>
+								<div class="description">Sets the table data.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.Table.html#setIdKey">setIdKey</a></b>(key)
+								</div>
+								<div class="description">Sets the unique key identifier column field.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.Table.html#sortData">sortData</a></b>(field, direction)
+								</div>
+								<div class="description">Sorts the table data by field and direction.</div>
+							</td>
+						</tr>
+					
+					</tbody>
+				</table>
+				
+				
+				
+				<dl class="inheritsList">
+				<dt>Methods borrowed from class <a href="../symbols/MochiKit.Widget.html#constructor">MochiKit.Widget</a>: </dt><dd><a href="../symbols/MochiKit.Widget.html#addAll">addAll</a>, <a href="../symbols/MochiKit.Widget.html#addClass">addClass</a>, <a href="../symbols/MochiKit.Widget.html#animate">animate</a>, <a href="../symbols/MochiKit.Widget.html#blurAll">blurAll</a>, <a href="../symbols/MochiKit.Widget.html#.createWidget">createWidget</a>, <a href="../symbols/MochiKit.Widget.html#destroy">destroy</a>, <a href="../symbols/MochiKit.Widget.html#.destroyWidget">destroyWidget</a>, <a href="../symbols/MochiKit.Widget.html#.emitSignal">emitSignal</a>, <a href="../symbols/MochiKit.Widget.html#hasClass">hasClass</a>, <a href="../symbols/MochiKit.Widget.html#hide">hide</a>, <a href="../symbols/MochiKit.Widget.html#.isFormField">isFormField</a>, <a href="../symbols/MochiKit.Widget.html#isHidden">isHidden</a>, <a href="../symbols/MochiKit.Widget.html#.isWidget">isWidget</a>, <a href="../symbols/MochiKit.Widget.html#removeAll">removeAll</a>, <a href="../symbols/MochiKit.Widget.html#removeClass">removeClass</a>, <a href="../symbols/MochiKit.Widget.html#setStyle">setStyle</a>, <a href="../symbols/MochiKit.Widget.html#show">show</a>, <a href="../symbols/MochiKit.Widget.html#toggleClass">toggleClass</a></dd>
+				</dl>
+				
+			
+
+<!-- ============================== constructor details ==================== -->		
+			
+			<div class="details"><a name="constructor"> </a>
+				<div class="sectionTitle">
+					Class Detail
+				</div>
+				
+				<div class="fixedFont">
+						<b>MochiKit.Widget.Table</b>(attrs)
+				</div>
+				
+				<div class="description">
+					Creates a new data table widget.
+					
+				</div>
+				
+				
+				
+				
+					
+						<dl class="detailList">
+						<dt class="heading">Parameters:</dt>
+						
+							<dt>
+								<span class="light fixedFont">{Object}</span>  <b>attrs</b>
+								
+							</dt>
+								<dd>the widget and node attributes</dd>
+						
+							<dt>
+								<span class="light fixedFont">{Boolean}</span>  <b>attrs.multiple</b>
+								<i>Optional</i>
+							</dt>
+								<dd>the multiple row selection flag,
+           defaults to false</dd>
+						
+							<dt>
+								<span class="light fixedFont">{Widget}</span>  <b>...</b>
+								<i>Optional</i>
+							</dt>
+								<dd>the child table columns</dd>
+						
+						</dl>
+					
+					
+					
+					
+					
+						<dl class="detailList">
+						<dt class="heading">Returns:</dt>
+						
+								<dd><span class="light fixedFont">{Widget}</span> the widget DOM node</dd>
+						
+						</dl>
+					
+					
+					
+
+			</div>
+			
+
+<!-- ============================== field details ========================== -->		
+			
+
+<!-- ============================== method details ========================= -->		
+			
+				<div class="sectionTitle">
+					Method Detail
+				</div>
+				
+					<a name="_addSelectedIds"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{Array}</span>
+					<b>_addSelectedIds</b>()
+					
+					</div>
+					<div class="description">
+						Adds the specified row id values to the selection. Note that this
+method does not emit any selection signal.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{String/Array}</span> <b>...</b>
+									<i>Optional</i>
+								</dt>
+								<dd>the row ids or array with ids to select</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Array}</span> an array with the new row ids actually selected</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="_handleSelect"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>_handleSelect</b>(evt)
+					
+					</div>
+					<div class="description">
+						Handles the mouse selection events.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Event}</span> <b>evt</b>
+									
+								</dt>
+								<dd>the MochiKit.Signal.Event object</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="_markSelection"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>_markSelection</b>(indexOrNull)
+					
+					</div>
+					<div class="description">
+						Marks selected rows.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Number}</span> <b>indexOrNull</b>
+									
+								</dt>
+								<dd>the row index, or null for the array</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="_renderRows"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>_renderRows</b>()
+					
+					</div>
+					<div class="description">
+						Renders the table rows.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="_unmarkSelection"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>_unmarkSelection</b>(indexOrNull)
+					
+					</div>
+					<div class="description">
+						Unmarks selected rows.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Number}</span> <b>indexOrNull</b>
+									
+								</dt>
+								<dd>the row index, or null for the array</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="addChildNode"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>addChildNode</b>(child)
+					
+					</div>
+					<div class="description">
+						Adds a single child table column widget to this widget.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Widget}</span> <b>child</b>
+									
+								</dt>
+								<dd>the table column widget to add</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="addSelectedIds"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{Array}</span>
+					<b>addSelectedIds</b>()
+					
+					</div>
+					<div class="description">
+						Adds the specified row id values to the selection. If the current
+selection is changed the select signal will be emitted.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{String/Array}</span> <b>...</b>
+									<i>Optional</i>
+								</dt>
+								<dd>the row ids or array with ids to select</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Array}</span> an array with the new row ids actually selected</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="clear"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>clear</b>()
+					
+					</div>
+					<div class="description">
+						Clears all the data in the table. The column headers will not be
+affected by this method. Use removeAll() or removeChildNode() to
+also remove columns.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="getCellElem"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{Node}</span>
+					<b>getCellElem</b>(row, col)
+					
+					</div>
+					<div class="description">
+						Returns a table cell element.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Number}</span> <b>row</b>
+									
+								</dt>
+								<dd>the row index</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Number}</span> <b>col</b>
+									
+								</dt>
+								<dd>the column index</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Node}</span> the table cell element node, or
+        null if not found</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="getChildNodes"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{Array}</span>
+					<b>getChildNodes</b>()
+					
+					</div>
+					<div class="description">
+						Returns an array with all child table column widgets. Note that
+the array is a real JavaScript array, not a dynamic NodeList.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Array}</span> the array of child table column widgets</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="getColumnIndex"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{Number}</span>
+					<b>getColumnIndex</b>(field)
+					
+					</div>
+					<div class="description">
+						Returns the column index of a field.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>field</b>
+									
+								</dt>
+								<dd>the field name</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Number}</span> the column index, or
+        -1 if not found</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="getData"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{Array}</span>
+					<b>getData</b>()
+					
+					</div>
+					<div class="description">
+						Returns an array with the data in the table. The array returned
+should correspond exactly to the one previously set, i.e. it has
+not been sorted or modified in other ways.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Array}</span> an array with the data in the table</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="getIdKey"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{String}</span>
+					<b>getIdKey</b>()
+					
+					</div>
+					<div class="description">
+						Returns the unique key identifier column field, or null if none
+was set.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{String}</span> the key column field name, or
+        null for none</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="getSelectedData"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{Object/Array}</span>
+					<b>getSelectedData</b>()
+					
+					</div>
+					<div class="description">
+						Returns the currently selected row data.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Object/Array}</span> the data row selected, or
+        an array of selected data rows if multiple selection is enabled</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="getSelectedIds"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{Array}</span>
+					<b>getSelectedIds</b>()
+					
+					</div>
+					<div class="description">
+						Returns the currently selected row ids. If no rows are selected,
+an empty array will be returned. The row ids are the data values
+from the key column, or automatically generated internal values
+if no key column is set.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Array}</span> an array with the selected row ids</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="getSortKey"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{String}</span>
+					<b>getSortKey</b>()
+					
+					</div>
+					<div class="description">
+						Returns the current sort key for the table.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{String}</span> the current sort field, or
+        null for none</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="redraw"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>redraw</b>()
+					
+					</div>
+					<div class="description">
+						Redraws the table from updated source data. Note that this method
+will not add or remove rows and keeps the current row order
+intact. For a more complete redraw of the table, use setData().
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="removeChildNode"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>removeChildNode</b>(child)
+					
+					</div>
+					<div class="description">
+						Removes a single child table column widget from this widget.
+This will also clear all the data in the table.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Widget}</span> <b>child</b>
+									
+								</dt>
+								<dd>the table column widget to remove</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="removeSelectedIds"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{Array}</span>
+					<b>removeSelectedIds</b>()
+					
+					</div>
+					<div class="description">
+						Removes the specified row id values from the selection. If the
+current selection is changed the select signal will be emitted.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{String/Array}</span> <b>...</b>
+									<i>Optional</i>
+								</dt>
+								<dd>the row ids or array with ids to unselect</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Array}</span> an array with the row ids actually unselected</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="setAttrs"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>setAttrs</b>(attrs)
+					
+					</div>
+					<div class="description">
+						Updates the widget or HTML DOM node attributes.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>attrs</b>
+									
+								</dt>
+								<dd>the widget and node attributes to set</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Boolean}</span> <b>attrs.multiple</b>
+									<i>Optional</i>
+								</dt>
+								<dd>the multiple row selection flag</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="setData"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>setData</b>(data)
+					
+					</div>
+					<div class="description">
+						Sets the table data. The table data is an array of objects, each
+having properties corresponding to the table column fields. Any
+object property not mapped to a table column will be ignored (i.e.
+a hidden column). See the TableColumn class for data mapping
+details.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Array}</span> <b>data</b>
+									
+								</dt>
+								<dd>an array with data objects</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="setIdKey"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>setIdKey</b>(key)
+					
+					</div>
+					<div class="description">
+						Sets the unique key identifier column field. Note that this
+method will regenerate all row identifiers if the table already
+contains data.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>key</b>
+									
+								</dt>
+								<dd>the new key column field name</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="sortData"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>sortData</b>(field, direction)
+					
+					</div>
+					<div class="description">
+						Sorts the table data by field and direction.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>field</b>
+									
+								</dt>
+								<dd>the sort field</dd>
+							
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>direction</b>
+									<i>Optional</i>
+								</dt>
+								<dd>the sort direction, either "asc" or
+           "desc"</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					
+				
+			
+			
+			<hr />
+		</div>
+		
+<!-- ============================== footer ================================= -->
+		<div class="fineprint" style="clear:both">
+			
+			Documentation generated by <a href="http://www.jsdoctoolkit.org/" target="_blank">JsDoc Toolkit</a> 2.0.2 on Sat Aug 30 2008 22:47:03 GMT+0200 (CEST)
+		</div>
+	</body>
+</html>

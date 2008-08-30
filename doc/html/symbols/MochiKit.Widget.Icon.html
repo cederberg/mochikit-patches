@@ -1,0 +1,1682 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="generator" content="JsDoc Toolkit" />
+		
+		<title>JsDoc Reference - MochiKit.Widget.Icon</title>
+
+		<style type="text/css">
+			/* default.css */
+body
+{
+	font: 12px "Lucida Grande", Tahoma, Arial, Helvetica, sans-serif;
+	width: 800px;
+}
+
+.header
+{
+	clear: both;
+	background-color: #ccc;
+	padding: 8px;
+}
+
+h1
+{
+	font-size: 150%;
+	font-weight: bold;
+	padding: 0;
+	margin: 1em 0 0 .3em;
+}
+
+hr
+{
+	border: none 0;
+	border-top: 1px solid #7F8FB1;
+	height: 1px;
+}
+
+pre.code
+{
+	display: block;
+	padding: 8px;
+	border: 1px dashed #ccc;
+}
+
+#index
+{
+	margin-top: 24px;
+	float: left;
+	width: 160px;
+	position: absolute;
+	left: 8px;
+	background-color: #F3F3F3;
+	padding: 8px;
+}
+
+#content
+{
+	margin-left: 190px;
+	width: 600px;
+}
+
+.classList
+{
+	list-style-type: none;
+	padding: 0;
+	margin: 0 0 0 8px;
+	font-family: arial, sans-serif;
+	font-size: 1em;
+	overflow: auto;
+}
+
+.classList li
+{
+	padding: 0;
+	margin: 0 0 8px 0;
+}
+
+.summaryTable { width: 100%; }
+
+h1.classTitle
+{
+	font-size:170%;
+	line-height:130%;
+}
+
+h2 { font-size: 110%; }
+caption, div.sectionTitle
+{
+	background-color: #7F8FB1;
+	color: #fff;
+	font-size:130%;
+	text-align: left;
+	padding: 2px 6px 2px 6px;
+	border: 1px #7F8FB1 solid;
+}
+
+div.sectionTitle { margin-bottom: 8px; }
+.summaryTable thead { display: none; }
+
+.summaryTable td
+{
+	vertical-align: top;
+	padding: 4px;
+	border-bottom: 1px #7F8FB1 solid;
+	border-right: 1px #7F8FB1 solid;
+}
+
+/*col#summaryAttributes {}*/
+.summaryTable td.attributes
+{
+	border-left: 1px #7F8FB1 solid;
+	width: 140px;
+	text-align: right;
+}
+
+td.attributes, .fixedFont
+{
+	line-height: 15px;
+	color: #002EBE;
+	font-family: "Courier New",Courier,monospace;
+	font-size: 13px;
+}
+
+.summaryTable td.nameDescription
+{
+	text-align: left;
+	font-size: 13px;
+	line-height: 15px;
+}
+
+.summaryTable td.nameDescription, .description
+{
+	line-height: 15px;
+	padding: 4px;
+	padding-left: 4px;
+}
+
+.summaryTable { margin-bottom: 8px; }
+
+ul.inheritsList
+{
+	list-style: square;
+	margin-left: 20px;
+	padding-left: 0;
+}
+
+.detailList {
+	margin-left: 20px; 
+	line-height: 15px;
+}
+.detailList dt { margin-left: 20px; }
+
+.detailList .heading
+{
+	font-weight: bold;
+	padding-bottom: 6px;
+	margin-left: 0;
+}
+
+.light, td.attributes, .light a:link, .light a:visited
+{
+	color: #777;
+	font-style: italic;
+}
+
+.fineprint
+{
+	text-align: right;
+	font-size: 10px;
+}
+		</style>
+	</head>
+
+	<body>
+<!-- ============================== header ================================= -->	
+		<!-- begin static/header.html -->
+		<div id="header">
+</div>
+		<!-- end static/header.html -->
+
+<!-- ============================== classes index ============================ -->
+		<div id="index">
+			<!-- begin publish.classesIndex -->
+			<div align="center"><a href="../index.html">Class Index</a>
+| <a href="../files.html">File Index</a></div>
+<hr />
+<h2>Classes</h2>
+<ul class="classList">
+	
+	<li><i><a href="../symbols/_global_.html">_global_</a></i></li>
+	
+	<li><a href="../symbols/MochiKit.Base.html">MochiKit.Base</a></li>
+	
+	<li><a href="../symbols/MochiKit.DateTime.html">MochiKit.DateTime</a></li>
+	
+	<li><a href="../symbols/MochiKit.DateTime.TimePeriod.html">MochiKit.DateTime.TimePeriod</a></li>
+	
+	<li><a href="../symbols/MochiKit.DOM.html">MochiKit.DOM</a></li>
+	
+	<li><a href="../symbols/MochiKit.Style.html">MochiKit.Style</a></li>
+	
+	<li><a href="../symbols/MochiKit.SVG.html">MochiKit.SVG</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.html">MochiKit.Widget</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.Button.html">MochiKit.Widget.Button</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.Dialog.html">MochiKit.Widget.Dialog</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.Field.html">MochiKit.Widget.Field</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.Form.html">MochiKit.Widget.Form</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.FormValidator.html">MochiKit.Widget.FormValidator</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.Icon.html">MochiKit.Widget.Icon</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.Overlay.html">MochiKit.Widget.Overlay</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.Pane.html">MochiKit.Widget.Pane</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.Popup.html">MochiKit.Widget.Popup</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.ProgressBar.html">MochiKit.Widget.ProgressBar</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.TabContainer.html">MochiKit.Widget.TabContainer</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.Table.html">MochiKit.Widget.Table</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.TableColumn.html">MochiKit.Widget.TableColumn</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.TextArea.html">MochiKit.Widget.TextArea</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.TextField.html">MochiKit.Widget.TextField</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.Tree.html">MochiKit.Widget.Tree</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.TreeNode.html">MochiKit.Widget.TreeNode</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.Wizard.html">MochiKit.Widget.Wizard</a></li>
+	
+</ul>
+<hr />
+			<!-- end publish.classesIndex -->
+		</div>
+		
+		<div id="content">
+<!-- ============================== class title ============================ -->
+			<h1 class="classTitle">
+				
+				Class MochiKit.Widget.Icon
+			</h1>
+
+<!-- ============================== class summary ========================== -->			
+			<p class="description">
+				<br />Extends
+					<a href="../symbols/MochiKit.Widget.html#constructor">MochiKit.Widget</a>.<br />
+				
+			
+				The icon widget class. Used to provide a small clickable
+    image, using the &lt;img&gt; HTML element. In particular,
+    the "onclick" event is usually of interest. Predefined icon
+    images for variuos purposes are available as constants.
+				
+				
+					<br /><i>Defined in: </i> <a href="../symbols/src/scripts_MochiKit_Widget.js.html">Widget.js</a>.
+				
+			</p>
+
+<!-- ============================== constructor summary ==================== -->			
+			
+			<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class MochiKit.Widget.Icon.">
+				<caption>Class Summary</caption>
+				<thead>
+					<tr>
+						<th scope="col">Constructor Attributes</th>
+						<th scope="col">Constructor Name and Description</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td class="attributes">&nbsp;</td>
+						<td class="nameDescription" >
+							<div class="fixedFont">
+								<b><a href="../symbols/MochiKit.Widget.Icon.html#constructor">MochiKit.Widget.Icon</a></b>(attrs)
+							</div>
+							<div class="description">Creates a new icon widget.</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			
+
+<!-- ============================== properties summary ===================== -->
+			
+				
+				
+				<table class="summaryTable" cellspacing="0" summary="A summary of the fields documented in the class MochiKit.Widget.Icon.">
+					<caption>Field Summary</caption>
+					<thead>
+						<tr>
+							<th scope="col">Field Attributes</th>
+							<th scope="col">Field Name and Description</th>
+						</tr>
+					</thead>
+					<tbody>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								<b><a href="../symbols/MochiKit.Widget.Icon.html#ADD">ADD</a></b>
+								</div>
+								<div class="description">The add icon definition.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								<b><a href="../symbols/MochiKit.Widget.Icon.html#AUTOMATIC">AUTOMATIC</a></b>
+								</div>
+								<div class="description">The automatic icon definition.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								<b><a href="../symbols/MochiKit.Widget.Icon.html#BLANK">BLANK</a></b>
+								</div>
+								<div class="description">The blank icon definition.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								<b><a href="../symbols/MochiKit.Widget.Icon.html#CALENDAR">CALENDAR</a></b>
+								</div>
+								<div class="description">The calendar icon definition.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								<b><a href="../symbols/MochiKit.Widget.Icon.html#CANCEL">CANCEL</a></b>
+								</div>
+								<div class="description">The cancel icon definition.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								<b><a href="../symbols/MochiKit.Widget.Icon.html#CLOSE">CLOSE</a></b>
+								</div>
+								<div class="description">The close icon definition.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								<b><a href="../symbols/MochiKit.Widget.Icon.html#COMMENT">COMMENT</a></b>
+								</div>
+								<div class="description">The comment icon definition.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								<b><a href="../symbols/MochiKit.Widget.Icon.html#CONFIG">CONFIG</a></b>
+								</div>
+								<div class="description">The config icon definition.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								<b><a href="../symbols/MochiKit.Widget.Icon.html#CUT">CUT</a></b>
+								</div>
+								<div class="description">The cut icon definition.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								<b><a href="../symbols/MochiKit.Widget.Icon.html#DEFAULT">DEFAULT</a></b>
+								</div>
+								<div class="description">The default icon definition, inherited by all others.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								<b><a href="../symbols/MochiKit.Widget.Icon.html#DELAY">DELAY</a></b>
+								</div>
+								<div class="description">The delay icon definition.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								<b><a href="../symbols/MochiKit.Widget.Icon.html#DELETE">DELETE</a></b>
+								</div>
+								<div class="description">The delete icon definition.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								<b><a href="../symbols/MochiKit.Widget.Icon.html#DOCUMENT">DOCUMENT</a></b>
+								</div>
+								<div class="description">The document icon definition.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								<b><a href="../symbols/MochiKit.Widget.Icon.html#DOWN">DOWN</a></b>
+								</div>
+								<div class="description">The down icon definition.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								<b><a href="../symbols/MochiKit.Widget.Icon.html#EDIT">EDIT</a></b>
+								</div>
+								<div class="description">The edit icon definition.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								<b><a href="../symbols/MochiKit.Widget.Icon.html#ERROR">ERROR</a></b>
+								</div>
+								<div class="description">The error icon definition.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								<b><a href="../symbols/MochiKit.Widget.Icon.html#EXPAND">EXPAND</a></b>
+								</div>
+								<div class="description">The expand icon definition.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								<b><a href="../symbols/MochiKit.Widget.Icon.html#EXPORT">EXPORT</a></b>
+								</div>
+								<div class="description">The export icon definition.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								<b><a href="../symbols/MochiKit.Widget.Icon.html#FOLDER">FOLDER</a></b>
+								</div>
+								<div class="description">The folder icon definition.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								<b><a href="../symbols/MochiKit.Widget.Icon.html#HELP">HELP</a></b>
+								</div>
+								<div class="description">The help icon definition.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								<b><a href="../symbols/MochiKit.Widget.Icon.html#LEFT">LEFT</a></b>
+								</div>
+								<div class="description">The left icon definition.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								<b><a href="../symbols/MochiKit.Widget.Icon.html#LOADING">LOADING</a></b>
+								</div>
+								<div class="description">The loading icon definition.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								<b><a href="../symbols/MochiKit.Widget.Icon.html#LOADING_LARGE">LOADING_LARGE</a></b>
+								</div>
+								<div class="description">The large loading icon definition.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								<b><a href="../symbols/MochiKit.Widget.Icon.html#MINUS">MINUS</a></b>
+								</div>
+								<div class="description">The minus icon definition.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								<b><a href="../symbols/MochiKit.Widget.Icon.html#NEXT">NEXT</a></b>
+								</div>
+								<div class="description">The next icon definition.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								<b><a href="../symbols/MochiKit.Widget.Icon.html#OK">OK</a></b>
+								</div>
+								<div class="description">The ok icon definition.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								<b><a href="../symbols/MochiKit.Widget.Icon.html#PLUGIN">PLUGIN</a></b>
+								</div>
+								<div class="description">The plugin icon definition.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								<b><a href="../symbols/MochiKit.Widget.Icon.html#PLUS">PLUS</a></b>
+								</div>
+								<div class="description">The plus icon definition.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								<b><a href="../symbols/MochiKit.Widget.Icon.html#PREVIOUS">PREVIOUS</a></b>
+								</div>
+								<div class="description">The previuos icon definition.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								<b><a href="../symbols/MochiKit.Widget.Icon.html#RELOAD">RELOAD</a></b>
+								</div>
+								<div class="description">The reload icon definition.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								<b><a href="../symbols/MochiKit.Widget.Icon.html#REMOVE">REMOVE</a></b>
+								</div>
+								<div class="description">The remove icon definition.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								<b><a href="../symbols/MochiKit.Widget.Icon.html#RESIZE">RESIZE</a></b>
+								</div>
+								<div class="description">The resize icon definition.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								<b><a href="../symbols/MochiKit.Widget.Icon.html#RIGHT">RIGHT</a></b>
+								</div>
+								<div class="description">The right icon definition.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								<b><a href="../symbols/MochiKit.Widget.Icon.html#SEARCH">SEARCH</a></b>
+								</div>
+								<div class="description">The search icon definition.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								<b><a href="../symbols/MochiKit.Widget.Icon.html#SELECT">SELECT</a></b>
+								</div>
+								<div class="description">The select icon definition.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								<b><a href="../symbols/MochiKit.Widget.Icon.html#UP">UP</a></b>
+								</div>
+								<div class="description">The up icon definition.</div>
+							</td>
+						</tr>
+					
+					</tbody>
+				</table>
+				
+				
+				
+				<dl class="inheritsList">
+				<dt>Fields borrowed from class <a href="../symbols/MochiKit.Widget.html#constructor">MochiKit.Widget</a>: </dt><dd><a href="../symbols/MochiKit.Widget.html#.Classes">Classes</a></dd>
+				</dl>
+				
+			
+
+<!-- ============================== methods summary ======================== -->
+			
+				
+				
+				<table class="summaryTable" cellspacing="0" summary="A summary of the methods documented in the class MochiKit.Widget.Icon.">
+					<caption>Method Summary</caption>
+					<thead>
+						<tr>
+							<th scope="col">Method Attributes</th>
+							<th scope="col">Method Name and Description</th>
+						</tr>
+					</thead>
+					<tbody>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.Icon.html#setAttrs">setAttrs</a></b>(attrs)
+								</div>
+								<div class="description">Updates the icon or HTML DOM node attributes.</div>
+							</td>
+						</tr>
+					
+					</tbody>
+				</table>
+				
+				
+				
+				<dl class="inheritsList">
+				<dt>Methods borrowed from class <a href="../symbols/MochiKit.Widget.html#constructor">MochiKit.Widget</a>: </dt><dd><a href="../symbols/MochiKit.Widget.html#addAll">addAll</a>, <a href="../symbols/MochiKit.Widget.html#addChildNode">addChildNode</a>, <a href="../symbols/MochiKit.Widget.html#addClass">addClass</a>, <a href="../symbols/MochiKit.Widget.html#animate">animate</a>, <a href="../symbols/MochiKit.Widget.html#blurAll">blurAll</a>, <a href="../symbols/MochiKit.Widget.html#.createWidget">createWidget</a>, <a href="../symbols/MochiKit.Widget.html#destroy">destroy</a>, <a href="../symbols/MochiKit.Widget.html#.destroyWidget">destroyWidget</a>, <a href="../symbols/MochiKit.Widget.html#.emitSignal">emitSignal</a>, <a href="../symbols/MochiKit.Widget.html#getChildNodes">getChildNodes</a>, <a href="../symbols/MochiKit.Widget.html#hasClass">hasClass</a>, <a href="../symbols/MochiKit.Widget.html#hide">hide</a>, <a href="../symbols/MochiKit.Widget.html#.isFormField">isFormField</a>, <a href="../symbols/MochiKit.Widget.html#isHidden">isHidden</a>, <a href="../symbols/MochiKit.Widget.html#.isWidget">isWidget</a>, <a href="../symbols/MochiKit.Widget.html#removeAll">removeAll</a>, <a href="../symbols/MochiKit.Widget.html#removeChildNode">removeChildNode</a>, <a href="../symbols/MochiKit.Widget.html#removeClass">removeClass</a>, <a href="../symbols/MochiKit.Widget.html#setStyle">setStyle</a>, <a href="../symbols/MochiKit.Widget.html#show">show</a>, <a href="../symbols/MochiKit.Widget.html#toggleClass">toggleClass</a></dd>
+				</dl>
+				
+			
+
+<!-- ============================== constructor details ==================== -->		
+			
+			<div class="details"><a name="constructor"> </a>
+				<div class="sectionTitle">
+					Class Detail
+				</div>
+				
+				<div class="fixedFont">
+						<b>MochiKit.Widget.Icon</b>(attrs)
+				</div>
+				
+				<div class="description">
+					Creates a new icon widget.
+					
+				</div>
+				
+				
+				
+				
+					
+						<dl class="detailList">
+						<dt class="heading">Parameters:</dt>
+						
+							<dt>
+								<span class="light fixedFont">{Object}</span>  <b>attrs</b>
+								
+							</dt>
+								<dd>the widget and node attributes</dd>
+						
+							<dt>
+								<span class="light fixedFont">{String}</span>  <b>attrs.ref</b>
+								<i>Optional</i>
+							</dt>
+								<dd>the referenced icon definition</dd>
+						
+							<dt>
+								<span class="light fixedFont">{String}</span>  <b>attrs.src</b>
+								<i>Optional</i>
+							</dt>
+								<dd>the icon image source URL (unmodified)</dd>
+						
+							<dt>
+								<span class="light fixedFont">{String}</span>  <b>attrs.url</b>
+								<i>Optional</i>
+							</dt>
+								<dd>the icon image file URL, prepended by
+            the "baseUrl" (that is inherited from the default icon)</dd>
+						
+							<dt>
+								<span class="light fixedFont">{String}</span>  <b>attrs.baseUrl</b>
+								<i>Optional</i>
+							</dt>
+								<dd>the icon image base URL, used only
+            to prepend to "url" (normally only specified in the
+            default icon)</dd>
+						
+							<dt>
+								<span class="light fixedFont">{String}</span>  <b>attrs.tooltip</b>
+								<i>Optional</i>
+							</dt>
+								<dd>the icon tooltip text</dd>
+						
+						</dl>
+					
+					
+					
+					
+					
+						<dl class="detailList">
+						<dt class="heading">Returns:</dt>
+						
+								<dd><span class="light fixedFont">{Widget}</span> the widget DOM node</dd>
+						
+						</dl>
+					
+					
+					
+
+			</div>
+			
+
+<!-- ============================== field details ========================== -->		
+			
+				<div class="sectionTitle">
+					Field Detail
+				</div>
+				
+					<a name="ADD"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>ADD</b>
+					
+					</div>
+					<div class="description">
+						The add icon definition.
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="AUTOMATIC"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>AUTOMATIC</b>
+					
+					</div>
+					<div class="description">
+						The automatic icon definition.
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="BLANK"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>BLANK</b>
+					
+					</div>
+					<div class="description">
+						The blank icon definition.
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="CALENDAR"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>CALENDAR</b>
+					
+					</div>
+					<div class="description">
+						The calendar icon definition.
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="CANCEL"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>CANCEL</b>
+					
+					</div>
+					<div class="description">
+						The cancel icon definition.
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="CLOSE"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>CLOSE</b>
+					
+					</div>
+					<div class="description">
+						The close icon definition.
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="COMMENT"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>COMMENT</b>
+					
+					</div>
+					<div class="description">
+						The comment icon definition.
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="CONFIG"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>CONFIG</b>
+					
+					</div>
+					<div class="description">
+						The config icon definition.
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="CUT"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>CUT</b>
+					
+					</div>
+					<div class="description">
+						The cut icon definition.
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="DEFAULT"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>DEFAULT</b>
+					
+					</div>
+					<div class="description">
+						The default icon definition, inherited by all others.
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="DELAY"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>DELAY</b>
+					
+					</div>
+					<div class="description">
+						The delay icon definition.
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="DELETE"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>DELETE</b>
+					
+					</div>
+					<div class="description">
+						The delete icon definition.
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="DOCUMENT"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>DOCUMENT</b>
+					
+					</div>
+					<div class="description">
+						The document icon definition.
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="DOWN"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>DOWN</b>
+					
+					</div>
+					<div class="description">
+						The down icon definition.
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="EDIT"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>EDIT</b>
+					
+					</div>
+					<div class="description">
+						The edit icon definition.
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="ERROR"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>ERROR</b>
+					
+					</div>
+					<div class="description">
+						The error icon definition.
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="EXPAND"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>EXPAND</b>
+					
+					</div>
+					<div class="description">
+						The expand icon definition.
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="EXPORT"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>EXPORT</b>
+					
+					</div>
+					<div class="description">
+						The export icon definition.
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="FOLDER"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>FOLDER</b>
+					
+					</div>
+					<div class="description">
+						The folder icon definition.
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="HELP"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>HELP</b>
+					
+					</div>
+					<div class="description">
+						The help icon definition.
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="LEFT"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>LEFT</b>
+					
+					</div>
+					<div class="description">
+						The left icon definition.
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="LOADING"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>LOADING</b>
+					
+					</div>
+					<div class="description">
+						The loading icon definition.
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="LOADING_LARGE"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>LOADING_LARGE</b>
+					
+					</div>
+					<div class="description">
+						The large loading icon definition.
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="MINUS"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>MINUS</b>
+					
+					</div>
+					<div class="description">
+						The minus icon definition.
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="NEXT"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>NEXT</b>
+					
+					</div>
+					<div class="description">
+						The next icon definition.
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="OK"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>OK</b>
+					
+					</div>
+					<div class="description">
+						The ok icon definition.
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="PLUGIN"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>PLUGIN</b>
+					
+					</div>
+					<div class="description">
+						The plugin icon definition.
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="PLUS"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>PLUS</b>
+					
+					</div>
+					<div class="description">
+						The plus icon definition.
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="PREVIOUS"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>PREVIOUS</b>
+					
+					</div>
+					<div class="description">
+						The previuos icon definition.
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="RELOAD"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>RELOAD</b>
+					
+					</div>
+					<div class="description">
+						The reload icon definition.
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="REMOVE"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>REMOVE</b>
+					
+					</div>
+					<div class="description">
+						The remove icon definition.
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="RESIZE"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>RESIZE</b>
+					
+					</div>
+					<div class="description">
+						The resize icon definition.
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="RIGHT"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>RIGHT</b>
+					
+					</div>
+					<div class="description">
+						The right icon definition.
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="SEARCH"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>SEARCH</b>
+					
+					</div>
+					<div class="description">
+						The search icon definition.
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="SELECT"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>SELECT</b>
+					
+					</div>
+					<div class="description">
+						The select icon definition.
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="UP"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>UP</b>
+					
+					</div>
+					<div class="description">
+						The up icon definition.
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+
+					
+				
+			
+
+<!-- ============================== method details ========================= -->		
+			
+				<div class="sectionTitle">
+					Method Detail
+				</div>
+				
+					<a name="setAttrs"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>setAttrs</b>(attrs)
+					
+					</div>
+					<div class="description">
+						Updates the icon or HTML DOM node attributes.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>attrs</b>
+									
+								</dt>
+								<dd>the widget and node attributes to set</dd>
+							
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>attrs.ref</b>
+									<i>Optional</i>
+								</dt>
+								<dd>the referenced icon definition</dd>
+							
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>attrs.src</b>
+									<i>Optional</i>
+								</dt>
+								<dd>the icon image source URL (unmodified)</dd>
+							
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>attrs.url</b>
+									<i>Optional</i>
+								</dt>
+								<dd>the icon image file URL, prepended by
+            the "baseUrl" (that is inherited from the default icon)</dd>
+							
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>attrs.baseUrl</b>
+									<i>Optional</i>
+								</dt>
+								<dd>the icon image base URL, used only
+            to prepend to "url" (normally only specified in the
+            default icon)</dd>
+							
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>attrs.tooltip</b>
+									<i>Optional</i>
+								</dt>
+								<dd>the icon tooltip text</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					
+				
+			
+			
+			<hr />
+		</div>
+		
+<!-- ============================== footer ================================= -->
+		<div class="fineprint" style="clear:both">
+			
+			Documentation generated by <a href="http://www.jsdoctoolkit.org/" target="_blank">JsDoc Toolkit</a> 2.0.2 on Sat Aug 30 2008 22:47:03 GMT+0200 (CEST)
+		</div>
+	</body>
+</html>

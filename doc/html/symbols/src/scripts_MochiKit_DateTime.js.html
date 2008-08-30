@@ -1,0 +1,104 @@
+<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"> <style>
+	.KEYW {color: #933;}
+	.COMM {color: #bbb; font-style: italic;}
+	.NUMB {color: #393;}
+	.STRN {color: #393;}
+	.REGX {color: #339;}
+	.line {border-right: 1px dotted #666; color: #666; font-style: normal;}
+	</style></head><body><pre><span class='line'>  1</span> <span class="COMM">/*
+<span class='line'>  2</span>  * Dual-licensed under the MIT License & the Academic Free License v. 2.1.
+<span class='line'>  3</span>  * See the file LICENSE for more information.
+<span class='line'>  4</span>  *
+<span class='line'>  5</span>  * (c) 2007-2008 by Per Cederberg & Dynabyte AB. All rights reserved.
+<span class='line'>  6</span>  */</span><span class="WHIT">
+<span class='line'>  7</span> 
+<span class='line'>  8</span> </span><span class="COMM">// Check for loaded MochiKit</span><span class="WHIT">
+<span class='line'>  9</span> </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">typeof</span><span class="PUNC">(</span><span class="NAME">MochiKit</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="STRN">"undefined"</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 10</span>     </span><span class="KEYW">throw</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">ReferenceError</span><span class="PUNC">(</span><span class="STRN">"MochiKit must be loaded before loading this script"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 11</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 12</span> 
+<span class='line'> 13</span> </span><span class="COMM">/**
+<span class='line'> 14</span>  * @name MochiKit.DateTime
+<span class='line'> 15</span>  * @namespace Provides functions for handling date and time.
+<span class='line'> 16</span>  */</span><span class="WHIT">
+<span class='line'> 17</span> </span><span class="COMM">// Check for loaded MochiKit.DateTime</span><span class="WHIT">
+<span class='line'> 18</span> </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">typeof</span><span class="PUNC">(</span><span class="NAME">MochiKit.DateTime</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="STRN">"undefined"</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 19</span>     </span><span class="KEYW">throw</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">ReferenceError</span><span class="PUNC">(</span><span class="STRN">"MochiKit.DateTime must be loaded before loading this script"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 20</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 21</span> 
+<span class='line'> 22</span> </span><span class="NAME">MochiKit.DateTime.MILLIS_PER_SECOND</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">1000</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 23</span> </span><span class="NAME">MochiKit.DateTime.MILLIS_PER_MINUTE</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">60</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="WHIT"> </span><span class="NUMB">1000</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 24</span> </span><span class="NAME">MochiKit.DateTime.MILLIS_PER_HOUR</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">60</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="WHIT"> </span><span class="NUMB">60</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="WHIT"> </span><span class="NUMB">1000</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 25</span> </span><span class="NAME">MochiKit.DateTime.MILLIS_PER_DAY</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">24</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="WHIT"> </span><span class="NUMB">60</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="WHIT"> </span><span class="NUMB">60</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="WHIT"> </span><span class="NUMB">1000</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 26</span> </span><span class="NAME">MochiKit.DateTime.MILLIS_PER_WEEK</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">7</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="WHIT"> </span><span class="NUMB">24</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="WHIT"> </span><span class="NUMB">60</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="WHIT"> </span><span class="NUMB">60</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="WHIT"> </span><span class="NUMB">1000</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 27</span> 
+<span class='line'> 28</span> </span><span class="COMM">/**
+<span class='line'> 29</span>  * Formats a number using two digits, i.e. pads with a leading zero
+<span class='line'> 30</span>  * character if the number is only one digit.
+<span class='line'> 31</span>  *
+<span class='line'> 32</span>  * @param {Number} value the number to format
+<span class='line'> 33</span>  *
+<span class='line'> 34</span>  * @return {String} the formatted number string
+<span class='line'> 35</span>  *
+<span class='line'> 36</span>  * @function
+<span class='line'> 37</span>  */</span><span class="WHIT">
+<span class='line'> 38</span> </span><span class="NAME">MochiKit.DateTime._twoDigitNumber</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">MochiKit.Format.numberFormatter</span><span class="PUNC">(</span><span class="STRN">"00"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 39</span> 
+<span class='line'> 40</span> </span><span class="COMM">/**
+<span class='line'> 41</span>  * Creates a new time period object from a number of milliseconds.
+<span class='line'> 42</span>  *
+<span class='line'> 43</span>  * @constructor
+<span class='line'> 44</span>  * @param {Number} millis the number of milliseconds in the period
+<span class='line'> 45</span>  *
+<span class='line'> 46</span>  * @return {Object} new time period object
+<span class='line'> 47</span>  *
+<span class='line'> 48</span>  * @class The time period class. Used to encapsulate a structured
+<span class='line'> 49</span>  *     time period, split up into its variuos components. For time
+<span class='line'> 50</span>  *     period calculations, the total millisecond value is normally
+<span class='line'> 51</span>  *     a better choice (to avoid overflow and underflow issues).
+<span class='line'> 52</span>  * @property {Number} days The number of days in the period. This is
+<span class='line'> 53</span>  *     an integer value from 0 and up.
+<span class='line'> 54</span>  * @property {Number} hours The number of hours in the period. This
+<span class='line'> 55</span>  *     is an integer value between 0 and 23.
+<span class='line'> 56</span>  * @property {Number} minutes The number of minutes in the period.
+<span class='line'> 57</span>  *     This is an integer value between 0 and 59.
+<span class='line'> 58</span>  * @property {Number} seconds The number of seconds in the period.
+<span class='line'> 59</span>  *     This is an integer value between 0 and 59.
+<span class='line'> 60</span>  * @property {Number} millis The number of remaining milliseconds in
+<span class='line'> 61</span>  *     the period. This is an integer value between 0 and 999.
+<span class='line'> 62</span>  */</span><span class="WHIT">
+<span class='line'> 63</span> </span><span class="NAME">MochiKit.DateTime.TimePeriod</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">millis</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 64</span>     </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 65</span>         </span><span class="NAME">days</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">Math.floor</span><span class="PUNC">(</span><span class="NAME">millis</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="WHIT"> </span><span class="NAME">MochiKit.DateTime.MILLIS_PER_DAY</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 66</span>         </span><span class="NAME">hours</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">Math.floor</span><span class="PUNC">(</span><span class="NAME">millis</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="WHIT"> </span><span class="NAME">MochiKit.DateTime.MILLIS_PER_HOUR</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">%</span><span class="WHIT"> </span><span class="NUMB">24</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 67</span>         </span><span class="NAME">minutes</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">Math.floor</span><span class="PUNC">(</span><span class="NAME">millis</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="WHIT"> </span><span class="NAME">MochiKit.DateTime.MILLIS_PER_MINUTE</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">%</span><span class="WHIT"> </span><span class="NUMB">60</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 68</span>         </span><span class="NAME">seconds</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">Math.floor</span><span class="PUNC">(</span><span class="NAME">millis</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="WHIT"> </span><span class="NAME">MochiKit.DateTime.MILLIS_PER_SECOND</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">%</span><span class="WHIT"> </span><span class="NUMB">60</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 69</span>         </span><span class="NAME">millis</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">millis</span><span class="WHIT"> </span><span class="PUNC">%</span><span class="WHIT"> </span><span class="NUMB">1000</span><span class="WHIT">
+<span class='line'> 70</span>     </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 71</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 72</span> 
+<span class='line'> 73</span> </span><span class="COMM">/**
+<span class='line'> 74</span>  * Converts a number of milliseconds to an approximate time period.
+<span class='line'> 75</span>  *
+<span class='line'> 76</span>  * @param {Number} millis the number of milliseconds
+<span class='line'> 77</span>  *
+<span class='line'> 78</span>  * @return {String} the string representation of the period
+<span class='line'> 79</span>  */</span><span class="WHIT">
+<span class='line'> 80</span> </span><span class="NAME">MochiKit.DateTime.toApproxPeriod</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">millis</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 81</span>     </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">p</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">MochiKit.DateTime.TimePeriod</span><span class="PUNC">(</span><span class="NAME">millis</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT"> 
+<span class='line'> 82</span> 
+<span class='line'> 83</span>     </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">p.days</span><span class="WHIT"> </span><span class="PUNC">>=</span><span class="WHIT"> </span><span class="NUMB">10</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 84</span>         </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">p.days</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">" days"</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 85</span>     </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">p.days</span><span class="WHIT"> </span><span class="PUNC">>=</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 86</span>         </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">p.days</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">" days "</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">MochiKit.DateTime._twoDigitNumber</span><span class="PUNC">(</span><span class="NAME">p.hours</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">" hours"</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 87</span>     </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">p.hours</span><span class="WHIT"> </span><span class="PUNC">>=</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 88</span>         </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">p.hours</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">":"</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">MochiKit.DateTime._twoDigitNumber</span><span class="PUNC">(</span><span class="NAME">p.minutes</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">" hours"</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 89</span>     </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">p.minutes</span><span class="WHIT"> </span><span class="PUNC">>=</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 90</span>         </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">p.minutes</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">":"</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">MochiKit.DateTime._twoDigitNumber</span><span class="PUNC">(</span><span class="NAME">p.seconds</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">" minutes"</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 91</span>     </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">p.seconds</span><span class="WHIT"> </span><span class="PUNC">>=</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 92</span>         </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">p.seconds</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">" seconds"</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 93</span>     </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 94</span>         </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">p.millis</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">" milliseconds"</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 95</span>     </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 96</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 97</span> </span></pre></body></html>

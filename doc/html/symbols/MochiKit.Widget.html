@@ -1,0 +1,1519 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="generator" content="JsDoc Toolkit" />
+		
+		<title>JsDoc Reference - MochiKit.Widget</title>
+
+		<style type="text/css">
+			/* default.css */
+body
+{
+	font: 12px "Lucida Grande", Tahoma, Arial, Helvetica, sans-serif;
+	width: 800px;
+}
+
+.header
+{
+	clear: both;
+	background-color: #ccc;
+	padding: 8px;
+}
+
+h1
+{
+	font-size: 150%;
+	font-weight: bold;
+	padding: 0;
+	margin: 1em 0 0 .3em;
+}
+
+hr
+{
+	border: none 0;
+	border-top: 1px solid #7F8FB1;
+	height: 1px;
+}
+
+pre.code
+{
+	display: block;
+	padding: 8px;
+	border: 1px dashed #ccc;
+}
+
+#index
+{
+	margin-top: 24px;
+	float: left;
+	width: 160px;
+	position: absolute;
+	left: 8px;
+	background-color: #F3F3F3;
+	padding: 8px;
+}
+
+#content
+{
+	margin-left: 190px;
+	width: 600px;
+}
+
+.classList
+{
+	list-style-type: none;
+	padding: 0;
+	margin: 0 0 0 8px;
+	font-family: arial, sans-serif;
+	font-size: 1em;
+	overflow: auto;
+}
+
+.classList li
+{
+	padding: 0;
+	margin: 0 0 8px 0;
+}
+
+.summaryTable { width: 100%; }
+
+h1.classTitle
+{
+	font-size:170%;
+	line-height:130%;
+}
+
+h2 { font-size: 110%; }
+caption, div.sectionTitle
+{
+	background-color: #7F8FB1;
+	color: #fff;
+	font-size:130%;
+	text-align: left;
+	padding: 2px 6px 2px 6px;
+	border: 1px #7F8FB1 solid;
+}
+
+div.sectionTitle { margin-bottom: 8px; }
+.summaryTable thead { display: none; }
+
+.summaryTable td
+{
+	vertical-align: top;
+	padding: 4px;
+	border-bottom: 1px #7F8FB1 solid;
+	border-right: 1px #7F8FB1 solid;
+}
+
+/*col#summaryAttributes {}*/
+.summaryTable td.attributes
+{
+	border-left: 1px #7F8FB1 solid;
+	width: 140px;
+	text-align: right;
+}
+
+td.attributes, .fixedFont
+{
+	line-height: 15px;
+	color: #002EBE;
+	font-family: "Courier New",Courier,monospace;
+	font-size: 13px;
+}
+
+.summaryTable td.nameDescription
+{
+	text-align: left;
+	font-size: 13px;
+	line-height: 15px;
+}
+
+.summaryTable td.nameDescription, .description
+{
+	line-height: 15px;
+	padding: 4px;
+	padding-left: 4px;
+}
+
+.summaryTable { margin-bottom: 8px; }
+
+ul.inheritsList
+{
+	list-style: square;
+	margin-left: 20px;
+	padding-left: 0;
+}
+
+.detailList {
+	margin-left: 20px; 
+	line-height: 15px;
+}
+.detailList dt { margin-left: 20px; }
+
+.detailList .heading
+{
+	font-weight: bold;
+	padding-bottom: 6px;
+	margin-left: 0;
+}
+
+.light, td.attributes, .light a:link, .light a:visited
+{
+	color: #777;
+	font-style: italic;
+}
+
+.fineprint
+{
+	text-align: right;
+	font-size: 10px;
+}
+		</style>
+	</head>
+
+	<body>
+<!-- ============================== header ================================= -->	
+		<!-- begin static/header.html -->
+		<div id="header">
+</div>
+		<!-- end static/header.html -->
+
+<!-- ============================== classes index ============================ -->
+		<div id="index">
+			<!-- begin publish.classesIndex -->
+			<div align="center"><a href="../index.html">Class Index</a>
+| <a href="../files.html">File Index</a></div>
+<hr />
+<h2>Classes</h2>
+<ul class="classList">
+	
+	<li><i><a href="../symbols/_global_.html">_global_</a></i></li>
+	
+	<li><a href="../symbols/MochiKit.Base.html">MochiKit.Base</a></li>
+	
+	<li><a href="../symbols/MochiKit.DateTime.html">MochiKit.DateTime</a></li>
+	
+	<li><a href="../symbols/MochiKit.DateTime.TimePeriod.html">MochiKit.DateTime.TimePeriod</a></li>
+	
+	<li><a href="../symbols/MochiKit.DOM.html">MochiKit.DOM</a></li>
+	
+	<li><a href="../symbols/MochiKit.Style.html">MochiKit.Style</a></li>
+	
+	<li><a href="../symbols/MochiKit.SVG.html">MochiKit.SVG</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.html">MochiKit.Widget</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.Button.html">MochiKit.Widget.Button</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.Dialog.html">MochiKit.Widget.Dialog</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.Field.html">MochiKit.Widget.Field</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.Form.html">MochiKit.Widget.Form</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.FormValidator.html">MochiKit.Widget.FormValidator</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.Icon.html">MochiKit.Widget.Icon</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.Overlay.html">MochiKit.Widget.Overlay</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.Pane.html">MochiKit.Widget.Pane</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.Popup.html">MochiKit.Widget.Popup</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.ProgressBar.html">MochiKit.Widget.ProgressBar</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.TabContainer.html">MochiKit.Widget.TabContainer</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.Table.html">MochiKit.Widget.Table</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.TableColumn.html">MochiKit.Widget.TableColumn</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.TextArea.html">MochiKit.Widget.TextArea</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.TextField.html">MochiKit.Widget.TextField</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.Tree.html">MochiKit.Widget.Tree</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.TreeNode.html">MochiKit.Widget.TreeNode</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.Wizard.html">MochiKit.Widget.Wizard</a></li>
+	
+</ul>
+<hr />
+			<!-- end publish.classesIndex -->
+		</div>
+		
+		<div id="content">
+<!-- ============================== class title ============================ -->
+			<h1 class="classTitle">
+				
+				Function Namespace MochiKit.Widget
+			</h1>
+
+<!-- ============================== class summary ========================== -->			
+			<p class="description">
+				
+			
+				The base class for the HTML user interface widgets.
+    The Widget class shouldn't be instantiated directly, instead
+    one of the subclasses should be instantiated.
+
+				
+				
+					<br /><i>Defined in: </i> <a href="../symbols/src/scripts_MochiKit_Widget.js.html">Widget.js</a>.
+				
+			</p>
+
+<!-- ============================== constructor summary ==================== -->			
+			
+			<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class MochiKit.Widget.">
+				<caption>Function Namespace Summary</caption>
+				<thead>
+					<tr>
+						<th scope="col">Constructor Attributes</th>
+						<th scope="col">Constructor Name and Description</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td class="attributes">&nbsp;</td>
+						<td class="nameDescription" >
+							<div class="fixedFont">
+								<b><a href="../symbols/MochiKit.Widget.html#constructor">MochiKit.Widget</a></b>()
+							</div>
+							<div class="description"></div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			
+
+<!-- ============================== properties summary ===================== -->
+			
+				
+				
+				<table class="summaryTable" cellspacing="0" summary="A summary of the fields documented in the class MochiKit.Widget.">
+					<caption>Field Summary</caption>
+					<thead>
+						<tr>
+							<th scope="col">Field Attributes</th>
+							<th scope="col">Field Name and Description</th>
+						</tr>
+					</thead>
+					<tbody>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								MochiKit.Widget.<b><a href="../symbols/MochiKit.Widget.html#.Classes">Classes</a></b>
+								</div>
+								<div class="description">The registered widget class names and constructor functions.</div>
+							</td>
+						</tr>
+					
+					</tbody>
+				</table>
+				
+				
+				
+			
+
+<!-- ============================== methods summary ======================== -->
+			
+				
+				
+				<table class="summaryTable" cellspacing="0" summary="A summary of the methods documented in the class MochiKit.Widget.">
+					<caption>Method Summary</caption>
+					<thead>
+						<tr>
+							<th scope="col">Method Attributes</th>
+							<th scope="col">Method Name and Description</th>
+						</tr>
+					</thead>
+					<tbody>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.html#addAll">addAll</a></b>()
+								</div>
+								<div class="description">Adds one or more children to this widget.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.html#addChildNode">addChildNode</a></b>(child)
+								</div>
+								<div class="description">Adds a single child DOM node to this widget.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.html#addClass">addClass</a></b>()
+								</div>
+								<div class="description">Adds the specified CSS class names to this HTML DOM node.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.html#animate">animate</a></b>(opts)
+								</div>
+								<div class="description">Performs a visual effect animation on this widget.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.html#blurAll">blurAll</a></b>()
+								</div>
+								<div class="description">Blurs (unfocuses) this DOM node and all relevant child nodes.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">MochiKit.Widget.<b><a href="../symbols/MochiKit.Widget.html#.createWidget">createWidget</a></b>(name, attrs)
+								</div>
+								<div class="description">Creates a new widget with the specified name, attributes and
+child widgets or DOM nodes.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.html#destroy">destroy</a></b>()
+								</div>
+								<div class="description">The internal widget destructor function.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">MochiKit.Widget.<b><a href="../symbols/MochiKit.Widget.html#.destroyWidget">destroyWidget</a></b>(node)
+								</div>
+								<div class="description">Destroys a widget or a DOM node.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">MochiKit.Widget.<b><a href="../symbols/MochiKit.Widget.html#.emitSignal">emitSignal</a></b>(node, sig)
+								</div>
+								<div class="description">Emits a signal to any listeners connected with MochiKit.Signal.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.html#getChildNodes">getChildNodes</a></b>()
+								</div>
+								<div class="description">Returns an array with all child DOM nodes.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.html#hasClass">hasClass</a></b>()
+								</div>
+								<div class="description">Checks if this HTML DOM node has the specified CSS class names.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.html#hide">hide</a></b>()
+								</div>
+								<div class="description">Hides this HTML DOM node if it doesn't have an explicit "display"
+CSS value.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">MochiKit.Widget.<b><a href="../symbols/MochiKit.Widget.html#.isFormField">isFormField</a></b>(obj)
+								</div>
+								<div class="description">Checks if the specified object is a form field.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.html#isHidden">isHidden</a></b>()
+								</div>
+								<div class="description">Checks if this HTML DOM node is hidden (with the hide() method).</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">MochiKit.Widget.<b><a href="../symbols/MochiKit.Widget.html#.isWidget">isWidget</a></b>(obj, className)
+								</div>
+								<div class="description">Checks if the specified object is a widget.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.html#removeAll">removeAll</a></b>()
+								</div>
+								<div class="description">Removes all children to this widget.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.html#removeChildNode">removeChildNode</a></b>(child)
+								</div>
+								<div class="description">Removes a single child DOM node from this widget.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.html#removeClass">removeClass</a></b>()
+								</div>
+								<div class="description">Removes the specified CSS class names from this HTML DOM node.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.html#setAttrs">setAttrs</a></b>(attrs)
+								</div>
+								<div class="description">Updates the widget or HTML DOM node attributes.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.html#setStyle">setStyle</a></b>(styles)
+								</div>
+								<div class="description">Updates the CSS styles of this HTML DOM node.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.html#show">show</a></b>()
+								</div>
+								<div class="description">Shows this HTML DOM node if it was previously hidden with the
+hide() method.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.html#toggleClass">toggleClass</a></b>()
+								</div>
+								<div class="description">Toggles adding and removing the specified CSS class names to and
+from this HTML DOM node.</div>
+							</td>
+						</tr>
+					
+					</tbody>
+				</table>
+				
+				
+				
+			
+
+<!-- ============================== constructor details ==================== -->		
+			
+			<div class="details"><a name="constructor"> </a>
+				<div class="sectionTitle">
+					Function Namespace Detail
+				</div>
+				
+				<div class="fixedFont">
+						<b>MochiKit.Widget</b>()
+				</div>
+				
+				<div class="description">
+					
+					
+				</div>
+				
+				
+				
+				
+					
+					
+					
+					
+					
+					
+					
+
+			</div>
+			
+
+<!-- ============================== field details ========================== -->		
+			
+				<div class="sectionTitle">
+					Field Detail
+				</div>
+				
+					<a name=".Classes"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					
+					<span class="light">MochiKit.Widget.</span><b>Classes</b>
+					
+					</div>
+					<div class="description">
+						The registered widget class names and constructor functions. All
+the default widgets in the MochiKit.Widget namespace are defined
+here, using their constructor function names. It is possible to
+override or add new classes by simply modifying this global data
+object.
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+
+					
+				
+			
+
+<!-- ============================== method details ========================= -->		
+			
+				<div class="sectionTitle">
+					Method Detail
+				</div>
+				
+					<a name="addAll"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>addAll</b>()
+					
+					</div>
+					<div class="description">
+						Adds one or more children to this widget. This method will
+flatten any arrays among the arguments and ignores any null or
+undefined argument. Any DOM nodes or widgets will be added to the
+end, and other objects will be converted to a text node first.
+Subclasses should normally override the addChildNode() method instead
+of this one, since that is the basis for DOM node insertion.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>...</b>
+									<i>Optional</i>
+								</dt>
+								<dd>the children to add</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="addChildNode"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>addChildNode</b>(child)
+					
+					</div>
+					<div class="description">
+						Adds a single child DOM node to this widget. This method is
+sometimes overridden by child widgets in order to hide or control
+intermediate DOM nodes required by the widget.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Widget/Node}</span> <b>child</b>
+									
+								</dt>
+								<dd>the DOM node to add</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="addClass"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>addClass</b>()
+					
+					</div>
+					<div class="description">
+						Adds the specified CSS class names to this HTML DOM node.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>...</b>
+									<i>Optional</i>
+								</dt>
+								<dd>the CSS class names to add</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="animate"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>animate</b>(opts)
+					
+					</div>
+					<div class="description">
+						Performs a visual effect animation on this widget. This is
+implemented using the MochiKit.Visual effect package. All options
+sent to this function will be passed on to the appropriate
+MochiKit.Visual function.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>opts</b>
+									
+								</dt>
+								<dd>the visual effect options</dd>
+							
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>opts.effect</b>
+									
+								</dt>
+								<dd>the MochiKit.Visual effect name</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="blurAll"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>blurAll</b>()
+					
+					</div>
+					<div class="description">
+						Blurs (unfocuses) this DOM node and all relevant child nodes.
+This function will recursively blur all A, BUTTON, INPUT,
+TEXTAREA and SELECT child nodes found.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name=".createWidget"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					<span class="light">{Widget}</span>
+					<span class="light">MochiKit.Widget.</span><b>createWidget</b>(name, attrs)
+					
+					</div>
+					<div class="description">
+						Creates a new widget with the specified name, attributes and
+child widgets or DOM nodes. The widget class name must have been
+registered in the MochiKit.Widget.Classes lookup table, or an
+exception will be thrown. This function is identical to calling
+the constructor function directly.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>name</b>
+									
+								</dt>
+								<dd>the widget class name</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>attrs</b>
+									
+								</dt>
+								<dd>the widget and node attributes</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>...</b>
+									<i>Optional</i>
+								</dt>
+								<dd>the child widgets or DOM nodes</dd>
+							
+							</dl>
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Throws:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{ReferenceError}</span>  <b></b>
+								</dt>
+								<dd>if the widget class name couldn't be
+            found in MochiKit.Widget.Classes</dd>
+							
+							</dl>
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Widget}</span> the widget DOM node</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="destroy"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>destroy</b>()
+					
+					</div>
+					<div class="description">
+						The internal widget destructor function. This method should only
+be called by destroyWidget() and may be overridden by subclasses.
+By default this method does nothing.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name=".destroyWidget"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					
+					<span class="light">MochiKit.Widget.</span><b>destroyWidget</b>(node)
+					
+					</div>
+					<div class="description">
+						Destroys a widget or a DOM node. This method will remove the DOM
+node from the tree, disconnect all signals and call all widget
+destructor functions. This function will also be called
+recursively on all child nodes. Once destroyed, all references to
+the widget object should be cleared in order for the browser to
+be able to reclaim the memory used.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Widget/Node}</span> <b>node</b>
+									
+								</dt>
+								<dd>the (widget) DOM node</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name=".emitSignal"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					<span class="light">{Boolean}</span>
+					<span class="light">MochiKit.Widget.</span><b>emitSignal</b>(node, sig)
+					
+					</div>
+					<div class="description">
+						Emits a signal to any listeners connected with MochiKit.Signal.
+This function handles errors by logging them to the default error
+log in MochiKit.Logging.<p>
+
+Note that this function is an internal helper function for the
+widgets and shouldn't be called by external code.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Widget}</span> <b>node</b>
+									
+								</dt>
+								<dd>the widget DOM node</dd>
+							
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>sig</b>
+									
+								</dt>
+								<dd>the signal name ("onclick" or similar)</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>...</b>
+									<i>Optional</i>
+								</dt>
+								<dd>the optional signal arguments</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Boolean}</span> true if the signal was processed correctly, or
+        false if an exception was thrown</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="getChildNodes"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{Array}</span>
+					<b>getChildNodes</b>()
+					
+					</div>
+					<div class="description">
+						Returns an array with all child DOM nodes. Note that the array is
+a real JavaScript array, not a dynamic NodeList. This method is
+sometimes overridden by child widgets in order to hide
+intermediate DOM nodes required by the widget.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Array}</span> the array of child DOM nodes</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="hasClass"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{Boolean}</span>
+					<b>hasClass</b>()
+					
+					</div>
+					<div class="description">
+						Checks if this HTML DOM node has the specified CSS class names.
+Note that more than one CSS class name may be checked, in which
+case all must be present.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>...</b>
+									<i>Optional</i>
+								</dt>
+								<dd>the CSS class names to check</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Boolean}</span> true if all CSS classes were present, or
+        false otherwise</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="hide"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>hide</b>()
+					
+					</div>
+					<div class="description">
+						Hides this HTML DOM node if it doesn't have an explicit "display"
+CSS value. This mechanism is safe for all types of HTML elements,
+since it uses a "widgetHidden" CSS class to hide nodes instead of
+explicitly setting the CSS display property.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name=".isFormField"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					<span class="light">{Boolean}</span>
+					<span class="light">MochiKit.Widget.</span><b>isFormField</b>(obj)
+					
+					</div>
+					<div class="description">
+						Checks if the specified object is a form field. Any non-null
+object that looks like a DOM node and is either an standard HTML
+form field (&lt;input&gt;, &lt;textarea&gt; or &lt;select&gt;) or
+one with a "value" property will cause this function to return
+true. Otherwise, false will be returned.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>obj</b>
+									
+								</dt>
+								<dd>the object to check</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Boolean}</span> true if the object looks like a form field, or
+        false otherwise</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="isHidden"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{Boolean}</span>
+					<b>isHidden</b>()
+					
+					</div>
+					<div class="description">
+						Checks if this HTML DOM node is hidden (with the hide() method).
+This method does NOT check the actual widget visibility (which
+will be affected by animations for example), but only checks for
+the "widgetHidden" CSS class.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Boolean}</span> true if the widget is hidden, or
+        false otherwise</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name=".isWidget"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					<span class="light">{Boolean}</span>
+					<span class="light">MochiKit.Widget.</span><b>isWidget</b>(obj, className)
+					
+					</div>
+					<div class="description">
+						Checks if the specified object is a widget. Any non-null object
+that looks like a DOM node and has the element class "widget"
+will cause this function to return true. Otherwise, false will
+be returned. As an option, this function can also check if the
+widget has a certain class by checking for an additional CSS
+class "widget<className>" (which is a standard followed by all
+widgets).
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>obj</b>
+									
+								</dt>
+								<dd>the object to check</dd>
+							
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>className</b>
+									<i>Optional</i>
+								</dt>
+								<dd>the optional widget class name</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Boolean}</span> true if the object looks like a widget, or
+        false otherwise</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="removeAll"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>removeAll</b>()
+					
+					</div>
+					<div class="description">
+						Removes all children to this widget. This method will also destroy
+and child widgets and disconnect all signal listeners. This method
+uses the getChildNodes() and removeChildNode() methods to find and
+remove the individual child nodes.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="removeChildNode"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>removeChildNode</b>(child)
+					
+					</div>
+					<div class="description">
+						Removes a single child DOM node from this widget. This method is
+sometimes overridden by child widgets in order to hide or control
+intermediate DOM nodes required by the widget.<p>
+
+Note that this method will NOT destroy the removed child widget,
+so care must be taken to ensure proper child widget destruction.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Widget/Node}</span> <b>child</b>
+									
+								</dt>
+								<dd>the DOM node to remove</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="removeClass"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>removeClass</b>()
+					
+					</div>
+					<div class="description">
+						Removes the specified CSS class names from this HTML DOM node.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>...</b>
+									<i>Optional</i>
+								</dt>
+								<dd>the CSS class names to remove</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="setAttrs"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>setAttrs</b>(attrs)
+					
+					</div>
+					<div class="description">
+						Updates the widget or HTML DOM node attributes. This method is
+sometimes overridden by individual widgets to allow modification
+of widget attributes also available in the constructor.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>attrs</b>
+									
+								</dt>
+								<dd>the widget and node attributes to set</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="setStyle"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>setStyle</b>(styles)
+					
+					</div>
+					<div class="description">
+						Updates the CSS styles of this HTML DOM node. This method is
+identical to MochiKit.Style.setStyle, but uses "this" as the
+first argument.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>styles</b>
+									
+								</dt>
+								<dd>an object with the styles to set</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="show"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>show</b>()
+					
+					</div>
+					<div class="description">
+						Shows this HTML DOM node if it was previously hidden with the
+hide() method. This mechanism is safe for all types of HTML
+elements, since it uses a "widgetHidden" CSS class to hide nodes
+instead of explicitly setting the CSS display property.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="toggleClass"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{Boolean}</span>
+					<b>toggleClass</b>()
+					
+					</div>
+					<div class="description">
+						Toggles adding and removing the specified CSS class names to and
+from this HTML DOM node. If all the CSS classes are already set,
+they will be removed. Otherwise they will be added.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>...</b>
+									<i>Optional</i>
+								</dt>
+								<dd>the CSS class names to remove</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Boolean}</span> true if the CSS classes were added, or
+        false otherwise</dd>
+							
+							</dl>
+						
+						
+						
+
+					
+				
+			
+			
+			<hr />
+		</div>
+		
+<!-- ============================== footer ================================= -->
+		<div class="fineprint" style="clear:both">
+			
+			Documentation generated by <a href="http://www.jsdoctoolkit.org/" target="_blank">JsDoc Toolkit</a> 2.0.2 on Sat Aug 30 2008 22:47:03 GMT+0200 (CEST)
+		</div>
+	</body>
+</html>

@@ -1,0 +1,246 @@
+<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"> <style>
+	.KEYW {color: #933;}
+	.COMM {color: #bbb; font-style: italic;}
+	.NUMB {color: #393;}
+	.STRN {color: #393;}
+	.REGX {color: #339;}
+	.line {border-right: 1px dotted #666; color: #666; font-style: normal;}
+	</style></head><body><pre><span class='line'>  1</span> <span class="COMM">/*
+<span class='line'>  2</span>  * Dual-licensed under the MIT License & the Academic Free License v. 2.1.
+<span class='line'>  3</span>  * See the file LICENSE for more information.
+<span class='line'>  4</span>  *
+<span class='line'>  5</span>  * (c) 2007-2008 by Per Cederberg & Dynabyte AB. All rights reserved.
+<span class='line'>  6</span>  */</span><span class="WHIT">
+<span class='line'>  7</span> 
+<span class='line'>  8</span> </span><span class="COMM">// Check for loaded MochiKit</span><span class="WHIT">
+<span class='line'>  9</span> </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">typeof</span><span class="PUNC">(</span><span class="NAME">MochiKit</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="STRN">"undefined"</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 10</span>     </span><span class="KEYW">throw</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">ReferenceError</span><span class="PUNC">(</span><span class="STRN">"MochiKit must be loaded before loading this script"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 11</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 12</span> 
+<span class='line'> 13</span> </span><span class="COMM">/**
+<span class='line'> 14</span>  * @name MochiKit.DOM
+<span class='line'> 15</span>  * @namespace Provides a painless DOM manipulation API.
+<span class='line'> 16</span>  */</span><span class="WHIT">
+<span class='line'> 17</span> </span><span class="COMM">// Check for loaded MochiKit.DOM</span><span class="WHIT">
+<span class='line'> 18</span> </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">typeof</span><span class="PUNC">(</span><span class="NAME">MochiKit.DOM</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="STRN">"undefined"</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 19</span>     </span><span class="KEYW">throw</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">ReferenceError</span><span class="PUNC">(</span><span class="STRN">"MochiKit.DOM must be loaded before loading this script"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 20</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 21</span> 
+<span class='line'> 22</span> </span><span class="NAME">MochiKit.DOM.NS</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 23</span>     </span><span class="NAME">XHTML</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">"http://www.w3.org/1999/xhtml"</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 24</span>     </span><span class="NAME">XLINK</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">"http://www.w3.org/1999/xlink"</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 25</span>     </span><span class="NAME">SVG</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">"http://www.w3.org/2000/svg"</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 26</span>     </span><span class="NAME">XUL</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">"http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"</span><span class="WHIT">
+<span class='line'> 27</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 28</span> </span><span class="NAME">MochiKit.DOM.NS.HTML</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="NAME">undefined</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">''</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">MochiKit.DOM.NS.XHTML</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 29</span> 
+<span class='line'> 30</span> </span><span class="COMM">/**
+<span class='line'> 31</span>  * Returns true if the specified object looks like a DOM node.
+<span class='line'> 32</span>  * Otherwise, false will be returned. Any non-null object with a
+<span class='line'> 33</span>  * nodeType > 0 will be considered a DOM node by this function.
+<span class='line'> 34</span>  *
+<span class='line'> 35</span>  * @param {Object} obj the object to check
+<span class='line'> 36</span>  *
+<span class='line'> 37</span>  * @return {Boolean} true if the object looks like a DOM node, or
+<span class='line'> 38</span>  *         false otherwise
+<span class='line'> 39</span>  */</span><span class="WHIT">
+<span class='line'> 40</span> </span><span class="NAME">MochiKit.DOM.isDOM</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">obj</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 41</span>     </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">typeof</span><span class="PUNC">(</span><span class="NAME">obj</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">!==</span><span class="WHIT"> </span><span class="STRN">"undefined"</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT">
+<span class='line'> 42</span>            </span><span class="KEYW">typeof</span><span class="PUNC">(</span><span class="NAME">obj.nodeType</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="STRN">"number"</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT">
+<span class='line'> 43</span>            </span><span class="NAME">obj.nodeType</span><span class="WHIT"> </span><span class="PUNC">></span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 44</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 45</span> 
+<span class='line'> 46</span> </span><span class="COMM">/**
+<span class='line'> 47</span>  * Returns true if the specified object looks like an HTML or XHTML
+<span class='line'> 48</span>  * DOM node. Otherwise, false will be returned. Any non-null object
+<span class='line'> 49</span>  * with a nodeType > 0 will be considered a DOM node, but only those
+<span class='line'> 50</span>  * with a matching namespaceURI will be considered HTML DOM nodes. 
+<span class='line'> 51</span>  *
+<span class='line'> 52</span>  * @param {Object} obj the object to check
+<span class='line'> 53</span>  *
+<span class='line'> 54</span>  * @return {Boolean} true if the object looks like an HTML DOM node,
+<span class='line'> 55</span>  *         or false otherwise
+<span class='line'> 56</span>  */</span><span class="WHIT">
+<span class='line'> 57</span> </span><span class="NAME">MochiKit.DOM.isHTML</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">obj</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 58</span>     </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">ns</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">MochiKit.DOM.NS.HTML</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 59</span>     </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">MochiKit.DOM.isDOM</span><span class="PUNC">(</span><span class="NAME">obj</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT">
+<span class='line'> 60</span>            </span><span class="NAME">MochiKit.Base.findIdentical</span><span class="PUNC">(</span><span class="NAME">ns</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">obj.namespaceURI</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">>=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 61</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 62</span> 
+<span class='line'> 63</span> </span><span class="COMM">/**
+<span class='line'> 64</span>  * Creates a programmers debug representation of a DOM node. This
+<span class='line'> 65</span>  * method is similar to MochiKit.DOM.emitHtml, except for that it
+<span class='line'> 66</span>  * does not recurse into child nodes.
+<span class='line'> 67</span>  *
+<span class='line'> 68</span>  * @param {Object} node the HTML DOM node
+<span class='line'> 69</span>  *
+<span class='line'> 70</span>  * @return {String} a debug representation of the DOM node
+<span class='line'> 71</span>  */</span><span class="WHIT">
+<span class='line'> 72</span> </span><span class="NAME">MochiKit.DOM.reprDOM</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">node</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 73</span>     </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">node</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 74</span>         </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="STRN">"null"</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 75</span>     </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">typeof</span><span class="PUNC">(</span><span class="NAME">node</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="STRN">'string'</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 76</span>         </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">node</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 77</span>     </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">node.nodeType</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT"> </span><span class="COMM">// Node.ELEMENT_NODE</span><span class="WHIT">
+<span class='line'> 78</span>         </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">res</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">"&lt;"</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">node.tagName.toLowerCase</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 79</span>         </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">attrs</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">MochiKit.Base.map</span><span class="PUNC">(</span><span class="NAME">MochiKit.DOM.reprDOM</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">node.attributes</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 80</span>         </span><span class="NAME">res</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">attrs.join</span><span class="PUNC">(</span><span class="STRN">""</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 81</span>         </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">node.hasChildNodes</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 82</span>             </span><span class="NAME">res</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">" ["</span><span class="WHIT">  </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">node.childNodes.length</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">" child nodes]"</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 83</span>         </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 84</span>         </span><span class="NAME">res</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">"/>"</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 85</span>         </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">res</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 86</span>     </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">node.nodeType</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NUMB">2</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT"> </span><span class="COMM">// Node.ATTRIBUTE_NODE</span><span class="WHIT">
+<span class='line'> 87</span>         </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">node.specified</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 88</span>             </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="STRN">" "</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">node.name</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">'="'</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT">
+<span class='line'> 89</span>                    </span><span class="NAME">MochiKit.DOM.escapeHTML</span><span class="PUNC">(</span><span class="NAME">node.value</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">'"'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 90</span>         </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 91</span>             </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="STRN">""</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 92</span>         </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 93</span>     </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">node.nodeType</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NUMB">3</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT"> </span><span class="COMM">// Node.TEXT_NODE</span><span class="WHIT">
+<span class='line'> 94</span>         </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">MochiKit.DOM.escapeHTML</span><span class="PUNC">(</span><span class="NAME">node.nodeValue</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 95</span>     </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 96</span>         </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">node.toString</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 97</span>     </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 98</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 99</span> 
+<span class='line'>100</span> </span><span class="COMM">/**
+<span class='line'>101</span>  * Returns an array with DOM node attribute name and value pairs.
+<span class='line'>102</span>  * The name and value pairs are also stored in arrays with two
+<span class='line'>103</span>  * elements.
+<span class='line'>104</span>  *
+<span class='line'>105</span>  * @param {Object} node the HTML DOM node
+<span class='line'>106</span>  *
+<span class='line'>107</span>  * @return {Array} an array containing attribute name and value
+<span class='line'>108</span>  *             pairs (as arrays)
+<span class='line'>109</span>  */</span><span class="WHIT">
+<span class='line'>110</span> </span><span class="NAME">MochiKit.DOM.attributeArrayNewImpl</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">node</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>111</span>     </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">res</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>112</span>     </span><span class="NAME">node</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">MochiKit.DOM.getElement</span><span class="PUNC">(</span><span class="NAME">node</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>113</span>     </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">node</span><span class="WHIT"> </span><span class="PUNC">!=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">node.attributes.length</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>114</span>         </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">a</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">node.attributes</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>115</span>         </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">a.specified</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>116</span>             </span><span class="NAME">res.push</span><span class="PUNC">(</span><span class="PUNC">[</span><span class="NAME">a.name</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">a.value</span><span class="PUNC">]</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>117</span>         </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>118</span>     </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>119</span>     </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">res</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>120</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>121</span> 
+<span class='line'>122</span> </span><span class="COMM">/**
+<span class='line'>123</span>  * Returns an immediate child node from a parent DOM node. This
+<span class='line'>124</span>  * function handles the index range checks and finds the immediate
+<span class='line'>125</span>  * child node if a descendant node is specified.
+<span class='line'>126</span>  *
+<span class='line'>127</span>  * @param {Node} parent the parent HTML DOM node
+<span class='line'>128</span>  * @param {Number/Node} indexOrNode the child index or a descendant
+<span class='line'>129</span>  *            node
+<span class='line'>130</span>  *
+<span class='line'>131</span>  * @return {Node} the child HTML DOM node, or
+<span class='line'>132</span>  *         null if no matching node was found
+<span class='line'>133</span>  */</span><span class="WHIT">
+<span class='line'>134</span> </span><span class="NAME">MochiKit.DOM.childNode</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">parent</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">indexOrNode</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>135</span>     </span><span class="NAME">parent</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">MochiKit.DOM.getElement</span><span class="PUNC">(</span><span class="NAME">parent</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>136</span>     </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">typeof</span><span class="PUNC">(</span><span class="NAME">indexOrNode</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="STRN">"number"</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>137</span>         </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">indexOrNode</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="NAME">indexOrNode</span><span class="WHIT"> </span><span class="PUNC">>=</span><span class="WHIT"> </span><span class="NAME">parent.childNodes.length</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>138</span>             </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>139</span>         </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>140</span>             </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">parent.childNodes</span><span class="PUNC">[</span><span class="NAME">indexOrNode</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>141</span>         </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>142</span>     </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>143</span>         </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">node</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">MochiKit.DOM.getElement</span><span class="PUNC">(</span><span class="NAME">indexOrNode</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>144</span>         </span><span class="KEYW">while</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">node</span><span class="WHIT"> </span><span class="PUNC">!=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">node</span><span class="WHIT"> </span><span class="PUNC">!==</span><span class="WHIT"> </span><span class="NAME">parent</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">node.parentNode</span><span class="WHIT"> </span><span class="PUNC">!==</span><span class="WHIT"> </span><span class="NAME">parent</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>145</span>             </span><span class="NAME">node</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">node.parentNode</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>146</span>         </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>147</span>         </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">node</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="NAME">node</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">parent</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">?</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">node</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>148</span>     </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>149</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>150</span> 
+<span class='line'>151</span> </span><span class="COMM">/**
+<span class='line'>152</span>  * Creates a DOM node with a namespace.
+<span class='line'>153</span>  *
+<span class='line'>154</span>  * @param {String} ns the DOM namespace
+<span class='line'>155</span>  * @param {String} tag the DOM tag name
+<span class='line'>156</span>  * @param {Object} [attrs] the node attributes, or null for none
+<span class='line'>157</span>  * @param {Object} [...] the nodes or text to add as children
+<span class='line'>158</span>  *
+<span class='line'>159</span>  * @return {Object} the DOM node created
+<span class='line'>160</span>  */</span><span class="WHIT">
+<span class='line'>161</span> </span><span class="NAME">MochiKit.DOM.createDOMExt</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">ns</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">tag</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">attrs</span><span class="COMM">/*, ...*/</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>162</span>     </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">doc</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">MochiKit.DOM.currentDocument</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>163</span>     </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">node</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">ns</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">?</span><span class="WHIT"> </span><span class="NAME">doc.createElementNS</span><span class="PUNC">(</span><span class="NAME">ns</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">tag</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">doc.createElement</span><span class="PUNC">(</span><span class="NAME">tag</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>164</span>     </span><span class="NAME">MochiKit.DOM.updateNodeAttributes</span><span class="PUNC">(</span><span class="NAME">node</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">attrs</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>165</span>     </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">children</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">MochiKit.Base.extend</span><span class="PUNC">(</span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">arguments</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NUMB">3</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>166</span>     </span><span class="NAME">MochiKit.DOM.appendChildNodes</span><span class="PUNC">(</span><span class="NAME">node</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">children</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>167</span>     </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">node</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>168</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>169</span> 
+<span class='line'>170</span> </span><span class="COMM">/**
+<span class='line'>171</span>  * Creates a DOM text node from the specified text. This is a
+<span class='line'>172</span>  * convenience function for currentDocument().createTextNode, in
+<span class='line'>173</span>  * order to be compatible with the withDocument() function.
+<span class='line'>174</span>  *
+<span class='line'>175</span>  * @param {String} text the text content
+<span class='line'>176</span>  *
+<span class='line'>177</span>  * @return {Object} the DOM text node created
+<span class='line'>178</span>  */</span><span class="WHIT">
+<span class='line'>179</span> </span><span class="NAME">MochiKit.DOM.createTextNode</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">text</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>180</span>     </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">MochiKit.DOM.currentDocument</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">createTextNode</span><span class="PUNC">(</span><span class="NAME">text</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>181</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>182</span> 
+<span class='line'>183</span> </span><span class="COMM">/**
+<span class='line'>184</span>  * Returns a function for creating a specific kind of DOM nodes. The
+<span class='line'>185</span>  * returned function will optionally require a sequence of non-null
+<span class='line'>186</span>  * arguments that will be added as attributes to the node creation.
+<span class='line'>187</span>  * The returned function will otherwise work similar to the
+<span class='line'>188</span>  * createDOMExt() function, taking attributes and child nodes.
+<span class='line'>189</span>  *
+<span class='line'>190</span>  * @param {String} ns the DOM namespace, or null for HTML
+<span class='line'>191</span>  * @param {String} tag the DOM tag name
+<span class='line'>192</span>  * @param {Array} [args] the array with required arguments, or null
+<span class='line'>193</span>  *            for no required arguments
+<span class='line'>194</span>  * @param {Object} [attrs] the default node attributes, or null for
+<span class='line'>195</span>  *            none
+<span class='line'>196</span>  * @param {Object} [...] the default nodes or text to add as children
+<span class='line'>197</span>  *
+<span class='line'>198</span>  * @return {Function} the function that creates the DOM nodes
+<span class='line'>199</span>  */</span><span class="WHIT">
+<span class='line'>200</span> </span><span class="NAME">MochiKit.DOM.createDOMFuncExt</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">ns</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">tag</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">args</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">attrs</span><span class="COMM">/*, ...*/</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>201</span>     </span><span class="NAME">args</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">args</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>202</span>     </span><span class="NAME">attrs</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">attrs</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>203</span>     </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">children</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">MochiKit.Base.extend</span><span class="PUNC">(</span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">arguments</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NUMB">4</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>204</span>     </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="COMM">/*arg1, ..., argN, attrs, ...*/</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>205</span>         </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">myAttrs</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">MochiKit.Base.update</span><span class="PUNC">(</span><span class="PUNC">{</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">attrs</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>206</span>         </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">pos</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">pos</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">args.length</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">pos</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>207</span>             </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">arguments</span><span class="PUNC">[</span><span class="NAME">pos</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>208</span>                 </span><span class="KEYW">throw</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">Error</span><span class="PUNC">(</span><span class="STRN">"Argument '"</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">args</span><span class="PUNC">[</span><span class="NAME">pos</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">"' cannot be null"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">  
+<span class='line'>209</span>             </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>210</span>             </span><span class="NAME">myAttrs</span><span class="PUNC">[</span><span class="NAME">args</span><span class="PUNC">[</span><span class="NAME">pos</span><span class="PUNC">]</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">arguments</span><span class="PUNC">[</span><span class="NAME">pos</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>211</span>         </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>212</span>         </span><span class="NAME">MochiKit.Base.update</span><span class="PUNC">(</span><span class="NAME">myAttrs</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">arguments</span><span class="PUNC">[</span><span class="NAME">args.length</span><span class="PUNC">]</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>213</span>         </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">myChildren</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">MochiKit.Base.extend</span><span class="PUNC">(</span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">children</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>214</span>         </span><span class="NAME">MochiKit.Base.extend</span><span class="PUNC">(</span><span class="NAME">myChildren</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">arguments</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">args.length</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>215</span>         </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">MochiKit.DOM.createDOMExt</span><span class="PUNC">(</span><span class="NAME">ns</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">tag</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">myAttrs</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">myChildren</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>216</span>     </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>217</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>218</span> 
+<span class='line'>219</span> </span><span class="COMM">/**
+<span class='line'>220</span>  * Blurs (unfocuses) a specified DOM node and all relevant child
+<span class='line'>221</span>  * nodes. This function will recursively blur all A, BUTTON, INPUT,
+<span class='line'>222</span>  * TEXTAREA and SELECT child nodes found.
+<span class='line'>223</span>  *
+<span class='line'>224</span>  * @param {Object} node the HTML DOM node
+<span class='line'>225</span>  */</span><span class="WHIT">
+<span class='line'>226</span> </span><span class="NAME">MochiKit.DOM.blurAll</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">node</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>227</span>     </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">arguments.length</span><span class="WHIT"> </span><span class="PUNC">&lt;=</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>228</span>         </span><span class="NAME">MochiKit.DOM.blurAll</span><span class="PUNC">(</span><span class="NAME">node</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">"A"</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">"BUTTON"</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">"INPUT"</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">"TEXTAREA"</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">"SELECT"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>229</span>     </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>230</span>         </span><span class="NAME">node.blur</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>231</span>         </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">arguments.length</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>232</span>             </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">nodes</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">node.getElementsByTagName</span><span class="PUNC">(</span><span class="NAME">arguments</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>233</span>             </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">j</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">j</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">nodes.length</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">j</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>234</span>                 </span><span class="NAME">nodes</span><span class="PUNC">[</span><span class="NAME">j</span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">blur</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>235</span>             </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>236</span>         </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>237</span>     </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>238</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>239</span> </span></pre></body></html>

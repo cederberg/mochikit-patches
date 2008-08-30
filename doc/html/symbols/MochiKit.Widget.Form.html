@@ -1,0 +1,783 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="generator" content="JsDoc Toolkit" />
+		
+		<title>JsDoc Reference - MochiKit.Widget.Form</title>
+
+		<style type="text/css">
+			/* default.css */
+body
+{
+	font: 12px "Lucida Grande", Tahoma, Arial, Helvetica, sans-serif;
+	width: 800px;
+}
+
+.header
+{
+	clear: both;
+	background-color: #ccc;
+	padding: 8px;
+}
+
+h1
+{
+	font-size: 150%;
+	font-weight: bold;
+	padding: 0;
+	margin: 1em 0 0 .3em;
+}
+
+hr
+{
+	border: none 0;
+	border-top: 1px solid #7F8FB1;
+	height: 1px;
+}
+
+pre.code
+{
+	display: block;
+	padding: 8px;
+	border: 1px dashed #ccc;
+}
+
+#index
+{
+	margin-top: 24px;
+	float: left;
+	width: 160px;
+	position: absolute;
+	left: 8px;
+	background-color: #F3F3F3;
+	padding: 8px;
+}
+
+#content
+{
+	margin-left: 190px;
+	width: 600px;
+}
+
+.classList
+{
+	list-style-type: none;
+	padding: 0;
+	margin: 0 0 0 8px;
+	font-family: arial, sans-serif;
+	font-size: 1em;
+	overflow: auto;
+}
+
+.classList li
+{
+	padding: 0;
+	margin: 0 0 8px 0;
+}
+
+.summaryTable { width: 100%; }
+
+h1.classTitle
+{
+	font-size:170%;
+	line-height:130%;
+}
+
+h2 { font-size: 110%; }
+caption, div.sectionTitle
+{
+	background-color: #7F8FB1;
+	color: #fff;
+	font-size:130%;
+	text-align: left;
+	padding: 2px 6px 2px 6px;
+	border: 1px #7F8FB1 solid;
+}
+
+div.sectionTitle { margin-bottom: 8px; }
+.summaryTable thead { display: none; }
+
+.summaryTable td
+{
+	vertical-align: top;
+	padding: 4px;
+	border-bottom: 1px #7F8FB1 solid;
+	border-right: 1px #7F8FB1 solid;
+}
+
+/*col#summaryAttributes {}*/
+.summaryTable td.attributes
+{
+	border-left: 1px #7F8FB1 solid;
+	width: 140px;
+	text-align: right;
+}
+
+td.attributes, .fixedFont
+{
+	line-height: 15px;
+	color: #002EBE;
+	font-family: "Courier New",Courier,monospace;
+	font-size: 13px;
+}
+
+.summaryTable td.nameDescription
+{
+	text-align: left;
+	font-size: 13px;
+	line-height: 15px;
+}
+
+.summaryTable td.nameDescription, .description
+{
+	line-height: 15px;
+	padding: 4px;
+	padding-left: 4px;
+}
+
+.summaryTable { margin-bottom: 8px; }
+
+ul.inheritsList
+{
+	list-style: square;
+	margin-left: 20px;
+	padding-left: 0;
+}
+
+.detailList {
+	margin-left: 20px; 
+	line-height: 15px;
+}
+.detailList dt { margin-left: 20px; }
+
+.detailList .heading
+{
+	font-weight: bold;
+	padding-bottom: 6px;
+	margin-left: 0;
+}
+
+.light, td.attributes, .light a:link, .light a:visited
+{
+	color: #777;
+	font-style: italic;
+}
+
+.fineprint
+{
+	text-align: right;
+	font-size: 10px;
+}
+		</style>
+	</head>
+
+	<body>
+<!-- ============================== header ================================= -->	
+		<!-- begin static/header.html -->
+		<div id="header">
+</div>
+		<!-- end static/header.html -->
+
+<!-- ============================== classes index ============================ -->
+		<div id="index">
+			<!-- begin publish.classesIndex -->
+			<div align="center"><a href="../index.html">Class Index</a>
+| <a href="../files.html">File Index</a></div>
+<hr />
+<h2>Classes</h2>
+<ul class="classList">
+	
+	<li><i><a href="../symbols/_global_.html">_global_</a></i></li>
+	
+	<li><a href="../symbols/MochiKit.Base.html">MochiKit.Base</a></li>
+	
+	<li><a href="../symbols/MochiKit.DateTime.html">MochiKit.DateTime</a></li>
+	
+	<li><a href="../symbols/MochiKit.DateTime.TimePeriod.html">MochiKit.DateTime.TimePeriod</a></li>
+	
+	<li><a href="../symbols/MochiKit.DOM.html">MochiKit.DOM</a></li>
+	
+	<li><a href="../symbols/MochiKit.Style.html">MochiKit.Style</a></li>
+	
+	<li><a href="../symbols/MochiKit.SVG.html">MochiKit.SVG</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.html">MochiKit.Widget</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.Button.html">MochiKit.Widget.Button</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.Dialog.html">MochiKit.Widget.Dialog</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.Field.html">MochiKit.Widget.Field</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.Form.html">MochiKit.Widget.Form</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.FormValidator.html">MochiKit.Widget.FormValidator</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.Icon.html">MochiKit.Widget.Icon</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.Overlay.html">MochiKit.Widget.Overlay</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.Pane.html">MochiKit.Widget.Pane</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.Popup.html">MochiKit.Widget.Popup</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.ProgressBar.html">MochiKit.Widget.ProgressBar</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.TabContainer.html">MochiKit.Widget.TabContainer</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.Table.html">MochiKit.Widget.Table</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.TableColumn.html">MochiKit.Widget.TableColumn</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.TextArea.html">MochiKit.Widget.TextArea</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.TextField.html">MochiKit.Widget.TextField</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.Tree.html">MochiKit.Widget.Tree</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.TreeNode.html">MochiKit.Widget.TreeNode</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.Wizard.html">MochiKit.Widget.Wizard</a></li>
+	
+</ul>
+<hr />
+			<!-- end publish.classesIndex -->
+		</div>
+		
+		<div id="content">
+<!-- ============================== class title ============================ -->
+			<h1 class="classTitle">
+				
+				Class MochiKit.Widget.Form
+			</h1>
+
+<!-- ============================== class summary ========================== -->			
+			<p class="description">
+				<br />Extends
+					<a href="../symbols/MochiKit.Widget.html#constructor">MochiKit.Widget</a>.<br />
+				
+			
+				The form widget class. Provides a grouping for form fields,
+    using the &lt;form&gt; HTML element. The form widget supports
+    form reset, validation and data retrieval.
+				
+				
+					<br /><i>Defined in: </i> <a href="../symbols/src/scripts_MochiKit_Widget.js.html">Widget.js</a>.
+				
+			</p>
+
+<!-- ============================== constructor summary ==================== -->			
+			
+			<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class MochiKit.Widget.Form.">
+				<caption>Class Summary</caption>
+				<thead>
+					<tr>
+						<th scope="col">Constructor Attributes</th>
+						<th scope="col">Constructor Name and Description</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td class="attributes">&nbsp;</td>
+						<td class="nameDescription" >
+							<div class="fixedFont">
+								<b><a href="../symbols/MochiKit.Widget.Form.html#constructor">MochiKit.Widget.Form</a></b>(attrs)
+							</div>
+							<div class="description">Creates a new form widget.</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			
+
+<!-- ============================== properties summary ===================== -->
+			
+				
+				
+				
+				
+				<dl class="inheritsList">
+				<dt>Fields borrowed from class <a href="../symbols/MochiKit.Widget.html#constructor">MochiKit.Widget</a>: </dt><dd><a href="../symbols/MochiKit.Widget.html#.Classes">Classes</a></dd>
+				</dl>
+				
+			
+
+<!-- ============================== methods summary ======================== -->
+			
+				
+				
+				<table class="summaryTable" cellspacing="0" summary="A summary of the methods documented in the class MochiKit.Widget.Form.">
+					<caption>Method Summary</caption>
+					<thead>
+						<tr>
+							<th scope="col">Method Attributes</th>
+							<th scope="col">Method Name and Description</th>
+						</tr>
+					</thead>
+					<tbody>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.Form.html#_handleSubmit">_handleSubmit</a></b>(evt)
+								</div>
+								<div class="description">Handles the form submit signal.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.Form.html#fieldMap">fieldMap</a></b>()
+								</div>
+								<div class="description">Returns a map with all child DOM nodes containing form fields with
+a name attribute.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.Form.html#fields">fields</a></b>()
+								</div>
+								<div class="description">Returns an array with all child DOM nodes containing form fields.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.Form.html#reset">reset</a></b>()
+								</div>
+								<div class="description">Resets all fields in the form to their default values.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.Form.html#update">update</a></b>(values)
+								</div>
+								<div class="description">Updates the fields in this form with a specified map of values.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.Form.html#validate">validate</a></b>()
+								</div>
+								<div class="description">Validates this form using the form validators found.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.Form.html#validateReset">validateReset</a></b>()
+								</div>
+								<div class="description">Resets all form validators.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.Form.html#validators">validators</a></b>()
+								</div>
+								<div class="description">Returns an array with all child DOM nodes containing form
+validator widgets.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.Form.html#valueMap">valueMap</a></b>()
+								</div>
+								<div class="description">Returns a map with all form field values.</div>
+							</td>
+						</tr>
+					
+					</tbody>
+				</table>
+				
+				
+				
+				<dl class="inheritsList">
+				<dt>Methods borrowed from class <a href="../symbols/MochiKit.Widget.html#constructor">MochiKit.Widget</a>: </dt><dd><a href="../symbols/MochiKit.Widget.html#addAll">addAll</a>, <a href="../symbols/MochiKit.Widget.html#addChildNode">addChildNode</a>, <a href="../symbols/MochiKit.Widget.html#addClass">addClass</a>, <a href="../symbols/MochiKit.Widget.html#animate">animate</a>, <a href="../symbols/MochiKit.Widget.html#blurAll">blurAll</a>, <a href="../symbols/MochiKit.Widget.html#.createWidget">createWidget</a>, <a href="../symbols/MochiKit.Widget.html#destroy">destroy</a>, <a href="../symbols/MochiKit.Widget.html#.destroyWidget">destroyWidget</a>, <a href="../symbols/MochiKit.Widget.html#.emitSignal">emitSignal</a>, <a href="../symbols/MochiKit.Widget.html#getChildNodes">getChildNodes</a>, <a href="../symbols/MochiKit.Widget.html#hasClass">hasClass</a>, <a href="../symbols/MochiKit.Widget.html#hide">hide</a>, <a href="../symbols/MochiKit.Widget.html#.isFormField">isFormField</a>, <a href="../symbols/MochiKit.Widget.html#isHidden">isHidden</a>, <a href="../symbols/MochiKit.Widget.html#.isWidget">isWidget</a>, <a href="../symbols/MochiKit.Widget.html#removeAll">removeAll</a>, <a href="../symbols/MochiKit.Widget.html#removeChildNode">removeChildNode</a>, <a href="../symbols/MochiKit.Widget.html#removeClass">removeClass</a>, <a href="../symbols/MochiKit.Widget.html#setAttrs">setAttrs</a>, <a href="../symbols/MochiKit.Widget.html#setStyle">setStyle</a>, <a href="../symbols/MochiKit.Widget.html#show">show</a>, <a href="../symbols/MochiKit.Widget.html#toggleClass">toggleClass</a></dd>
+				</dl>
+				
+			
+
+<!-- ============================== constructor details ==================== -->		
+			
+			<div class="details"><a name="constructor"> </a>
+				<div class="sectionTitle">
+					Class Detail
+				</div>
+				
+				<div class="fixedFont">
+						<b>MochiKit.Widget.Form</b>(attrs)
+				</div>
+				
+				<div class="description">
+					Creates a new form widget.
+					
+				</div>
+				
+				
+				
+				
+					
+						<dl class="detailList">
+						<dt class="heading">Parameters:</dt>
+						
+							<dt>
+								<span class="light fixedFont">{Object}</span>  <b>attrs</b>
+								
+							</dt>
+								<dd>the widget and node attributes</dd>
+						
+							<dt>
+								<span class="light fixedFont">{Object}</span>  <b>...</b>
+								<i>Optional</i>
+							</dt>
+								<dd>the child widgets or DOM nodes</dd>
+						
+						</dl>
+					
+					
+					
+					
+					
+						<dl class="detailList">
+						<dt class="heading">Returns:</dt>
+						
+								<dd><span class="light fixedFont">{Widget}</span> the widget DOM node</dd>
+						
+						</dl>
+					
+					
+					
+
+			</div>
+			
+
+<!-- ============================== field details ========================== -->		
+			
+
+<!-- ============================== method details ========================= -->		
+			
+				<div class="sectionTitle">
+					Method Detail
+				</div>
+				
+					<a name="_handleSubmit"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>_handleSubmit</b>(evt)
+					
+					</div>
+					<div class="description">
+						Handles the form submit signal.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Event}</span> <b>evt</b>
+									
+								</dt>
+								<dd>the MochiKit.Signal.Event object</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="fieldMap"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{Object}</span>
+					<b>fieldMap</b>()
+					
+					</div>
+					<div class="description">
+						Returns a map with all child DOM nodes containing form fields with
+a name attribute. If multiple fields have the same name, the
+returned map will contain an array with all matching fields.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Object}</span> the map of form field elements</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="fields"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{Array}</span>
+					<b>fields</b>()
+					
+					</div>
+					<div class="description">
+						Returns an array with all child DOM nodes containing form fields.
+The child nodes will be returned based on the results of the 
+MochiKit.Widget.isFormField() function.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Array}</span> the array of form field elements</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="reset"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>reset</b>()
+					
+					</div>
+					<div class="description">
+						Resets all fields in the form to their default values.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="update"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>update</b>(values)
+					
+					</div>
+					<div class="description">
+						Updates the fields in this form with a specified map of values.
+If multiple fields have the same name, the value will be set to
+all of them.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>values</b>
+									
+								</dt>
+								<dd>the map of form field values</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="validate"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{Boolean/MochiKit.Async.Deferred}</span>
+					<b>validate</b>()
+					
+					</div>
+					<div class="description">
+						Validates this form using the form validators found.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Boolean/MochiKit.Async.Deferred}</span> true if the form
+        validated successfully, false if the validation failed,
+        or a MochiKit.Async.Deferred instance if the validation
+        was deferred</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="validateReset"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>validateReset</b>()
+					
+					</div>
+					<div class="description">
+						Resets all form validators.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="validators"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{Array}</span>
+					<b>validators</b>()
+					
+					</div>
+					<div class="description">
+						Returns an array with all child DOM nodes containing form
+validator widgets.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Array}</span> the array of form validator widgets</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="valueMap"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{Object}</span>
+					<b>valueMap</b>()
+					
+					</div>
+					<div class="description">
+						Returns a map with all form field values. If multiple fields have
+the same name, the value will be set to an array of all values.
+Any unchecked checkbox or radiobutton will be also be ignored.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Object}</span> the map of form field values</dd>
+							
+							</dl>
+						
+						
+						
+
+					
+				
+			
+			
+			<hr />
+		</div>
+		
+<!-- ============================== footer ================================= -->
+		<div class="fineprint" style="clear:both">
+			
+			Documentation generated by <a href="http://www.jsdoctoolkit.org/" target="_blank">JsDoc Toolkit</a> 2.0.2 on Sat Aug 30 2008 22:47:03 GMT+0200 (CEST)
+		</div>
+	</body>
+</html>

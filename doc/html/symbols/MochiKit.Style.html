@@ -1,0 +1,944 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="generator" content="JsDoc Toolkit" />
+		
+		<title>JsDoc Reference - MochiKit.Style</title>
+
+		<style type="text/css">
+			/* default.css */
+body
+{
+	font: 12px "Lucida Grande", Tahoma, Arial, Helvetica, sans-serif;
+	width: 800px;
+}
+
+.header
+{
+	clear: both;
+	background-color: #ccc;
+	padding: 8px;
+}
+
+h1
+{
+	font-size: 150%;
+	font-weight: bold;
+	padding: 0;
+	margin: 1em 0 0 .3em;
+}
+
+hr
+{
+	border: none 0;
+	border-top: 1px solid #7F8FB1;
+	height: 1px;
+}
+
+pre.code
+{
+	display: block;
+	padding: 8px;
+	border: 1px dashed #ccc;
+}
+
+#index
+{
+	margin-top: 24px;
+	float: left;
+	width: 160px;
+	position: absolute;
+	left: 8px;
+	background-color: #F3F3F3;
+	padding: 8px;
+}
+
+#content
+{
+	margin-left: 190px;
+	width: 600px;
+}
+
+.classList
+{
+	list-style-type: none;
+	padding: 0;
+	margin: 0 0 0 8px;
+	font-family: arial, sans-serif;
+	font-size: 1em;
+	overflow: auto;
+}
+
+.classList li
+{
+	padding: 0;
+	margin: 0 0 8px 0;
+}
+
+.summaryTable { width: 100%; }
+
+h1.classTitle
+{
+	font-size:170%;
+	line-height:130%;
+}
+
+h2 { font-size: 110%; }
+caption, div.sectionTitle
+{
+	background-color: #7F8FB1;
+	color: #fff;
+	font-size:130%;
+	text-align: left;
+	padding: 2px 6px 2px 6px;
+	border: 1px #7F8FB1 solid;
+}
+
+div.sectionTitle { margin-bottom: 8px; }
+.summaryTable thead { display: none; }
+
+.summaryTable td
+{
+	vertical-align: top;
+	padding: 4px;
+	border-bottom: 1px #7F8FB1 solid;
+	border-right: 1px #7F8FB1 solid;
+}
+
+/*col#summaryAttributes {}*/
+.summaryTable td.attributes
+{
+	border-left: 1px #7F8FB1 solid;
+	width: 140px;
+	text-align: right;
+}
+
+td.attributes, .fixedFont
+{
+	line-height: 15px;
+	color: #002EBE;
+	font-family: "Courier New",Courier,monospace;
+	font-size: 13px;
+}
+
+.summaryTable td.nameDescription
+{
+	text-align: left;
+	font-size: 13px;
+	line-height: 15px;
+}
+
+.summaryTable td.nameDescription, .description
+{
+	line-height: 15px;
+	padding: 4px;
+	padding-left: 4px;
+}
+
+.summaryTable { margin-bottom: 8px; }
+
+ul.inheritsList
+{
+	list-style: square;
+	margin-left: 20px;
+	padding-left: 0;
+}
+
+.detailList {
+	margin-left: 20px; 
+	line-height: 15px;
+}
+.detailList dt { margin-left: 20px; }
+
+.detailList .heading
+{
+	font-weight: bold;
+	padding-bottom: 6px;
+	margin-left: 0;
+}
+
+.light, td.attributes, .light a:link, .light a:visited
+{
+	color: #777;
+	font-style: italic;
+}
+
+.fineprint
+{
+	text-align: right;
+	font-size: 10px;
+}
+		</style>
+	</head>
+
+	<body>
+<!-- ============================== header ================================= -->	
+		<!-- begin static/header.html -->
+		<div id="header">
+</div>
+		<!-- end static/header.html -->
+
+<!-- ============================== classes index ============================ -->
+		<div id="index">
+			<!-- begin publish.classesIndex -->
+			<div align="center"><a href="../index.html">Class Index</a>
+| <a href="../files.html">File Index</a></div>
+<hr />
+<h2>Classes</h2>
+<ul class="classList">
+	
+	<li><i><a href="../symbols/_global_.html">_global_</a></i></li>
+	
+	<li><a href="../symbols/MochiKit.Base.html">MochiKit.Base</a></li>
+	
+	<li><a href="../symbols/MochiKit.DateTime.html">MochiKit.DateTime</a></li>
+	
+	<li><a href="../symbols/MochiKit.DateTime.TimePeriod.html">MochiKit.DateTime.TimePeriod</a></li>
+	
+	<li><a href="../symbols/MochiKit.DOM.html">MochiKit.DOM</a></li>
+	
+	<li><a href="../symbols/MochiKit.Style.html">MochiKit.Style</a></li>
+	
+	<li><a href="../symbols/MochiKit.SVG.html">MochiKit.SVG</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.html">MochiKit.Widget</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.Button.html">MochiKit.Widget.Button</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.Dialog.html">MochiKit.Widget.Dialog</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.Field.html">MochiKit.Widget.Field</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.Form.html">MochiKit.Widget.Form</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.FormValidator.html">MochiKit.Widget.FormValidator</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.Icon.html">MochiKit.Widget.Icon</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.Overlay.html">MochiKit.Widget.Overlay</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.Pane.html">MochiKit.Widget.Pane</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.Popup.html">MochiKit.Widget.Popup</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.ProgressBar.html">MochiKit.Widget.ProgressBar</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.TabContainer.html">MochiKit.Widget.TabContainer</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.Table.html">MochiKit.Widget.Table</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.TableColumn.html">MochiKit.Widget.TableColumn</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.TextArea.html">MochiKit.Widget.TextArea</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.TextField.html">MochiKit.Widget.TextField</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.Tree.html">MochiKit.Widget.Tree</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.TreeNode.html">MochiKit.Widget.TreeNode</a></li>
+	
+	<li><a href="../symbols/MochiKit.Widget.Wizard.html">MochiKit.Widget.Wizard</a></li>
+	
+</ul>
+<hr />
+			<!-- end publish.classesIndex -->
+		</div>
+		
+		<div id="content">
+<!-- ============================== class title ============================ -->
+			<h1 class="classTitle">
+				
+				Namespace MochiKit.Style
+			</h1>
+
+<!-- ============================== class summary ========================== -->			
+			<p class="description">
+				
+			
+				Provides a painless CSS manipulation API.
+
+				
+				
+					<br /><i>Defined in: </i> <a href="../symbols/src/scripts_MochiKit_Style.js.html">Style.js</a>.
+				
+			</p>
+
+<!-- ============================== constructor summary ==================== -->			
+			
+			<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class MochiKit.Style.">
+				<caption>Namespace Summary</caption>
+				<thead>
+					<tr>
+						<th scope="col">Constructor Attributes</th>
+						<th scope="col">Constructor Name and Description</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td class="attributes">&nbsp;</td>
+						<td class="nameDescription" >
+							<div class="fixedFont">
+								<b><a href="../symbols/MochiKit.Style.html#constructor">MochiKit.Style</a></b>
+							</div>
+							<div class="description"></div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			
+
+<!-- ============================== properties summary ===================== -->
+			
+
+<!-- ============================== methods summary ======================== -->
+			
+				
+				
+				<table class="summaryTable" cellspacing="0" summary="A summary of the methods documented in the class MochiKit.Style.">
+					<caption>Method Summary</caption>
+					<thead>
+						<tr>
+							<th scope="col">Method Attributes</th>
+							<th scope="col">Method Name and Description</th>
+						</tr>
+					</thead>
+					<tbody>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">MochiKit.Style.<b><a href="../symbols/MochiKit.Style.html#._evalConstraints">_evalConstraints</a></b>(sc, ref)
+								</div>
+								<div class="description">Evaluates the size constraint functions with a refeence dimension
+object.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">MochiKit.Style.<b><a href="../symbols/MochiKit.Style.html#._toPixels">_toPixels</a></b>(value)
+								</div>
+								<div class="description">Converts a style pixel value to the corresponding integer.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">MochiKit.Style.<b><a href="../symbols/MochiKit.Style.html#.adjustScrollOffset">adjustScrollOffset</a></b>(node, box)
+								</div>
+								<div class="description">Adjusts the scroll offsets for an HTML DOM node to ensure optimal
+visibility for the specified coordinates box.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">MochiKit.Style.<b><a href="../symbols/MochiKit.Style.html#.getBorderBox">getBorderBox</a></b>(node)
+								</div>
+								<div class="description">Returns the border widths for an HTML DOM node.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">MochiKit.Style.<b><a href="../symbols/MochiKit.Style.html#.getPaddingBox">getPaddingBox</a></b>(node)
+								</div>
+								<div class="description">Returns the padding sizes for an HTML DOM node.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">MochiKit.Style.<b><a href="../symbols/MochiKit.Style.html#.getScrollOffset">getScrollOffset</a></b>(node)
+								</div>
+								<div class="description">Returns the scroll offset for an HTML DOM node.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">MochiKit.Style.<b><a href="../symbols/MochiKit.Style.html#.registerSizeConstraints">registerSizeConstraints</a></b>(node, width, height, aspect)
+								</div>
+								<div class="description">Registers algebraic constraints for an element width, height and
+aspect ratio.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">MochiKit.Style.<b><a href="../symbols/MochiKit.Style.html#.resetScrollOffset">resetScrollOffset</a></b>(node, recursive)
+								</div>
+								<div class="description">Resets the scroll offsets to zero for for an HTML DOM node.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">MochiKit.Style.<b><a href="../symbols/MochiKit.Style.html#.resizeElements">resizeElements</a></b>()
+								</div>
+								<div class="description">Resizes a list of DOM nodes using their parent element sizes and
+any registered size constraints.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">MochiKit.Style.<b><a href="../symbols/MochiKit.Style.html#.setScrollOffset">setScrollOffset</a></b>(node, offset)
+								</div>
+								<div class="description">Sets the scroll offset for an HTML DOM node.</div>
+							</td>
+						</tr>
+					
+					</tbody>
+				</table>
+				
+				
+				
+			
+
+<!-- ============================== constructor details ==================== -->		
+			
+			<div class="details"><a name="constructor"> </a>
+				<div class="sectionTitle">
+					Namespace Detail
+				</div>
+				
+				<div class="fixedFont">
+						<b>MochiKit.Style</b>
+				</div>
+				
+				<div class="description">
+					
+					
+				</div>
+				
+				
+				
+				
+					
+					
+					
+					
+					
+					
+					
+
+			</div>
+			
+
+<!-- ============================== field details ========================== -->		
+			
+
+<!-- ============================== method details ========================= -->		
+			
+				<div class="sectionTitle">
+					Method Detail
+				</div>
+				
+					<a name="._evalConstraints"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					<span class="light">{Object}</span>
+					<span class="light">MochiKit.Style.</span><b>_evalConstraints</b>(sc, ref)
+					
+					</div>
+					<div class="description">
+						Evaluates the size constraint functions with a refeence dimension
+object. This is an internal function used to encapsulate the
+function calls and provide logging on errors.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>sc</b>
+									
+								</dt>
+								<dd>the size constraints object</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>ref</b>
+									
+								</dt>
+								<dd>the MochiKit.Style.Dimensions maximum
+           reference values</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Object}</span> the MochiKit.Style.Dimensions with evaluated size
+        constraint values (some may be null)</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="._toPixels"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					<span class="light">{Number}</span>
+					<span class="light">MochiKit.Style.</span><b>_toPixels</b>(value)
+					
+					</div>
+					<div class="description">
+						Converts a style pixel value to the corresponding integer. If the
+string ends with "px", those characters will be silently removed.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>value</b>
+									
+								</dt>
+								<dd>the style string value to convert</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Number}</span> the numeric value, or
+        null if the conversion failed</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name=".adjustScrollOffset"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					
+					<span class="light">MochiKit.Style.</span><b>adjustScrollOffset</b>(node, box)
+					
+					</div>
+					<div class="description">
+						Adjusts the scroll offsets for an HTML DOM node to ensure optimal
+visibility for the specified coordinates box. This function will
+scroll the node both vertially and horizontally to ensure that
+the top left corner of the box is always visible and that as much
+of the box extent as possible is visible.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>node</b>
+									
+								</dt>
+								<dd>the HTML DOM node</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>box</b>
+									
+								</dt>
+								<dd>the coordinates box with optional properties
+           {l, t, r, b} or {x, y, w, h}</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name=".getBorderBox"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					<span class="light">{Object}</span>
+					<span class="light">MochiKit.Style.</span><b>getBorderBox</b>(node)
+					
+					</div>
+					<div class="description">
+						Returns the border widths for an HTML DOM node. The widths for
+all four sides will be returned.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>node</b>
+									
+								</dt>
+								<dd>the HTML DOM node</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Object}</span> an object with "t", "b", "l" and "r" properties,
+        each containing either an integer value or null</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name=".getPaddingBox"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					<span class="light">{Object}</span>
+					<span class="light">MochiKit.Style.</span><b>getPaddingBox</b>(node)
+					
+					</div>
+					<div class="description">
+						Returns the padding sizes for an HTML DOM node. The sizes for all
+four sides will be returned.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>node</b>
+									
+								</dt>
+								<dd>the HTML DOM node</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Object}</span> an object with "t", "b", "l" and "r" properties,
+        each containing either an integer value or null</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name=".getScrollOffset"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					<span class="light">{Object}</span>
+					<span class="light">MochiKit.Style.</span><b>getScrollOffset</b>(node)
+					
+					</div>
+					<div class="description">
+						Returns the scroll offset for an HTML DOM node.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>node</b>
+									
+								</dt>
+								<dd>the HTML DOM node</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Object}</span> a MochiKit.Style.Coordinates object with "x" and
+        "y" properties containing the element scroll offset</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name=".registerSizeConstraints"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					
+					<span class="light">MochiKit.Style.</span><b>registerSizeConstraints</b>(node, width, height, aspect)
+					
+					</div>
+					<div class="description">
+						Registers algebraic constraints for an element width, height and
+aspect ratio. The constraints may either be fixed numeric values,
+functions or string formulas. The string formulas will be
+converted to JavaScript functions, replacing any "%" character
+with the parent reference value (i.e. the parent element width,
+height or aspect ratio). It is also possible to directly reference
+the parent values with the "w" and "h" variables. Any functions
+specified must take both the parent element width and height as
+arguments (possibly ignoring one or the other) and return a
+number. Any value returned when evaluating the functions or
+formulas will be bounded to the parent element size.
+						
+						
+					</div>
+					
+					
+					
+					<pre class="code">// To set width to 50% - 20 px & height to 100%
+registerSizeConstraints(node, "50% - 20", "100%");
+// To set a square aspect ratio
+registerSizeConstraints(node, null, null, 1.0);</pre>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>node</b>
+									
+								</dt>
+								<dd>the HTML DOM node</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Number/Function/String}</span> <b>width</b>
+									<i>Optional</i>
+								</dt>
+								<dd>the width constraint</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Number/Function/String}</span> <b>height</b>
+									<i>Optional</i>
+								</dt>
+								<dd>the height constraint</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Number/Function/String}</span> <b>aspect</b>
+									<i>Optional</i>
+								</dt>
+								<dd>the aspect ratio constraint</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name=".resetScrollOffset"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					
+					<span class="light">MochiKit.Style.</span><b>resetScrollOffset</b>(node, recursive)
+					
+					</div>
+					<div class="description">
+						Resets the scroll offsets to zero for for an HTML DOM node.
+Optionally all child node offsets can also be reset.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>node</b>
+									
+								</dt>
+								<dd>the HTML DOM node</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Boolean}</span> <b>recursive</b>
+									<i>Optional</i>
+								</dt>
+								<dd>the recursive flag, defaults to
+           false</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name=".resizeElements"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					
+					<span class="light">MochiKit.Style.</span><b>resizeElements</b>()
+					
+					</div>
+					<div class="description">
+						Resizes a list of DOM nodes using their parent element sizes and
+any registered size constraints. The resize operation is recursive
+and will also be applied to all child nodes. If an element lacks a
+size constraint for either width or height, that size aspect will
+not be modified.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>...</b>
+									<i>Optional</i>
+								</dt>
+								<dd>the HTML DOM nodes to resize</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">See:</dt>
+							
+								<dd>registerSizeConstraints</dd>
+							
+							</dl>
+						
+
+					<hr />
+				
+					<a name=".setScrollOffset"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					
+					<span class="light">MochiKit.Style.</span><b>setScrollOffset</b>(node, offset)
+					
+					</div>
+					<div class="description">
+						Sets the scroll offset for an HTML DOM node.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>node</b>
+									
+								</dt>
+								<dd>the HTML DOM node</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>offset</b>
+									
+								</dt>
+								<dd>the MochiKit.Style.Coordinates containing
+           the new scroll offset "x" and "y" values</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					
+				
+			
+			
+			<hr />
+		</div>
+		
+<!-- ============================== footer ================================= -->
+		<div class="fineprint" style="clear:both">
+			
+			Documentation generated by <a href="http://www.jsdoctoolkit.org/" target="_blank">JsDoc Toolkit</a> 2.0.2 on Sat Aug 30 2008 22:47:03 GMT+0200 (CEST)
+		</div>
+	</body>
+</html>
