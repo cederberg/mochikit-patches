@@ -337,6 +337,15 @@ ul.inheritsList
 					<tbody>
 					
 						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">MochiKit.Widget.<b><a href="../symbols/MochiKit.Widget.html#._createWidgetTreeElem">_createWidgetTreeElem</a></b>(node, ids)
+								</div>
+								<div class="description">Creates a DOM node or widget from a parsed XML element.</div>
+							</td>
+						</tr>
+					
+						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.html#addAll">addAll</a></b>()
@@ -388,6 +397,15 @@ ul.inheritsList
 								</div>
 								<div class="description">Creates a new widget with the specified name, attributes and
 child widgets or DOM nodes.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">MochiKit.Widget.<b><a href="../symbols/MochiKit.Widget.html#.createWidgetTree">createWidgetTree</a></b>(node, ids)
+								</div>
+								<div class="description">Creates a tree of DOM nodes or widgets from a parsed XML document.</div>
 							</td>
 						</tr>
 					
@@ -614,6 +632,61 @@ object.
 				<div class="sectionTitle">
 					Method Detail
 				</div>
+				
+					<a name="._createWidgetTreeElem"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					<span class="light">{Node/Widget}</span>
+					<span class="light">MochiKit.Widget.</span><b>_createWidgetTreeElem</b>(node, ids)
+					
+					</div>
+					<div class="description">
+						Creates a DOM node or widget from a parsed XML element. This
+function will call createWidget() for any XML element node with a
+name corresponding to a widget class. Otherwise the createDOM()
+function is called. Some basic adjustments will be performed on
+the element attributes "id", "style", "class", "w", "h" and "a",
+in order to set these values with the appropriate function
+instead of as plain attribute strings.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Node}</span> <b>node</b>
+									
+								</dt>
+								<dd>the XML element node</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>ids</b>
+									<i>Optional</i>
+								</dt>
+								<dd>the optional node id mappings</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Node/Widget}</span> the DOM node or widget created</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
 				
 					<a name="addAll"> </a>
 					<div class="fixedFont">
@@ -864,6 +937,63 @@ the constructor function directly.
 							<dt class="heading">Returns:</dt>
 							
 								<dd><span class="light fixedFont">{Widget}</span> the widget DOM node</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name=".createWidgetTree"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					<span class="light">{Array}</span>
+					<span class="light">MochiKit.Widget.</span><b>createWidgetTree</b>(node, ids)
+					
+					</div>
+					<div class="description">
+						Creates a tree of DOM nodes or widgets from a parsed XML document.
+This function will call createWidget() for any XML element node
+with a name corresponding to a widget class. Otherwise the
+createDOM() function is called. Some basic adjustments will be
+performed on the element attributes "id", "style", "class", "w",
+"h" and "a", in order to set these values with the appropriate
+function instead of as plain attribute strings. Text nodes with
+non-whitespace content will be mapped to HTML DOM text nodes.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Node/NodeList}</span> <b>node</b>
+									
+								</dt>
+								<dd>the XML document, node or node list</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>ids</b>
+									<i>Optional</i>
+								</dt>
+								<dd>the optional node id mappings</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Array}</span> an array of the root DOM nodes or widgets created,
+        or null if no nodes could be created</dd>
 							
 							</dl>
 						
@@ -1513,7 +1643,7 @@ they will be removed. Otherwise they will be added.
 <!-- ============================== footer ================================= -->
 		<div class="fineprint" style="clear:both">
 			
-			Documentation generated by <a href="http://www.jsdoctoolkit.org/" target="_blank">JsDoc Toolkit</a> 2.0.2 on Sat Aug 30 2008 22:47:03 GMT+0200 (CEST)
+			Documentation generated by <a href="http://www.jsdoctoolkit.org/" target="_blank">JsDoc Toolkit</a> 2.0.2 on Sun Aug 31 2008 10:04:45 GMT+0200 (CEST)
 		</div>
 	</body>
 </html>
