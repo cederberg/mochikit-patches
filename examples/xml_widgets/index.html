@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+        "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>XML Widget Example</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <link href="../../include/css/widget.css" rel="stylesheet" type="text/css" />
+    <script src="../../trunk.js" type="text/javascript"></script>
+    <script src="../../MochiKit/Base.js" type="text/javascript"></script>
+    <script src="../../MochiKit/DateTime.js" type="text/javascript"></script>
+    <script src="../../MochiKit/DOM.js" type="text/javascript"></script>
+    <script src="../../MochiKit/Style.js" type="text/javascript"></script>
+    <script src="../../MochiKit/Widget.js" type="text/javascript"></script>
+    <script type="text/javascript">
+    var uiId = {};
+    var progressValue = 0;
+    var tableData = [{ id: 123, first: "John", last: "Doe", email: "john.doe@mail.com" },
+                     { id: 567, first: "James", last: "Smith", email: "james.william.smith@mail.com" },
+                     { id: 789, first: "Mary", last: "Harris", email: "mary@longdomainname.com" },
+                     { id: 462, first: "Patricia", last: "Williams", email: "pw@pw.com" },
+                     { id: 1234, first: "David", last: "White", email: "dave@mail.com" }];
+
+    function init() {
+        // TODO: Automate setup of base icon image URL
+        MochiKit.Widget.Icon.DEFAULT.baseUrl = "../../include/images/icons/";
+        fun = MochiKit.Base.partial(MochiKit.Style.resizeElements, document.body);
+        MochiKit.Signal.connect(window, "onresize", fun);
+        MochiKit.Style.resizeElements(document.body);
+        var d = MochiKit.Async.doXHR("ui.xml", { method: "GET" });
+        d.addBoth(showUI);
+    }
+
+    function showUI(res) {
+        if (res instanceof Error) {
+            alert(res.message);
+        } else {
+            var xml = res.responseXML;
+            var widgets = MochiKit.Widget.createWidgetTree(xml, uiId);
+            MochiKit.DOM.appendChildNodes(document.body, widgets);
+            MochiKit.Style.resizeElements(document.body);
+            setInterval(progressUpdate, 20);
+            uiId.table.setData(tableData);
+            MochiKit.Signal.connect(uiId.dialogButton, "onclick", uiId.dialog, "show");
+        }
+    }
+
+    function progressUpdate() {
+        if (progressValue < 1000) {
+            uiId.progress.setValue(++progressValue);
+        } else {
+            progressValue = 0;
+            uiId.progress.setAttrs({ min: 0, max: 1000 });
+            uiId.progress.setValue(0);
+        }
+    }
+    </script>
+
+</head>
+
+<body onload="init()">
+</body>
+</html>

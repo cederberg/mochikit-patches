@@ -102,6 +102,110 @@ MochiKit.Widget.createWidget = function(name, attrs/*, ...*/) {
 }
 
 /**
+ * Creates a tree of DOM nodes or widgets from a parsed XML document.
+ * This function will call createWidget() for any XML element node
+ * with a name corresponding to a widget class. Otherwise the
+ * createDOM() function is called. Some basic adjustments will be
+ * performed on the element attributes "id", "style", "class", "w",
+ * "h" and "a", in order to set these values with the appropriate
+ * function instead of as plain attribute strings. Text nodes with
+ * non-whitespace content will be mapped to HTML DOM text nodes.
+ *
+ * @param {Node/NodeList} node the XML document, node or node list
+ * @param {Object} [ids] the optional node id mappings
+ *
+ * @return {Array} an array of the root DOM nodes or widgets created,
+ *         or null if no nodes could be created 
+ */
+MochiKit.Widget.createWidgetTree = function(node, ids) {
+    if (node.documentElement) {
+        return MochiKit.Widget.createWidgetTree(node.documentElement.childNodes, ids);
+    } else if (typeof(node.item) != "undefined" && typeof(node.length) == "number") {
+        var res = [];
+        for (var i = 0; i < node.length; i++) {
+            var list = MochiKit.Widget.createWidgetTree(node[i], ids);
+            if (!MochiKit.Base.isUndefinedOrNull(list)) {
+                res = res.concat(list);
+            }
+        }
+        return res;
+    } else if (node.nodeType === 1) { // Node.ELEMENT_NODE
+        try {
+            return [MochiKit.Widget._createWidgetTreeElem(node, ids)];
+        } catch (e) {
+            MochiKit.Logging.logError("Failed to create DOM node or widget", e);
+        }
+    } else if (node.nodeType === 3) { // Node.TEXT_NODE
+        var str = node.nodeValue;
+        if (str != null && MochiKit.Format.strip(str) != "") {
+            return MochiKit.DOM.createTextNode(str.replace(/\s+/g, " "));
+        }
+    }
+    // TODO: handling of CDATA nodes to escape text?
+    return null;
+}
+
+/**
+ * Creates a DOM node or widget from a parsed XML element. This
+ * function will call createWidget() for any XML element node with a
+ * name corresponding to a widget class. Otherwise the createDOM()
+ * function is called. Some basic adjustments will be performed on
+ * the element attributes "id", "style", "class", "w", "h" and "a",
+ * in order to set these values with the appropriate function
+ * instead of as plain attribute strings.
+ *
+ * @param {Node} node the XML element node
+ * @param {Object} [ids] the optional node id mappings
+ *
+ * @return {Node/Widget} the DOM node or widget created
+ */
+MochiKit.Widget._createWidgetTreeElem = function(node, ids) {
+    var name = node.nodeName;
+    var attrs = MochiKit.Base.dict(MochiKit.DOM.attributeArrayNewImpl(node));
+    var locals = MochiKit.Base.mask(attrs, ["id", "w", "h", "a", "class", "style"]);
+    var children = MochiKit.Widget.createWidgetTree(node.childNodes, ids);
+    if (MochiKit.Widget.Classes[name]) {
+        var widget = MochiKit.Widget.createWidget(name, attrs, children);
+    } else {
+        var widget = MochiKit.DOM.createDOM(name, attrs, children);
+        // TODO: Remove this once MochiKit ticket #302 is resolved
+        if (attrs.value) {
+            widget.value = attrs.value;
+        }
+    }
+    if (locals.id) {
+        if (ids) {
+            ids[locals.id] = widget;
+        } else {
+            widget.id = locals.id;
+        }
+    }
+    if (locals.w || locals.h || locals.a) {
+        MochiKit.Style.registerSizeConstraints(widget, locals.w, locals.h, locals.a);
+    }
+    if (locals["class"]) {
+        var classes = locals["class"].split(" ");
+        if (typeof(widget.addClass) == "function") {
+            widget.addClass.apply(widget, classes);
+        } else {
+            for (var i = 0; i < arguments.length; i++) {
+                MochiKit.DOM.addElementClass(widget, classes[i]);
+            }
+        }
+    }
+    if (locals.style) {
+        var styles = {};
+        var parts = locals.style.split(";");
+        for (var i = 0; i < parts.length; i++) {
+            var a = parts[i].split(":");
+            styles[MochiKit.Format.strip(a[0])] = MochiKit.Format.strip(a[1]);
+        }
+        MochiKit.Style.setStyle(widget, styles);
+    }
+    return widget;
+}
+
+/**
  * Destroys a widget or a DOM node. This method will remove the DOM
  * node from the tree, disconnect all signals and call all widget
  * destructor functions. This function will also be called

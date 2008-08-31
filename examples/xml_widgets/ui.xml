@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui>
+  <TabContainer id="tabContainer" w="100%-20" h="100%-20" style="padding: 10px;">
+    <Pane pageTitle="Buttons">
+      <p><Button highlight="true"><Icon ref="OK" /> Highlighted Icon</Button></p>
+      <p><Button><Icon ref="CANCEL" /> Plain Icon</Button></p>
+      <p><Button>Plain</Button></p>
+    </Pane>
+    <Pane pageTitle="Progress">
+      <ProgressBar id="progress" min="0" max="1000" style="width: 100%;" />
+    </Pane>
+    <Pane pageTitle="Table">
+      <Table id="table" style="width: 350px;">
+        <TableColumn title="#" field="id" type="number" />
+        <TableColumn title="First Name" field="first" sort="asc" />
+        <TableColumn title="Last Name" field="last" />
+        <TableColumn title="Email" field= "email" maxLength="20" />
+      </Table>
+    </Pane>
+    <Pane pageTitle="Tree">
+      <Tree style="width: 200px; height: 100%;">
+        <TreeNode name="one">
+          <TreeNode name="uno (Spanish)" />
+          <TreeNode name="eins (German)" />
+          <TreeNode name="ett (Swedish)" />
+        </TreeNode>
+        <TreeNode name="two">
+          <TreeNode name="dos (Spanish)" />
+          <TreeNode name="zwei (German)" />
+          <TreeNode name="två (Swedish)" />
+        </TreeNode>
+        <TreeNode name="three">
+          <TreeNode name="tres (Spanish)" />
+          <TreeNode name="drei (German)" />
+          <TreeNode name="tre (Swedish)" />
+        </TreeNode>
+      </Tree>
+    </Pane>
+    <Pane pageTitle="Dialog">
+      <Button id="dialogButton" highlight="true"><Icon ref="EXPAND" /> Show Dialog</Button>
+      <Dialog id="dialog" w="50%" h="60%" title="Modal Dialog Example" modal="true">
+        A dialog can contain DOM nodes or widgets.
+      </Dialog>
+    </Pane>
+  </TabContainer>
+</ui>
