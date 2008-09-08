@@ -3174,6 +3174,9 @@ MochiKit.Widget.TextField.prototype._handleKeyDown = function(evt) {
         popup.resetDelay();
         if (popup.isHidden()) {
             switch (evt.key().string) {
+            case "KEY_ESCAPE":
+                evt.stop();
+                break;
             case "KEY_ARROW_UP":
             case "KEY_ARROW_DOWN":
                 this.showPopup();
