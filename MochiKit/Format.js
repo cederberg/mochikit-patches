@@ -69,6 +69,8 @@ MochiKit.Format.truncate = function(obj, maxLength, tail) {
 MochiKit.Format.formatter = function(pattern, locale) {
     if (typeof(locale) == "undefined") {
         locale = MochiKit.Format.formatLocale();
+    } else if (typeof(locale) == "string") {
+        locale = MochiKit.Format.formatLocale(locale);
     }
     var parts = MochiKit.Format._parsePattern(pattern);
     return function() {
@@ -403,5 +405,6 @@ MochiKit.Format.FormatPatternError.prototype =
 
 // Export symbols to global namespace
 MochiKit.Format.EXPORT.push("format");
+MochiKit.Format.EXPORT.push("formatter");
 MochiKit.Format.EXPORT.push("FormatPatternError");
 MochiKit.Base._exportSymbols(this, MochiKit.Format);

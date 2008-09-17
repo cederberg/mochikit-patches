@@ -78,7 +78,15 @@ tests.test_Format = function (t) {
     t.is(format("{:,08.4f}", 1.5), "01.500,0", "grouped precision floating format");
     t.is(format("{:<7.3f}", 1.5), "1.500  ", "left-aligned floating format");
     t.is(format("{:>5f}", 1.5), "  1.5", "right-aligned floating format");
-    // TODO: test formatter function
+    var f = formatter("{1}{2}{0}{1}");
+    t.is(f("a", "b", "c"), "bcab", "formatter function creation");
+    t.is(f("1", "2", "3"), "2312", "formatter function reuse");
+    var f = formatter("{:,08.4f}");
+    t.is(f(1.5), "01.500,0", "default locale formatter");
+    var f = formatter("{:,08.4f}", formatLocale("fr_FR"));
+    t.is(f(1.5), "01,500 0", "fr_FR precision locale formatter");
+    var f = formatter("{:,08.4f}", "de_DE");
+    t.is(f(1.5), "01,500.0", "de_DE precision locale formatter");
     try {
         format("{ :z }", o);
         t.ok(false, "should throw FormatPatternError on invalid format type");
