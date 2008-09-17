@@ -5,7 +5,7 @@
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<meta name="generator" content="JsDoc Toolkit" />
 		
-		<title>JsDoc Reference - MochiKit.Style</title>
+		<title>JsDoc Reference - MochiKit.Format</title>
 
 		<style type="text/css">
 			/* default.css */
@@ -254,24 +254,24 @@ ul.inheritsList
 <!-- ============================== class title ============================ -->
 			<h1 class="classTitle">
 				
-				Namespace MochiKit.Style
+				Namespace MochiKit.Format
 			</h1>
 
 <!-- ============================== class summary ========================== -->			
 			<p class="description">
 				
 			
-				Provides a painless CSS manipulation API.
+				Provides string formatting functionality.
 
 				
 				
-					<br /><i>Defined in: </i> <a href="../symbols/src/scripts_MochiKit_Style.js.html">Style.js</a>.
+					<br /><i>Defined in: </i> <a href="../symbols/src/scripts_MochiKit_Format.js.html">Format.js</a>.
 				
 			</p>
 
 <!-- ============================== constructor summary ==================== -->			
 			
-			<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class MochiKit.Style.">
+			<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class MochiKit.Format.">
 				<caption>Namespace Summary</caption>
 				<thead>
 					<tr>
@@ -284,7 +284,7 @@ ul.inheritsList
 						<td class="attributes">&nbsp;</td>
 						<td class="nameDescription" >
 							<div class="fixedFont">
-								<b><a href="../symbols/MochiKit.Style.html#constructor">MochiKit.Style</a></b>
+								<b><a href="../symbols/MochiKit.Format.html#constructor">MochiKit.Format</a></b>
 							</div>
 							<div class="description"></div>
 						</td>
@@ -300,7 +300,7 @@ ul.inheritsList
 			
 				
 				
-				<table class="summaryTable" cellspacing="0" summary="A summary of the methods documented in the class MochiKit.Style.">
+				<table class="summaryTable" cellspacing="0" summary="A summary of the methods documented in the class MochiKit.Format.">
 					<caption>Method Summary</caption>
 					<thead>
 						<tr>
@@ -313,94 +313,66 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">MochiKit.Style.<b><a href="../symbols/MochiKit.Style.html#._evalConstraints">_evalConstraints</a></b>(sc, ref)
+								<div class="fixedFont">MochiKit.Format.<b><a href="../symbols/MochiKit.Format.html#._formatParts">_formatParts</a></b>(parts, values, locale)
 								</div>
-								<div class="description">Evaluates the size constraint functions with a refeence dimension
-object.</div>
+								<div class="description">Formats an array of strings and format info objects with the
+specified array of values.</div>
 							</td>
 						</tr>
 					
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">MochiKit.Style.<b><a href="../symbols/MochiKit.Style.html#._toPixels">_toPixels</a></b>(value)
+								<div class="fixedFont">MochiKit.Format.<b><a href="../symbols/MochiKit.Format.html#._parseFormat">_parseFormat</a></b>(pattern, startPos, endPos)
 								</div>
-								<div class="description">Converts a style pixel value to the corresponding integer.</div>
+								<div class="description">Parses a format instruction and returns a format info object.</div>
 							</td>
 						</tr>
 					
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">MochiKit.Style.<b><a href="../symbols/MochiKit.Style.html#.adjustScrollOffset">adjustScrollOffset</a></b>(node, box)
+								<div class="fixedFont">MochiKit.Format.<b><a href="../symbols/MochiKit.Format.html#._parseFormatFlags">_parseFormatFlags</a></b>(pattern, startPos, endPos)
 								</div>
-								<div class="description">Adjusts the scroll offsets for an HTML DOM node to ensure optimal
-visibility for the specified coordinates box.</div>
+								<div class="description">Parses a string with format flags and returns a format info object.</div>
 							</td>
 						</tr>
 					
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">MochiKit.Style.<b><a href="../symbols/MochiKit.Style.html#.getBorderBox">getBorderBox</a></b>(node)
+								<div class="fixedFont">MochiKit.Format.<b><a href="../symbols/MochiKit.Format.html#._parsePattern">_parsePattern</a></b>(pattern)
 								</div>
-								<div class="description">Returns the border widths for an HTML DOM node.</div>
+								<div class="description">Parses a format pattern and returns an array of constant strings
+and format info objects.</div>
 							</td>
 						</tr>
 					
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">MochiKit.Style.<b><a href="../symbols/MochiKit.Style.html#.getPaddingBox">getPaddingBox</a></b>(node)
+								<div class="fixedFont">MochiKit.Format.<b><a href="../symbols/MochiKit.Format.html#.format">format</a></b>(pattern)
 								</div>
-								<div class="description">Returns the padding sizes for an HTML DOM node.</div>
+								<div class="description">Formats the specified arguments according to a formatter pattern.</div>
 							</td>
 						</tr>
 					
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">MochiKit.Style.<b><a href="../symbols/MochiKit.Style.html#.getScrollOffset">getScrollOffset</a></b>(node)
+								<div class="fixedFont">MochiKit.Format.<b><a href="../symbols/MochiKit.Format.html#.formatter">formatter</a></b>(pattern, locale)
 								</div>
-								<div class="description">Returns the scroll offset for an HTML DOM node.</div>
+								<div class="description">Creates a formatter function for the specified formatter pattern
+and locale.</div>
 							</td>
 						</tr>
 					
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">MochiKit.Style.<b><a href="../symbols/MochiKit.Style.html#.registerSizeConstraints">registerSizeConstraints</a></b>(node, width, height, aspect)
+								<div class="fixedFont">MochiKit.Format.<b><a href="../symbols/MochiKit.Format.html#.truncate">truncate</a></b>(obj, maxLength, tail)
 								</div>
-								<div class="description">Registers algebraic constraints for an element width, height and
-aspect ratio.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">MochiKit.Style.<b><a href="../symbols/MochiKit.Style.html#.resetScrollOffset">resetScrollOffset</a></b>(node, recursive)
-								</div>
-								<div class="description">Resets the scroll offsets to zero for for an HTML DOM node.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">MochiKit.Style.<b><a href="../symbols/MochiKit.Style.html#.resizeElements">resizeElements</a></b>()
-								</div>
-								<div class="description">Resizes a list of DOM nodes using their parent element sizes and
-any registered size constraints.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">MochiKit.Style.<b><a href="../symbols/MochiKit.Style.html#.setScrollOffset">setScrollOffset</a></b>(node, offset)
-								</div>
-								<div class="description">Sets the scroll offset for an HTML DOM node.</div>
+								<div class="description">Returns a right-truncated copy of a string or an array.</div>
 							</td>
 						</tr>
 					
@@ -419,7 +391,7 @@ any registered size constraints.</div>
 				</div>
 				
 				<div class="fixedFont">
-						<b>MochiKit.Style</b>
+						<b>MochiKit.Format</b>
 				</div>
 				
 				<div class="description">
@@ -450,17 +422,71 @@ any registered size constraints.</div>
 					Method Detail
 				</div>
 				
-					<a name="._evalConstraints"> </a>
+					<a name="._formatParts"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					<span class="light">{String}</span>
+					<span class="light">MochiKit.Format.</span><b>_formatParts</b>(parts, values, locale)
+					
+					</div>
+					<div class="description">
+						Formats an array of strings and format info objects with the
+specified array of values.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Array}</span> <b>parts</b>
+									
+								</dt>
+								<dd>the array of strings and format infos</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Array}</span> <b>values</b>
+									
+								</dt>
+								<dd>the array of values to format</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>locale</b>
+									
+								</dt>
+								<dd>the formatting locale to use</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{String}</span> the formatted output string</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="._parseFormat"> </a>
 					<div class="fixedFont">&lt;static&gt; 
 					
 					<span class="light">{Object}</span>
-					<span class="light">MochiKit.Style.</span><b>_evalConstraints</b>(sc, ref)
+					<span class="light">MochiKit.Format.</span><b>_parseFormat</b>(pattern, startPos, endPos)
 					
 					</div>
 					<div class="description">
-						Evaluates the size constraint functions with a refeence dimension
-object. This is an internal function used to encapsulate the
-function calls and provide logging on errors.
+						Parses a format instruction and returns a format info object.
 						
 						
 					</div>
@@ -472,29 +498,43 @@ function calls and provide logging on errors.
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<span class="light fixedFont">{Object}</span> <b>sc</b>
+									<span class="light fixedFont">{String}</span> <b>pattern</b>
 									
 								</dt>
-								<dd>the size constraints object</dd>
+								<dd>the format pattern string</dd>
 							
 								<dt>
-									<span class="light fixedFont">{Object}</span> <b>ref</b>
+									<span class="light fixedFont">{Number}</span> <b>startPos</b>
 									
 								</dt>
-								<dd>the MochiKit.Style.Dimensions maximum
-           reference values</dd>
+								<dd>the first index of the format instruction</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Number}</span> <b>endPos</b>
+									
+								</dt>
+								<dd>the last index of the format instruction</dd>
 							
 							</dl>
 						
 						
 						
+						
+							<dl class="detailList">
+							<dt class="heading">Throws:</dt>
+							
+								<dt>
+									 <b></b>
+								</dt>
+								<dd>FormatPatternError if the format pattern was invalid</dd>
+							
+							</dl>
 						
 						
 							<dl class="detailList">
 							<dt class="heading">Returns:</dt>
 							
-								<dd><span class="light fixedFont">{Object}</span> the MochiKit.Style.Dimensions with evaluated size
-        constraint values (some may be null)</dd>
+								<dd><span class="light fixedFont">{Object}</span> the format info object</dd>
 							
 							</dl>
 						
@@ -503,108 +543,15 @@ function calls and provide logging on errors.
 
 					<hr />
 				
-					<a name="._toPixels"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					<span class="light">{Number}</span>
-					<span class="light">MochiKit.Style.</span><b>_toPixels</b>(value)
-					
-					</div>
-					<div class="description">
-						Converts a style pixel value to the corresponding integer. If the
-string ends with "px", those characters will be silently removed.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{String}</span> <b>value</b>
-									
-								</dt>
-								<dd>the style string value to convert</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd><span class="light fixedFont">{Number}</span> the numeric value, or
-        null if the conversion failed</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name=".adjustScrollOffset"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					
-					<span class="light">MochiKit.Style.</span><b>adjustScrollOffset</b>(node, box)
-					
-					</div>
-					<div class="description">
-						Adjusts the scroll offsets for an HTML DOM node to ensure optimal
-visibility for the specified coordinates box. This function will
-scroll the node both vertially and horizontally to ensure that
-the top left corner of the box is always visible and that as much
-of the box extent as possible is visible.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{Object}</span> <b>node</b>
-									
-								</dt>
-								<dd>the HTML DOM node</dd>
-							
-								<dt>
-									<span class="light fixedFont">{Object}</span> <b>box</b>
-									
-								</dt>
-								<dd>the coordinates box with optional properties
-           {l, t, r, b} or {x, y, w, h}</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name=".getBorderBox"> </a>
+					<a name="._parseFormatFlags"> </a>
 					<div class="fixedFont">&lt;static&gt; 
 					
 					<span class="light">{Object}</span>
-					<span class="light">MochiKit.Style.</span><b>getBorderBox</b>(node)
+					<span class="light">MochiKit.Format.</span><b>_parseFormatFlags</b>(pattern, startPos, endPos)
 					
 					</div>
 					<div class="description">
-						Returns the border widths for an HTML DOM node. The widths for
-all four sides will be returned.
+						Parses a string with format flags and returns a format info object.
 						
 						
 					</div>
@@ -616,22 +563,43 @@ all four sides will be returned.
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<span class="light fixedFont">{Object}</span> <b>node</b>
+									<span class="light fixedFont">{String}</span> <b>pattern</b>
 									
 								</dt>
-								<dd>the HTML DOM node</dd>
+								<dd>the format pattern string</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Number}</span> <b>startPos</b>
+									
+								</dt>
+								<dd>the first index of the format instruction</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Number}</span> <b>endPos</b>
+									
+								</dt>
+								<dd>the last index of the format instruction</dd>
 							
 							</dl>
 						
 						
 						
+						
+							<dl class="detailList">
+							<dt class="heading">Throws:</dt>
+							
+								<dt>
+									 <b></b>
+								</dt>
+								<dd>FormatPatternError if the format pattern was invalid</dd>
+							
+							</dl>
 						
 						
 							<dl class="detailList">
 							<dt class="heading">Returns:</dt>
 							
-								<dd><span class="light fixedFont">{Object}</span> an object with "t", "b", "l" and "r" properties,
-        each containing either an integer value or null</dd>
+								<dd><span class="light fixedFont">{Object}</span> the format info object</dd>
 							
 							</dl>
 						
@@ -640,16 +608,16 @@ all four sides will be returned.
 
 					<hr />
 				
-					<a name=".getPaddingBox"> </a>
+					<a name="._parsePattern"> </a>
 					<div class="fixedFont">&lt;static&gt; 
 					
-					<span class="light">{Object}</span>
-					<span class="light">MochiKit.Style.</span><b>getPaddingBox</b>(node)
+					<span class="light">{Array}</span>
+					<span class="light">MochiKit.Format.</span><b>_parsePattern</b>(pattern)
 					
 					</div>
 					<div class="description">
-						Returns the padding sizes for an HTML DOM node. The sizes for all
-four sides will be returned.
+						Parses a format pattern and returns an array of constant strings
+and format info objects.
 						
 						
 					</div>
@@ -661,22 +629,31 @@ four sides will be returned.
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<span class="light fixedFont">{Object}</span> <b>node</b>
+									<span class="light fixedFont">{String}</span> <b>pattern</b>
 									
 								</dt>
-								<dd>the HTML DOM node</dd>
+								<dd>the format pattern to analyze</dd>
 							
 							</dl>
 						
 						
 						
+						
+							<dl class="detailList">
+							<dt class="heading">Throws:</dt>
+							
+								<dt>
+									 <b></b>
+								</dt>
+								<dd>FormatPatternError if the format pattern was invalid</dd>
+							
+							</dl>
 						
 						
 							<dl class="detailList">
 							<dt class="heading">Returns:</dt>
 							
-								<dd><span class="light fixedFont">{Object}</span> an object with "t", "b", "l" and "r" properties,
-        each containing either an integer value or null</dd>
+								<dd><span class="light fixedFont">{Array}</span> an array of strings and format info objects</dd>
 							
 							</dl>
 						
@@ -685,15 +662,17 @@ four sides will be returned.
 
 					<hr />
 				
-					<a name=".getScrollOffset"> </a>
+					<a name=".format"> </a>
 					<div class="fixedFont">&lt;static&gt; 
 					
-					<span class="light">{Object}</span>
-					<span class="light">MochiKit.Style.</span><b>getScrollOffset</b>(node)
+					<span class="light">{String}</span>
+					<span class="light">MochiKit.Format.</span><b>format</b>(pattern)
 					
 					</div>
 					<div class="description">
-						Returns the scroll offset for an HTML DOM node.
+						Formats the specified arguments according to a formatter pattern.
+See separate documentation for information about the formatter
+pattern syntax.
 						
 						
 					</div>
@@ -705,201 +684,57 @@ four sides will be returned.
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<span class="light fixedFont">{Object}</span> <b>node</b>
+									<span class="light fixedFont">{String}</span> <b>pattern</b>
 									
 								</dt>
-								<dd>the HTML DOM node</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd><span class="light fixedFont">{Object}</span> a MochiKit.Style.Coordinates object with "x" and
-        "y" properties containing the element scroll offset</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name=".registerSizeConstraints"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					
-					<span class="light">MochiKit.Style.</span><b>registerSizeConstraints</b>(node, width, height, aspect)
-					
-					</div>
-					<div class="description">
-						Registers algebraic constraints for an element width, height and
-aspect ratio. The constraints may either be fixed numeric values,
-functions or string formulas. The string formulas will be
-converted to JavaScript functions, replacing any "%" character
-with the parent reference value (i.e. the parent element width,
-height or aspect ratio). It is also possible to directly reference
-the parent values with the "w" and "h" variables. Any functions
-specified must take both the parent element width and height as
-arguments (possibly ignoring one or the other) and return a
-number. Any value returned when evaluating the functions or
-formulas will be bounded to the parent element size.
-						
-						
-					</div>
-					
-					
-					
-					<pre class="code">// To set width to 50% - 20 px & height to 100%
-registerSizeConstraints(node, "50% - 20", "100%");
-// To set a square aspect ratio
-registerSizeConstraints(node, null, null, 1.0);</pre>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{Object}</span> <b>node</b>
-									
-								</dt>
-								<dd>the HTML DOM node</dd>
-							
-								<dt>
-									<span class="light fixedFont">{Number/Function/String}</span> <b>width</b>
-									<i>Optional</i>
-								</dt>
-								<dd>the width constraint</dd>
-							
-								<dt>
-									<span class="light fixedFont">{Number/Function/String}</span> <b>height</b>
-									<i>Optional</i>
-								</dt>
-								<dd>the height constraint</dd>
-							
-								<dt>
-									<span class="light fixedFont">{Number/Function/String}</span> <b>aspect</b>
-									<i>Optional</i>
-								</dt>
-								<dd>the aspect ratio constraint</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name=".resetScrollOffset"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					
-					<span class="light">MochiKit.Style.</span><b>resetScrollOffset</b>(node, recursive)
-					
-					</div>
-					<div class="description">
-						Resets the scroll offsets to zero for for an HTML DOM node.
-Optionally all child node offsets can also be reset.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{Object}</span> <b>node</b>
-									
-								</dt>
-								<dd>the HTML DOM node</dd>
-							
-								<dt>
-									<span class="light fixedFont">{Boolean}</span> <b>recursive</b>
-									<i>Optional</i>
-								</dt>
-								<dd>the recursive flag, defaults to
-           false</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name=".resizeElements"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					
-					<span class="light">MochiKit.Style.</span><b>resizeElements</b>()
-					
-					</div>
-					<div class="description">
-						Resizes a list of DOM nodes using their parent element sizes and
-any registered size constraints. The resize operation is recursive
-and will also be applied to all child nodes. If an element lacks a
-size constraint for either width or height, that size aspect will
-not be modified.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
+								<dd>the formatter pattern string</dd>
 							
 								<dt>
 									<span class="light fixedFont">{Object}</span> <b>...</b>
 									<i>Optional</i>
 								</dt>
-								<dd>the HTML DOM nodes to resize</dd>
+								<dd>the optional values to format</dd>
 							
 							</dl>
-						
-						
-						
 						
 						
 						
 						
 							<dl class="detailList">
-							<dt class="heading">See:</dt>
+							<dt class="heading">Throws:</dt>
 							
-								<dd>registerSizeConstraints</dd>
+								<dt>
+									 <b></b>
+								</dt>
+								<dd>FormatPatternError if the format pattern was invalid</dd>
 							
 							</dl>
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{String}</span> the formatted output string</dd>
+							
+							</dl>
+						
+						
 						
 
 					<hr />
 				
-					<a name=".setScrollOffset"> </a>
+					<a name=".formatter"> </a>
 					<div class="fixedFont">&lt;static&gt; 
 					
-					
-					<span class="light">MochiKit.Style.</span><b>setScrollOffset</b>(node, offset)
+					<span class="light">{Function}</span>
+					<span class="light">MochiKit.Format.</span><b>formatter</b>(pattern, locale)
 					
 					</div>
 					<div class="description">
-						Sets the scroll offset for an HTML DOM node.
+						Creates a formatter function for the specified formatter pattern
+and locale. The returned function takes as many arguments as the
+formatter pattern requires. See separate documentation for
+information about the formatter pattern syntax.
 						
 						
 					</div>
@@ -911,23 +746,99 @@ not be modified.
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<span class="light fixedFont">{Object}</span> <b>node</b>
+									<span class="light fixedFont">{String}</span> <b>pattern</b>
 									
 								</dt>
-								<dd>the HTML DOM node</dd>
+								<dd>the formatter pattern string</dd>
 							
 								<dt>
-									<span class="light fixedFont">{Object}</span> <b>offset</b>
-									
+									<span class="light fixedFont">{Object}</span> <b>locale</b>
+									<i>Optional</i>
 								</dt>
-								<dd>the MochiKit.Style.Coordinates containing
-           the new scroll offset "x" and "y" values</dd>
+								<dd>the locale to use, defaults to
+           LOCALE.en_US</dd>
 							
 							</dl>
 						
 						
 						
 						
+							<dl class="detailList">
+							<dt class="heading">Throws:</dt>
+							
+								<dt>
+									 <b></b>
+								</dt>
+								<dd>FormatPatternError if the format pattern was invalid</dd>
+							
+							</dl>
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Function}</span> the formatter function created</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name=".truncate"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					<span class="light">{String/Array}</span>
+					<span class="light">MochiKit.Format.</span><b>truncate</b>(obj, maxLength, tail)
+					
+					</div>
+					<div class="description">
+						Returns a right-truncated copy of a string or an array. If the
+string or array is shorter than the specified maximum length, the
+object will be returned unmodified. If an optional tail string or
+array is specified, additional elements will be removed in order
+to also make space for the tail (that will be appended).
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{String/Array}</span> <b>obj</b>
+									
+								</dt>
+								<dd>the string or array to truncate</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Number}</span> <b>maxLength</b>
+									
+								</dt>
+								<dd>the maximum length</dd>
+							
+								<dt>
+									<span class="light fixedFont">{String/Array}</span> <b>tail</b>
+									<i>Optional</i>
+								</dt>
+								<dd>the tail to append on truncation</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{String/Array}</span> the truncated string or array</dd>
+							
+							</dl>
 						
 						
 						

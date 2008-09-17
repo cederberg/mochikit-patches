@@ -5,7 +5,7 @@
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<meta name="generator" content="JsDoc Toolkit" />
 		
-		<title>JsDoc Reference - MochiKit.DateTime.TimePeriod</title>
+		<title>JsDoc Reference - MochiKit.Format.FormatPatternError</title>
 
 		<style type="text/css">
 			/* default.css */
@@ -254,26 +254,26 @@ ul.inheritsList
 <!-- ============================== class title ============================ -->
 			<h1 class="classTitle">
 				
-				Class MochiKit.DateTime.TimePeriod
+				Class MochiKit.Format.FormatPatternError
 			</h1>
 
 <!-- ============================== class summary ========================== -->			
 			<p class="description">
+				<br />Extends
+					MochiKit.Base.NamedError.<br />
 				
 			
-				The time period class. Used to encapsulate a structured
-    time period, split up into its variuos components. For time
-    period calculations, the total millisecond value is normally
-    a better choice (to avoid overflow and underflow issues).
+				The format pattern error class. This error is thrown when
+    a syntax error is encountered inside a format string.
 				
 				
-					<br /><i>Defined in: </i> <a href="../symbols/src/scripts_MochiKit_DateTime.js.html">DateTime.js</a>.
+					<br /><i>Defined in: </i> <a href="../symbols/src/scripts_MochiKit_Format.js.html">Format.js</a>.
 				
 			</p>
 
 <!-- ============================== constructor summary ==================== -->			
 			
-			<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class MochiKit.DateTime.TimePeriod.">
+			<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class MochiKit.Format.FormatPatternError.">
 				<caption>Class Summary</caption>
 				<thead>
 					<tr>
@@ -286,9 +286,9 @@ ul.inheritsList
 						<td class="attributes">&nbsp;</td>
 						<td class="nameDescription" >
 							<div class="fixedFont">
-								<b><a href="../symbols/MochiKit.DateTime.TimePeriod.html#constructor">MochiKit.DateTime.TimePeriod</a></b>(millis)
+								<b><a href="../symbols/MochiKit.Format.FormatPatternError.html#constructor">MochiKit.Format.FormatPatternError</a></b>(pattern, pos, message)
 							</div>
-							<div class="description">Creates a new time period object from a number of milliseconds.</div>
+							<div class="description">Creates a new format pattern error.</div>
 						</td>
 					</tr>
 				</tbody>
@@ -299,7 +299,7 @@ ul.inheritsList
 			
 				
 				
-				<table class="summaryTable" cellspacing="0" summary="A summary of the fields documented in the class MochiKit.DateTime.TimePeriod.">
+				<table class="summaryTable" cellspacing="0" summary="A summary of the fields documented in the class MochiKit.Format.FormatPatternError.">
 					<caption>Field Summary</caption>
 					<thead>
 						<tr>
@@ -313,9 +313,9 @@ ul.inheritsList
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
 								<div class="fixedFont">
-								<b><a href="../symbols/MochiKit.DateTime.TimePeriod.html#days">days</a></b>
+								<b><a href="../symbols/MochiKit.Format.FormatPatternError.html#message">message</a></b>
 								</div>
-								<div class="description">The number of days in the period.</div>
+								<div class="description">The error message text.</div>
 							</td>
 						</tr>
 					
@@ -323,9 +323,9 @@ ul.inheritsList
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
 								<div class="fixedFont">
-								<b><a href="../symbols/MochiKit.DateTime.TimePeriod.html#hours">hours</a></b>
+								<b><a href="../symbols/MochiKit.Format.FormatPatternError.html#pattern">pattern</a></b>
 								</div>
-								<div class="description">The number of hours in the period.</div>
+								<div class="description">The format pattern string.</div>
 							</td>
 						</tr>
 					
@@ -333,30 +333,9 @@ ul.inheritsList
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
 								<div class="fixedFont">
-								<b><a href="../symbols/MochiKit.DateTime.TimePeriod.html#millis">millis</a></b>
+								<b><a href="../symbols/MochiKit.Format.FormatPatternError.html#pos">pos</a></b>
 								</div>
-								<div class="description">The number of remaining milliseconds in
-    the period.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">
-								<b><a href="../symbols/MochiKit.DateTime.TimePeriod.html#minutes">minutes</a></b>
-								</div>
-								<div class="description">The number of minutes in the period.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">
-								<b><a href="../symbols/MochiKit.DateTime.TimePeriod.html#seconds">seconds</a></b>
-								</div>
-								<div class="description">The number of seconds in the period.</div>
+								<div class="description">The position of the error.</div>
 							</td>
 						</tr>
 					
@@ -378,11 +357,11 @@ ul.inheritsList
 				</div>
 				
 				<div class="fixedFont">
-						<b>MochiKit.DateTime.TimePeriod</b>(millis)
+						<b>MochiKit.Format.FormatPatternError</b>(pattern, pos, message)
 				</div>
 				
 				<div class="description">
-					Creates a new time period object from a number of milliseconds.
+					Creates a new format pattern error.
 					
 				</div>
 				
@@ -394,10 +373,22 @@ ul.inheritsList
 						<dt class="heading">Parameters:</dt>
 						
 							<dt>
-								<span class="light fixedFont">{Number}</span>  <b>millis</b>
+								<span class="light fixedFont">{String}</span>  <b>pattern</b>
 								
 							</dt>
-								<dd>the number of milliseconds in the period</dd>
+								<dd>the format pattern string</dd>
+						
+							<dt>
+								<span class="light fixedFont">{Number}</span>  <b>pos</b>
+								
+							</dt>
+								<dd>the position of the error</dd>
+						
+							<dt>
+								<span class="light fixedFont">{String}</span>  <b>message</b>
+								
+							</dt>
+								<dd>the error message text</dd>
 						
 						</dl>
 					
@@ -408,7 +399,7 @@ ul.inheritsList
 						<dl class="detailList">
 						<dt class="heading">Returns:</dt>
 						
-								<dd><span class="light fixedFont">{Object}</span> new time period object</dd>
+								<dd><span class="light fixedFont">{Error}</span> the format pattern error</dd>
 						
 						</dl>
 					
@@ -424,16 +415,15 @@ ul.inheritsList
 					Field Detail
 				</div>
 				
-					<a name="days"> </a>
+					<a name="message"> </a>
 					<div class="fixedFont">
 					
-					<span class="light">{Number}</span>
-					<b>days</b>
+					<span class="light">{String}</span>
+					<b>message</b>
 					
 					</div>
 					<div class="description">
-						The number of days in the period. This is
-    an integer value from 0 and up.
+						The error message text.
 						
 						
 					</div>
@@ -447,16 +437,15 @@ ul.inheritsList
 
 					<hr />
 				
-					<a name="hours"> </a>
+					<a name="pattern"> </a>
 					<div class="fixedFont">
 					
-					<span class="light">{Number}</span>
-					<b>hours</b>
+					<span class="light">{String}</span>
+					<b>pattern</b>
 					
 					</div>
 					<div class="description">
-						The number of hours in the period. This
-    is an integer value between 0 and 23.
+						The format pattern string.
 						
 						
 					</div>
@@ -470,62 +459,15 @@ ul.inheritsList
 
 					<hr />
 				
-					<a name="millis"> </a>
+					<a name="pos"> </a>
 					<div class="fixedFont">
 					
 					<span class="light">{Number}</span>
-					<b>millis</b>
+					<b>pos</b>
 					
 					</div>
 					<div class="description">
-						The number of remaining milliseconds in
-    the period. This is an integer value between 0 and 999.
-						
-						
-					</div>
-					
-					
-
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="minutes"> </a>
-					<div class="fixedFont">
-					
-					<span class="light">{Number}</span>
-					<b>minutes</b>
-					
-					</div>
-					<div class="description">
-						The number of minutes in the period.
-    This is an integer value between 0 and 59.
-						
-						
-					</div>
-					
-					
-
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="seconds"> </a>
-					<div class="fixedFont">
-					
-					<span class="light">{Number}</span>
-					<b>seconds</b>
-					
-					</div>
-					<div class="description">
-						The number of seconds in the period.
-    This is an integer value between 0 and 59.
+						The position of the error.
 						
 						
 					</div>

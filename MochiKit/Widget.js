@@ -829,7 +829,7 @@ MochiKit.Widget.Field.prototype.setAttrs = function(attrs) {
     if (typeof(locals.value) != "undefined") {
         this.value = locals.value;
         if (this.maxLength > 0) {
-            locals.value = MochiKit.Base.truncate(locals.value, this.maxLength, "...");
+            locals.value = MochiKit.Format.truncate(locals.value, this.maxLength, "...");
         }
         MochiKit.DOM.replaceChildNodes(this, locals.value);
         this.title = (this.value == locals.value) ? null : this.value;
@@ -2821,14 +2821,14 @@ MochiKit.Widget.TableColumn.prototype._map = function(src, dst) {
             if (value instanceof Date) {
                 value = MochiKit.DateTime.toISODate(value);
             } else {
-                value = MochiKit.Base.truncate(value, 10);
+                value = MochiKit.Format.truncate(value, 10);
             }
             break;
         case "datetime":
             if (value instanceof Date) {
                 value = MochiKit.DateTime.toISOTimestamp(value);
             } else {
-                value = MochiKit.Base.truncate(value, 19);
+                value = MochiKit.Format.truncate(value, 19);
             }
             break;
         case "time":
@@ -2869,7 +2869,7 @@ MochiKit.Widget.TableColumn.prototype._render = function(obj) {
     }
     if (this.maxLength && this.maxLength < value.length) {
         td.title = value;
-        value = MochiKit.Base.truncate(value, this.maxLength, "...");
+        value = MochiKit.Format.truncate(value, this.maxLength, "...");
     }
     if (this.type == "html") {
         td.innerHTML = value;
