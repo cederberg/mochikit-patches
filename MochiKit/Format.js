@@ -311,79 +311,60 @@ MochiKit.Format._formatParts = function(parts, values, locale) {
             // TODO: implement remaining format types (with precision)
             case "d":
             case "f":
-            case "%":
                 var sign = (info.sign == "-") ? "" : info.sign;
                 sign = (v < 0) ? "-" : sign;
                 v = Math.abs(v);
                 if (info.format == "d") {
                     str = self.truncToFixed(v, 0);
-                } else if (info.precision >= 0 && info.format == "%") {
-                    str = self.truncToFixed(v, info.precision + 2);
                 } else if (info.precision >= 0) {
                     str = self.truncToFixed(v, info.precision);
                 } else {
                     str = (v == null) ? "0" : v.toString();
                 }
-                if (info.format == "%") {
-                    // Avoid multiplication by 100 since it leads to
-                    // problems with numeric rounding errors. Instead
-                    // we just move the decimal separator. Ugly, but...
-                    var fracPos = str.indexOf(".");
-                    if (fracPos < 0) {
-                        str = str + "00";
-                    } else if (fracPos + 3 >= str.length) {
-                        var fraction = str.substring(fracPos + 1);
-                        while (fraction.length < 2) {
-                            fraction = fraction + "0";
-                        }
-                        str = str.substring(0, fracPos) + fraction;
-                    } else {
-                        var fraction = str.substring(fracPos + 1);
-                        str = str.substring(0, fracPos) +
-                              fraction.substring(0, 2) + "." +
-                              fraction.substring(2);
-                    }
-                    while (str.length > 1 && str[0] == "0" && str[1] != ".") {
-                        str = str.substring(1);
-                    }
+                if (info.padding == "0" ) {
+                    str = self._addZeroPadding(str, info.width - sign.length);
+                }
+                if (info.grouping) {
+                    str = self._addNumberGrouping(str, locale);
+                }
+                str = sign + str;
+                break;
+            case "%":
+                var sign = (info.sign == "-") ? "" : info.sign;
+                sign = (v < 0) ? "-" : sign;
+                v = Math.abs(v);
+                // Avoid multiplication by 100 since it leads to
+                // problems with numeric rounding errors. Instead
+                // we just move the decimal separator. Ugly, but...
+                if (info.precision >= 0) {
+                    str = self.truncToFixed(v, info.precision + 2);
+                } else {
+                    str = (v == null) ? "0" : v.toString();
                 }
                 var fracPos = str.indexOf(".");
-                var whole = (fracPos < 0) ? str : str.substring(0, fracPos);
-                var fraction = (fracPos < 0) ? "" : str.substring(fracPos + 1);
+                if (fracPos < 0) {
+                    str = str + "00";
+                } else if (fracPos + 3 >= str.length) {
+                    var fraction = str.substring(fracPos + 1);
+                    while (fraction.length < 2) {
+                        fraction = fraction + "0";
+                    }
+                    str = str.substring(0, fracPos) + fraction;
+                } else {
+                    var fraction = str.substring(fracPos + 1);
+                    str = str.substring(0, fracPos) + fraction.substring(0, 2) +
+                          "." + fraction.substring(2);
+                }
+                while (str.length > 1 && str[0] == "0" && str[1] != ".") {
+                    str = str.substring(1);
+                }
                 if (info.padding == "0" ) {
-                    var adjust = sign.length;
-                    if (fraction.length > 0) {
-                        adjust += 1 + fraction.length;
-                    }
-                    adjust += (info.format == "%") ? 1 : 0;
-                    while (whole.length < info.width - adjust) {
-                        whole = "0" + whole;
-                    }
+                    str = self._addZeroPadding(str, info.width - sign.length - 1);
                 }
-                str = (fraction.length > 0) ? locale.decimal : "";
-                while (info.grouping && fraction.length > 3) {
-                    str = str + fraction.substring(0, 3) + locale.separator;
-                    fraction = fraction.substring(3);
-                    if (whole[0] == "0") {
-                        whole = whole.substring(1);
-                    }
+                if (info.grouping) {
+                    str = self._addNumberGrouping(str, locale);
                 }
-                if (fraction.length > 0) {
-                    str += fraction;
-                }
-                while (info.grouping && whole.length > 3) {
-                    var pos = whole.length - 3;
-                    str = locale.separator + whole.substring(pos) + str;
-                    if (whole[0] == "0") {
-                        whole = whole.substring(1, pos);
-                    } else {
-                        whole = whole.substring(0, pos);
-                    }
-                }
-                str = sign + whole + str;
-                if (info.format == "%") {
-                    str = str + locale.percent;
-                }
+                str = sign + str + locale.percent;
                 break;
             case "r":
             case "s":
@@ -407,6 +388,59 @@ MochiKit.Format._formatParts = function(parts, values, locale) {
         }
     }
     return result;
+}
+
+/**
+ * Adds zero-padding to an already formatted numeric string.
+ *
+ * @param {String} str the formatted number string
+ * @param {Number} width the reqested minimum width
+ *
+ * @return {String} the formatted number string
+ */
+MochiKit.Format._addZeroPadding = function(str, width) {
+    while (str.length < width) {
+        str = "0" + str;
+    }
+    return str;
+}
+
+/**
+ * Adds locale-specific number grouping to an already formatted
+ * numeric string. While adding grouping characters, padded zeros
+ * will be removed in order to keep the number width intact (if
+ * possible).
+ *
+ * @param {String} str the formatted number string
+ * @param {Object} locale the formatting locale to use
+ *
+ * @return {String} the formatted number string
+ */
+MochiKit.Format._addNumberGrouping = function(str, locale) {
+    var fracPos = str.indexOf(".");
+    var whole = (fracPos < 0) ? str : str.substring(0, fracPos);
+    var fraction = (fracPos < 0) ? "" : str.substring(fracPos + 1);
+    str = (fraction.length > 0) ? locale.decimal : "";
+    while (fraction.length > 3) {
+        str = str + fraction.substring(0, 3) + locale.separator;
+        fraction = fraction.substring(3);
+        if (whole.length > 1 && whole[0] == "0") {
+            whole = whole.substring(1);
+        }
+    }
+    if (fraction.length > 0) {
+        str += fraction;
+    }
+    while (whole.length > 3) {
+        var pos = whole.length - 3;
+        str = locale.separator + whole.substring(pos) + str;
+        if (whole[0] == "0") {
+            whole = whole.substring(1, pos);
+        } else {
+            whole = whole.substring(0, pos);
+        }
+    }
+    return whole + str;
 }
 
 /**
