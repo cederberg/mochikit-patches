@@ -7407,7 +7407,7 @@ case "d":
 case "f":
 var sign=(info.sign=="-")?"":info.sign;
 sign=(v<0)?"-":sign;
-v=Math.abs(v);
+v=(v==null)?0:Math.abs(v);
 if(info.format=="d"){
 str=self.truncToFixed(v,0);
 }else{
@@ -7428,7 +7428,7 @@ break;
 case "%":
 var sign=(info.sign=="-")?"":info.sign;
 sign=(v<0)?"-":sign;
-v=Math.abs(v);
+v=(v==null)?0:Math.abs(v);
 if(info.precision>=0){
 str=self.truncToFixed(v,info.precision+2);
 }else{

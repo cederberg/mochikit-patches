@@ -313,7 +313,7 @@ MochiKit.Format._formatParts = function(parts, values, locale) {
             case "f":
                 var sign = (info.sign == "-") ? "" : info.sign;
                 sign = (v < 0) ? "-" : sign;
-                v = Math.abs(v);
+                v = (v == null) ? 0 : Math.abs(v);
                 if (info.format == "d") {
                     str = self.truncToFixed(v, 0);
                 } else if (info.precision >= 0) {
@@ -332,7 +332,7 @@ MochiKit.Format._formatParts = function(parts, values, locale) {
             case "%":
                 var sign = (info.sign == "-") ? "" : info.sign;
                 sign = (v < 0) ? "-" : sign;
-                v = Math.abs(v);
+                v = (v == null) ? 0 : Math.abs(v);
                 // Avoid multiplication by 100 since it leads to
                 // problems with numeric rounding errors. Instead
                 // we just move the decimal separator. Ugly, but...

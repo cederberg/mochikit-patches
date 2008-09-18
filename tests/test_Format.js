@@ -37,6 +37,7 @@ tests.test_Format = function (t) {
               repr: function() { return "repr"; } };
     t.is(format("{:s}", o), "toString", "string format type");
     t.is(format("{ :s }", null), "null", "null string format");
+    t.is(format("{:s}", undefined), "null", "undefined string format");
     t.is(format("abc {:s}", 0.25), "abc 0.25", "number string format");
     t.is(format("{:4s}", 2), "   2", "padded string format");
     t.is(format("{:<4}", 2), "2   ", "left-aligned padded string format");
@@ -44,9 +45,11 @@ tests.test_Format = function (t) {
     t.is(format("{:>6.4s}", o), "  toSt", "left-aligned padded truncated string format");
     t.is(format("{:r}", o), "repr", "repr format type");
     t.is(format("{:r}", null), "null", "null repr format");
+    t.is(format("{:r}", undefined), "undefined", "undefined repr format");
     t.is(format("{:<5.3r}", o), "rep  ", "right-aligned padded truncated repr format");
     t.is(format("{:d}", 1.5), "1", "decimal format type");
     t.is(format("{:d}", null), "0", "null decimal format");
+    t.is(format("{:d}", undefined), "0", "undefined decimal format");
     t.is(format("{:4d}", 25), "  25", "padded decimal format");
     t.is(format("{:04d}", 25), "0025", "zero-padded decimal format");
     t.is(format("{:4d}", -25), " -25", "unsigned decimal format");
@@ -63,6 +66,7 @@ tests.test_Format = function (t) {
     t.is(format("{:>4d}", 25), "  25", "right-aligned decimal format");
     t.is(format("{:f}", 1.5), "1.5", "floating format type");
     t.is(format("{:f}", null), "0", "null floating format");
+    t.is(format("{:f}", undefined), "0", "undefined floating format");
     t.is(format("{:5f}", 1.5), "  1.5", "padded floating format");
     t.is(format("{:.5f}", 1.5), "1.50000", "precision floating format");
     t.is(format("{:05.2f}", 1.5), "01.50", "zero-padded floating format");
@@ -80,6 +84,7 @@ tests.test_Format = function (t) {
     t.is(format("{:>5f}", 1.5), "  1.5", "right-aligned floating format");
     t.is(format("{:%}", 1.5), "150%", "percent format type");
     t.is(format("{:%}", null), "0%", "null percent format");
+    t.is(format("{:%}", undefined), "0%", "undefined percent format");
     t.is(format("{:5%}", 0.15), "  15%", "padded percent format");
     t.is(format("{:.2%}", 0.153), "15.30%", "precision percent format");
     t.is(format("{:07.2%}", 0.153), "015.30%", "zero-padded percent format");
