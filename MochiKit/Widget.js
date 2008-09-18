@@ -1351,7 +1351,7 @@ MochiKit.Base.update(MochiKit.Widget.Icon, {
     /** The default icon definition, inherited by all others. */
     DEFAULT: { baseUrl: "images/icons/", width: "16", height: "16" },
     /** The blank icon definition. */
-    BLANK: { url: "blank.gif" },
+    BLANK: { url: "blank.gif", style: { cursor: "default" } },
     /** The close icon definition. */
     CLOSE: { url: "close.gif" },
     /** The resize icon definition. */
