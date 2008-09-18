@@ -783,6 +783,8 @@ MochiKit.Widget.Dialog.prototype._stopDrag = function(evt) {
  * @param {String} attrs.name the field name
  * @param {String} [attrs.value] the initial field value, defaults
  *            to an empty string
+ * @param {String} [attrs.format] the field format string, defaults
+ *            to "{:s}"
  * @param {Number} [attrs.maxLength] the maximum data length,
  *            overflow will be displayed as a tooltip, defaults to
  *            -1 (unlimited)
@@ -814,6 +816,7 @@ MochiKit.Widget.Field.prototype = MochiKit.Base.clone(MochiKit.Widget.prototype)
  * @param {Object} attrs the widget and node attributes to set
  * @param {String} [attrs.name] the field name
  * @param {String} [attrs.value] the field value
+ * @param {String} [attrs.format] the field format string
  * @param {Number} [attrs.maxLength] the maximum data length,
  *            overflow will be displayed as a tooltip
  */
@@ -823,16 +826,27 @@ MochiKit.Widget.Field.prototype.setAttrs = function(attrs) {
     if (typeof(locals.name) != "undefined") {
         this.name = locals.name;
     }
+    if (typeof(locals.format) != "undefined") {
+        this.format = locals.format;
+    }
     if (typeof(locals.maxLength) != "undefined") {
         this.maxLength = parseInt(locals.maxLength);
     }
     if (typeof(locals.value) != "undefined") {
-        this.value = locals.value;
-        if (this.maxLength > 0) {
-            locals.value = MochiKit.Format.truncate(locals.value, this.maxLength, "...");
+        var str = this.value = locals.value;
+        if (this.format) {
+            str = MochiKit.Format.format(this.format, str);
+        } else if (str == null) {
+            str = "null";
+        } else if (typeof(str) != "string") {
+            str = str.toString();
         }
-        MochiKit.DOM.replaceChildNodes(this, locals.value);
-        this.title = (this.value == locals.value) ? null : this.value;
+        var longStr = str;
+        if (this.maxLength > 0) {
+            str = MochiKit.Format.truncate(str, this.maxLength, "...");
+        }
+        MochiKit.DOM.replaceChildNodes(this, str);
+        this.title = (str == longStr) ? null : longStr;
     }
     MochiKit.DOM.updateNodeAttributes(this, attrs);
 }

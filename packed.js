@@ -8152,25 +8152,40 @@ var _85e=MochiKit.Base.mask(_85d,["name","value","maxLength"]);
 if(typeof (_85e.name)!="undefined"){
 this.name=_85e.name;
 }
+if(typeof (_85e.format)!="undefined"){
+this.format=_85e.format;
+}
 if(typeof (_85e.maxLength)!="undefined"){
 this.maxLength=parseInt(_85e.maxLength);
 }
 if(typeof (_85e.value)!="undefined"){
-this.value=_85e.value;
-if(this.maxLength>0){
-_85e.value=MochiKit.Format.truncate(_85e.value,this.maxLength,"...");
+var str=this.value=_85e.value;
+if(this.format){
+str=MochiKit.Format.format(this.format,str);
+}else{
+if(str==null){
+str="null";
+}else{
+if(typeof (str)!="string"){
+str=str.toString();
 }
-MochiKit.DOM.replaceChildNodes(this,_85e.value);
-this.title=(this.value==_85e.value)?null:this.value;
+}
+}
+var _860=str;
+if(this.maxLength>0){
+str=MochiKit.Format.truncate(str,this.maxLength,"...");
+}
+MochiKit.DOM.replaceChildNodes(this,str);
+this.title=(str==_860)?null:_860;
 }
 MochiKit.DOM.updateNodeAttributes(this,_85d);
 };
-MochiKit.Widget.Form=function(_85f){
+MochiKit.Widget.Form=function(_861){
 var cls=arguments.callee;
 if(!(this instanceof cls)){
-return new cls(_85f);
+return new cls(_861);
 }
-var o=MochiKit.DOM.FORM(_85f);
+var o=MochiKit.DOM.FORM(_861);
 MochiKit.Base.updatetree(o,this);
 o.addClass("widget","widgetForm");
 MochiKit.Signal.connect(o,"onsubmit",o,"_handleSubmit");
@@ -8179,33 +8194,33 @@ return o;
 };
 MochiKit.Widget.Form.prototype=MochiKit.Base.clone(MochiKit.Widget.prototype);
 MochiKit.Widget.Form.prototype.fields=function(){
-var _862=[];
+var _864=[];
 MochiKit.Base.nodeWalk(this,function(elem){
 if(elem.nodeType!==1){
 return null;
 }
 if(MochiKit.Widget.isFormField(elem)){
-_862.push(elem);
+_864.push(elem);
 return null;
 }else{
 return elem.childNodes;
 }
 });
-return _862;
+return _864;
 };
 MochiKit.Widget.Form.prototype.fieldMap=function(){
-var _864=this.fields();
+var _866=this.fields();
 var map={};
-for(var i=0;i<_864.length;i++){
-var name=_864[i].name;
+for(var i=0;i<_866.length;i++){
+var name=_866[i].name;
 if(typeof (name)=="string"){
 if(map[name] instanceof Array){
-map[name].push(_864[i]);
+map[name].push(_866[i]);
 }else{
 if(map[name]!=null){
-map[name]=[map[name],_864[i]];
+map[name]=[map[name],_866[i]];
 }else{
-map[name]=_864[i];
+map[name]=_866[i];
 }
 }
 }
@@ -8214,9 +8229,9 @@ return map;
 };
 MochiKit.Widget.Form.prototype.reset=function(){
 this.validateReset();
-var _868=this.fields();
-for(var i=0;i<_868.length;i++){
-var elem=_868[i];
+var _86a=this.fields();
+for(var i=0;i<_86a.length;i++){
+var elem=_86a[i];
 if(typeof (elem.reset)=="function"){
 elem.reset();
 }else{
@@ -8246,61 +8261,61 @@ opt.selected=opt.defaultSelected;
 }
 };
 MochiKit.Widget.Form.prototype.valueMap=function(){
-var _86d=this.fields();
+var _86f=this.fields();
 var map={};
-for(var i=0;i<_86d.length;i++){
-var name=_86d[i].name;
-var _871="";
-if(typeof (_86d[i].getValue)=="function"){
-_871=_86d[i].getValue();
+for(var i=0;i<_86f.length;i++){
+var name=_86f[i].name;
+var _873="";
+if(typeof (_86f[i].getValue)=="function"){
+_873=_86f[i].getValue();
 }else{
-_871=_86d[i].value;
+_873=_86f[i].value;
 }
-if(_86d[i].type==="radio"||_86d[i].type==="checkbox"){
-if(_86d[i].checked){
-_871=_871||true;
+if(_86f[i].type==="radio"||_86f[i].type==="checkbox"){
+if(_86f[i].checked){
+_873=_873||true;
 }else{
-_871=null;
+_873=null;
 }
 }
-if(typeof (name)=="string"&&_871!=null){
+if(typeof (name)=="string"&&_873!=null){
 if(map[name] instanceof Array){
-map[name].push(_871);
+map[name].push(_873);
 }else{
 if(map[name]!=null){
-map[name]=[map[name],_871];
+map[name]=[map[name],_873];
 }else{
-map[name]=_871;
+map[name]=_873;
 }
 }
 }
 }
 return map;
 };
-MochiKit.Widget.Form.prototype.update=function(_872){
-var _873=this.fields();
-for(var i=0;i<_873.length;i++){
-var elem=_873[i];
-if(elem.name in _872){
-var _876=_872[elem.name];
+MochiKit.Widget.Form.prototype.update=function(_874){
+var _875=this.fields();
+for(var i=0;i<_875.length;i++){
+var elem=_875[i];
+if(elem.name in _874){
+var _878=_874[elem.name];
 if(elem.type==="radio"||elem.type==="checkbox"){
-if(_876==null){
+if(_878==null){
 elem.checked=false;
 }else{
-if(MochiKit.Base.isArrayLike(_876)){
-elem.checked=(MochiKit.Base.findValue(_876,elem.value)>=0);
+if(MochiKit.Base.isArrayLike(_878)){
+elem.checked=(MochiKit.Base.findValue(_878,elem.value)>=0);
 }else{
-elem.checked=(elem.value===_876||_876===true);
+elem.checked=(elem.value===_878||_878===true);
 }
 }
 }else{
-if(MochiKit.Base.isArrayLike(_876)){
-_876=_876.join(", ");
+if(MochiKit.Base.isArrayLike(_878)){
+_878=_878.join(", ");
 }
 if(typeof (elem.setAttrs)=="function"){
-elem.setAttrs({value:_876});
+elem.setAttrs({value:_878});
 }else{
-elem.value=_876;
+elem.value=_878;
 }
 }
 }
@@ -8308,101 +8323,101 @@ elem.value=_876;
 };
 MochiKit.Widget.Form.prototype.validators=function(){
 var res=[];
-var _878=this.getElementsByTagName("SPAN");
-for(var i=0;i<_878.length;i++){
-if(MochiKit.Widget.isWidget(_878[i],"FormValidator")){
-res.push(_878[i]);
+var _87a=this.getElementsByTagName("SPAN");
+for(var i=0;i<_87a.length;i++){
+if(MochiKit.Widget.isWidget(_87a[i],"FormValidator")){
+res.push(_87a[i]);
 }
 }
 return res;
 };
 MochiKit.Widget.Form.prototype.validate=function(){
-var _87a=this.validators();
-var _87b=this.fields();
-var _87c=true;
-var _87d=[];
-for(var i=0;i<_87a.length;i++){
-_87a[i].reset();
+var _87c=this.validators();
+var _87d=this.fields();
+var _87e=true;
+var _87f=[];
+for(var i=0;i<_87c.length;i++){
+_87c[i].reset();
 }
-for(var i=0;i<_87a.length;i++){
-for(var j=0;j<_87b.length;j++){
-if(_87a[i].name==_87b[j].name){
-var res=_87a[i].verify(_87b[j]);
+for(var i=0;i<_87c.length;i++){
+for(var j=0;j<_87d.length;j++){
+if(_87c[i].name==_87d[j].name){
+var res=_87c[i].verify(_87d[j]);
 if(res instanceof MochiKit.Async.Deferred){
-_87d.push(res);
+_87f.push(res);
 }else{
 if(res===false){
-_87c=false;
+_87e=false;
 }
 }
 }
 }
 }
-if(!_87c){
+if(!_87e){
 return false;
 }else{
-if(_87d.length>0){
-return MochiKit.Async.gatherResults(_87d);
+if(_87f.length>0){
+return MochiKit.Async.gatherResults(_87f);
 }else{
 return true;
 }
 }
 };
 MochiKit.Widget.Form.prototype.validateReset=function(){
-var _881=this.validators();
-for(var i=0;i<_881.length;i++){
-_881[i].reset();
+var _883=this.validators();
+for(var i=0;i<_883.length;i++){
+_883[i].reset();
 }
 };
 MochiKit.Widget.Form.prototype._handleSubmit=function(evt){
 evt.stop();
 };
-MochiKit.Widget.FormValidator=function(_884){
+MochiKit.Widget.FormValidator=function(_886){
 var cls=arguments.callee;
 if(!(this instanceof cls)){
-return new cls(_884);
+return new cls(_886);
 }
 var o=MochiKit.DOM.SPAN();
 MochiKit.Base.updatetree(o,this);
 o.addClass("widget","widgetFormValidator");
-o.setAttrs(MochiKit.Base.update({name:"",mandatory:true,display:"error",message:null,validator:null},_884));
+o.setAttrs(MochiKit.Base.update({name:"",mandatory:true,display:"error",message:null,validator:null},_886));
 o.fields=[];
 o.hide();
 return o;
 };
 MochiKit.Widget.FormValidator.prototype=MochiKit.Base.clone(MochiKit.Widget.prototype);
-MochiKit.Widget.FormValidator.prototype.setAttrs=function(_887){
-_887=MochiKit.Base.update({},_887);
-var _888=MochiKit.Base.mask(_887,["name","mandatory","regex","display","message","validator"]);
-if(typeof (_888.name)!="undefined"){
-this.name=_888.name;
+MochiKit.Widget.FormValidator.prototype.setAttrs=function(_889){
+_889=MochiKit.Base.update({},_889);
+var _88a=MochiKit.Base.mask(_889,["name","mandatory","regex","display","message","validator"]);
+if(typeof (_88a.name)!="undefined"){
+this.name=_88a.name;
 }
-if(typeof (_888.mandatory)!="undefined"){
-this.mandatory=!MochiKit.Base.isFalse(_888.mandatory);
+if(typeof (_88a.mandatory)!="undefined"){
+this.mandatory=!MochiKit.Base.isFalse(_88a.mandatory);
 }
-if(typeof (_888.regex)!="undefined"){
-if(_888.regex instanceof RegExp){
-this.regex=_888.regex;
+if(typeof (_88a.regex)!="undefined"){
+if(_88a.regex instanceof RegExp){
+this.regex=_88a.regex;
 }else{
-if(_888.regex.indexOf("^")!=0){
-_888.regex="^"+_888.regex;
+if(_88a.regex.indexOf("^")!=0){
+_88a.regex="^"+_88a.regex;
 }
-if(_888.regex.indexOf("$")!=_888.regex.length-1){
-_888.regex+="$";
+if(_88a.regex.indexOf("$")!=_88a.regex.length-1){
+_88a.regex+="$";
 }
-this.regex=new RegExp(_888.regex);
+this.regex=new RegExp(_88a.regex);
 }
 }
-if(typeof (_888.display)!="undefined"){
-this.display=_888.display;
+if(typeof (_88a.display)!="undefined"){
+this.display=_88a.display;
 }
-if(typeof (_888.message)!="undefined"){
-this.message=_888.message;
+if(typeof (_88a.message)!="undefined"){
+this.message=_88a.message;
 }
-if(typeof (_888.validator)!="undefined"){
-this.validator=_888.validator;
+if(typeof (_88a.validator)!="undefined"){
+this.validator=_88a.validator;
 }
-MochiKit.DOM.updateNodeAttributes(this,_887);
+MochiKit.DOM.updateNodeAttributes(this,_889);
 };
 MochiKit.Widget.FormValidator.prototype.reset=function(){
 for(var i=0;i<this.fields.length;i++){
@@ -8414,43 +8429,43 @@ this.hide();
 this.removeAll();
 }
 };
-MochiKit.Widget.FormValidator.prototype.verify=function(_88a){
-if(!_88a.disabled){
-var _88b="";
-if(typeof (_88a.getValue)=="function"){
-_88b=_88a.getValue();
+MochiKit.Widget.FormValidator.prototype.verify=function(_88c){
+if(!_88c.disabled){
+var _88d="";
+if(typeof (_88c.getValue)=="function"){
+_88d=_88c.getValue();
 }else{
-_88b=_88a.value;
+_88d=_88c.value;
 }
-var _88c=MochiKit.Format.strip(_88b);
-if(MochiKit.Format.strip(_88b)==""){
+var _88e=MochiKit.Format.strip(_88d);
+if(MochiKit.Format.strip(_88d)==""){
 if(this.mandatory){
 var msg="This field is mandatory and cannot be left blank";
-this.addError(_88a,msg);
+this.addError(_88c,msg);
 return false;
 }
 }else{
-if(this.regex!=null&&!this.regex.test(_88c)){
+if(this.regex!=null&&!this.regex.test(_88e)){
 var msg="The field format is incorrect";
-this.addError(_88a,msg);
+this.addError(_88c,msg);
 return false;
 }else{
 if(typeof (this.validator)=="function"){
-var res=this.validator(_88b);
+var res=this.validator(_88d);
 if(res instanceof MochiKit.Async.Deferred){
 var self=this;
 res.addErrback(function(e){
-self.addError(_88a,e.message);
+self.addError(_88c,e.message);
 return e;
 });
 return res;
 }else{
 if(typeof (res)=="string"){
-this.addError(_88a,res);
+this.addError(_88c,res);
 return false;
 }else{
 if(res===false){
-this.addError(_88a,"Field validation failed");
+this.addError(_88c,"Field validation failed");
 return false;
 }
 }
@@ -8461,94 +8476,94 @@ return false;
 }
 return true;
 };
-MochiKit.Widget.FormValidator.prototype.addError=function(_891,_892){
-if(!MochiKit.DOM.hasElementClass(_891,"widgetInvalid")){
-this.fields.push(_891);
-MochiKit.DOM.addElementClass(_891,"widgetInvalid");
+MochiKit.Widget.FormValidator.prototype.addError=function(_893,_894){
+if(!MochiKit.DOM.hasElementClass(_893,"widgetInvalid")){
+this.fields.push(_893);
+MochiKit.DOM.addElementClass(_893,"widgetInvalid");
 if(this.display==="error"){
-var _893={ref:"ERROR",tooltip:this.message||_892};
-this.addAll(new MochiKit.Widget.Icon(_893));
+var _895={ref:"ERROR",tooltip:this.message||_894};
+this.addAll(new MochiKit.Widget.Icon(_895));
 this.show();
 }
 }
 };
-MochiKit.Widget.Icon=function(_894){
+MochiKit.Widget.Icon=function(_896){
 var cls=arguments.callee;
 if(!(this instanceof cls)){
-return new cls(_894);
+return new cls(_896);
 }
 var o=MochiKit.DOM.IMG();
 MochiKit.Base.updatetree(o,this);
-o.setAttrs(_894);
+o.setAttrs(_896);
 o.addClass("widget","widgetIcon");
 return o;
 };
 MochiKit.Widget.Icon.prototype=MochiKit.Base.clone(MochiKit.Widget.prototype);
-MochiKit.Widget.Icon.prototype.setAttrs=function(_897){
-_897=MochiKit.Base.update({},_897);
-if(_897.ref){
-MochiKit.Base.setdefault(_897,MochiKit.Widget.Icon[_897.ref],MochiKit.Widget.Icon.DEFAULT);
+MochiKit.Widget.Icon.prototype.setAttrs=function(_899){
+_899=MochiKit.Base.update({},_899);
+if(_899.ref){
+MochiKit.Base.setdefault(_899,MochiKit.Widget.Icon[_899.ref],MochiKit.Widget.Icon.DEFAULT);
 }
-var _898=MochiKit.Base.mask(_897,["ref","url","baseUrl","tooltip","width","height"]);
-if(typeof (_898.url)!="undefined"){
-MochiKit.Base.setdefault(_898,MochiKit.Widget.Icon.DEFAULT);
-_897.src=_898.baseUrl+_898.url;
+var _89a=MochiKit.Base.mask(_899,["ref","url","baseUrl","tooltip","width","height"]);
+if(typeof (_89a.url)!="undefined"){
+MochiKit.Base.setdefault(_89a,MochiKit.Widget.Icon.DEFAULT);
+_899.src=_89a.baseUrl+_89a.url;
 }
-if(typeof (_898.tooltip)!="undefined"){
-_897.alt=_898.tooltip;
-_897.title=_898.tooltip;
+if(typeof (_89a.tooltip)!="undefined"){
+_899.alt=_89a.tooltip;
+_899.title=_89a.tooltip;
 }
-if(typeof (_898.width)!="undefined"){
-this.width=_898.width;
-this.setStyle({width:_898.width});
+if(typeof (_89a.width)!="undefined"){
+this.width=_89a.width;
+this.setStyle({width:_89a.width});
 }
-if(typeof (_898.height)!="undefined"){
-this.height=_898.height;
-this.setStyle({height:_898.height});
+if(typeof (_89a.height)!="undefined"){
+this.height=_89a.height;
+this.setStyle({height:_89a.height});
 }
-MochiKit.DOM.updateNodeAttributes(this,_897);
+MochiKit.DOM.updateNodeAttributes(this,_899);
 };
 MochiKit.Base.update(MochiKit.Widget.Icon,{DEFAULT:{baseUrl:"images/icons/",width:"16",height:"16"},BLANK:{url:"blank.gif",style:{cursor:"default"}},CLOSE:{url:"close.gif"},RESIZE:{url:"resize-handle.gif"},OK:{url:"ok.gif",tooltip:"OK"},CANCEL:{url:"cancel.gif",tooltip:"Cancel"},HELP:{url:"help.gif",tooltip:"Help"},ERROR:{url:"error.gif",tooltip:"Error"},PLUS:{url:"plus.gif",tooltip:"Show"},MINUS:{url:"minus.gif",tooltip:"Hide"},NEXT:{url:"next.gif",tooltip:"Next"},PREVIOUS:{url:"previous.gif",tooltip:"Previous"},CONFIG:{url:"config.gif",tooltip:"Configure"},DELAY:{url:"delay.gif",tooltip:"Configure Delay"},RELOAD:{url:"reload.gif",tooltip:"Reload"},LOADING:{url:"loading.gif",tooltip:"Loading..."},LOADING_LARGE:{url:"loading-large.gif",tooltip:"Loading...",width:"32",height:"32"},SEARCH:{url:"magnifier.gif",tooltip:"Search"},ADD:{url:"add.gif",tooltip:"Add"},REMOVE:{url:"remove.gif",tooltip:"Remove"},EDIT:{url:"edit.gif",tooltip:"Edit"},DELETE:{url:"trash.gif",tooltip:"Clear / Delete"},SELECT:{url:"select.gif",tooltip:"Select / Unselect"},CUT:{url:"cut.gif",tooltip:"Cut"},EXPORT:{url:"export.gif",tooltip:"Export"},EXPAND:{url:"expand.gif",tooltip:"Expand"},UP:{url:"up.gif",tooltip:"Move Up"},DOWN:{url:"down.gif",tooltip:"Move Down"},LEFT:{url:"left.gif",tooltip:"Move Left"},RIGHT:{url:"right.gif",tooltip:"Move Right"},COMMENT:{url:"comment.gif",tooltip:"Comment"},CALENDAR:{url:"calendar.gif",tooltip:"Calendar"},AUTOMATIC:{url:"automatic.gif",tooltip:"Automatic Processing"},PLUGIN:{url:"plugin.gif",tooltip:"Plug-in"},FOLDER:{url:"folder.gif"},DOCUMENT:{url:"document.gif"}});
-MochiKit.Widget.Overlay=function(_899){
+MochiKit.Widget.Overlay=function(_89b){
 var cls=arguments.callee;
 if(!(this instanceof cls)){
-return new cls(_899,MochiKit.Base.extend(null,arguments,1));
+return new cls(_89b,MochiKit.Base.extend(null,arguments,1));
 }
 var msg=MochiKit.DOM.DIV({"class":"widgetOverlayMessage"});
 var o=MochiKit.DOM.DIV({},msg);
 MochiKit.Base.updatetree(o,this);
 o.addClass("widget","widgetOverlay");
-_899=MochiKit.Base.update({loading:true,message:"Working..."},_899);
-o.setAttrs(_899);
+_89b=MochiKit.Base.update({loading:true,message:"Working..."},_89b);
+o.setAttrs(_89b);
 o.addAll(MochiKit.Base.extend(null,arguments,1));
 return o;
 };
 MochiKit.Widget.Overlay.prototype=MochiKit.Base.clone(MochiKit.Widget.prototype);
-MochiKit.Widget.Overlay.prototype.setAttrs=function(_89d){
-_89d=MochiKit.Base.update({},_89d);
-var _89e=MochiKit.Base.mask(_89d,["loading","message"]);
-if(typeof (_89e.loading)!="undefined"){
-this.showLoading=!MochiKit.Base.isFalse(_89e.loading);
+MochiKit.Widget.Overlay.prototype.setAttrs=function(_89f){
+_89f=MochiKit.Base.update({},_89f);
+var _8a0=MochiKit.Base.mask(_89f,["loading","message"]);
+if(typeof (_8a0.loading)!="undefined"){
+this.showLoading=!MochiKit.Base.isFalse(_8a0.loading);
 }
-if(typeof (_89e.message)!="undefined"){
-this.message=_89e.message;
+if(typeof (_8a0.message)!="undefined"){
+this.message=_8a0.message;
 }
 if(typeof (this.showLoading)!="undefined"){
 var icon=new MochiKit.Widget.Icon({ref:"LOADING_LARGE"});
 icon.setStyle({"padding-right":"20px"});
 }
 MochiKit.DOM.replaceChildNodes(this.firstChild,icon,this.message);
-MochiKit.DOM.updateNodeAttributes(this,_89d);
+MochiKit.DOM.updateNodeAttributes(this,_89f);
 };
-MochiKit.Widget.Pane=function(_8a0){
+MochiKit.Widget.Pane=function(_8a2){
 var cls=arguments.callee;
 if(!(this instanceof cls)){
-return new cls(_8a0,MochiKit.Base.extend(null,arguments,1));
+return new cls(_8a2,MochiKit.Base.extend(null,arguments,1));
 }
 var o=MochiKit.DOM.DIV();
 MochiKit.Base.updatetree(o,this);
 o.addClass("widget","widgetPane");
-o.setAttrs(MochiKit.Base.update({pageTitle:"Page",pageStatus:"ANY",pageCloseable:false},_8a0));
+o.setAttrs(MochiKit.Base.update({pageTitle:"Page",pageStatus:"ANY",pageCloseable:false},_8a2));
 o.addAll(MochiKit.Base.extend(null,arguments,1));
 return o;
 };
@@ -8557,37 +8572,37 @@ MochiKit.Widget.Pane.ANY={previous:true,next:true};
 MochiKit.Widget.Pane.FORWARD={previous:false,next:true};
 MochiKit.Widget.Pane.BACKWARD={previous:true,next:false};
 MochiKit.Widget.Pane.WORKING={previous:false,next:false};
-MochiKit.Widget.Pane.prototype.setAttrs=function(_8a3){
-_8a3=MochiKit.Base.update({},_8a3);
-var _8a4=MochiKit.Base.mask(_8a3,["pageTitle","pageStatus","pageCloseable"]);
-var _8a5=false;
-if(typeof (_8a4.pageTitle)!="undefined"){
-this.pageTitle=_8a4.pageTitle;
-_8a5=true;
+MochiKit.Widget.Pane.prototype.setAttrs=function(_8a5){
+_8a5=MochiKit.Base.update({},_8a5);
+var _8a6=MochiKit.Base.mask(_8a5,["pageTitle","pageStatus","pageCloseable"]);
+var _8a7=false;
+if(typeof (_8a6.pageTitle)!="undefined"){
+this.pageTitle=_8a6.pageTitle;
+_8a7=true;
 }
-if(typeof (_8a4.pageStatus)!="undefined"){
-if(typeof (_8a4.pageStatus)=="string"){
-_8a4.pageStatus=MochiKit.Widget.Pane[_8a4.pageStatus];
+if(typeof (_8a6.pageStatus)!="undefined"){
+if(typeof (_8a6.pageStatus)=="string"){
+_8a6.pageStatus=MochiKit.Widget.Pane[_8a6.pageStatus];
 }
-this.pageStatus=_8a4.pageStatus;
-_8a5=true;
+this.pageStatus=_8a6.pageStatus;
+_8a7=true;
 }
-if(typeof (_8a4.pageCloseable)!="undefined"){
-this.pageCloseable=!MochiKit.Base.isFalse(_8a4.pageCloseable);
-_8a5=true;
+if(typeof (_8a6.pageCloseable)!="undefined"){
+this.pageCloseable=!MochiKit.Base.isFalse(_8a6.pageCloseable);
+_8a7=true;
 }
-if(_8a5&&this.parentNode&&typeof (this.parentNode._updateStatus)=="function"){
+if(_8a7&&this.parentNode&&typeof (this.parentNode._updateStatus)=="function"){
 this.parentNode._updateStatus();
 }
-MochiKit.DOM.updateNodeAttributes(this,_8a3);
+MochiKit.DOM.updateNodeAttributes(this,_8a5);
 };
 MochiKit.Widget.Pane.prototype._handleEnter=function(opts){
 opts=opts||{};
 if(opts.validateReset){
-var _8a7=this.getElementsByTagName("FORM");
-for(var i=0;i<_8a7.length;i++){
-if(typeof (_8a7[i].validateReset)=="function"){
-_8a7[i].validateReset();
+var _8a9=this.getElementsByTagName("FORM");
+for(var i=0;i<_8a9.length;i++){
+if(typeof (_8a9[i].validateReset)=="function"){
+_8a9[i].validateReset();
 }
 }
 }
@@ -8598,10 +8613,10 @@ MochiKit.Widget.emitSignal(this,"onenter");
 MochiKit.Widget.Pane.prototype._handleExit=function(opts){
 opts=opts||{};
 if(opts.validateForm){
-var _8aa=this.getElementsByTagName("FORM");
-for(var i=0;i<_8aa.length;i++){
-if(typeof (_8aa[i].validate)=="function"){
-var res=_8aa[i].validate();
+var _8ac=this.getElementsByTagName("FORM");
+for(var i=0;i<_8ac.length;i++){
+if(typeof (_8ac[i].validate)=="function"){
+var res=_8ac[i].validate();
 if(!res){
 return false;
 }
@@ -8613,37 +8628,37 @@ this.hide();
 MochiKit.Widget.emitSignal(this,"onexit");
 return true;
 };
-MochiKit.Widget.Popup=function(_8ad){
+MochiKit.Widget.Popup=function(_8af){
 var cls=arguments.callee;
 if(!(this instanceof cls)){
-return new cls(_8ad,MochiKit.Base.extend(null,arguments,1));
+return new cls(_8af,MochiKit.Base.extend(null,arguments,1));
 }
 var o=MochiKit.DOM.DIV();
 MochiKit.Base.updatetree(o,this);
 o.addClass("widget","widgetPopup","widgetHidden");
 o.selectedIndex=-1;
 o._delayTimer=null;
-o.setAttrs(MochiKit.Base.update({delay:5000},_8ad));
+o.setAttrs(MochiKit.Base.update({delay:5000},_8af));
 o.addAll(MochiKit.Base.extend(null,arguments,1));
 MochiKit.Signal.connect(o,"onmousemove",o,"_handleMouseMove");
 MochiKit.Signal.connect(o,"onclick",o,"_handleMouseClick");
 return o;
 };
 MochiKit.Widget.Popup.prototype=MochiKit.Base.clone(MochiKit.Widget.prototype);
-MochiKit.Widget.Popup.prototype.setAttrs=function(_8b0){
-_8b0=MochiKit.Base.update({},_8b0);
-var _8b1=MochiKit.Base.mask(_8b0,["delay","showAnim","hideAnim"]);
-if(typeof (_8b1.delay)!="undefined"){
-this.delay=parseInt(_8b1.delay);
+MochiKit.Widget.Popup.prototype.setAttrs=function(_8b2){
+_8b2=MochiKit.Base.update({},_8b2);
+var _8b3=MochiKit.Base.mask(_8b2,["delay","showAnim","hideAnim"]);
+if(typeof (_8b3.delay)!="undefined"){
+this.delay=parseInt(_8b3.delay);
 this.resetDelay();
 }
-if(typeof (_8b1.showAnim)!="undefined"){
-this.showAnim=_8b1.showAnim;
+if(typeof (_8b3.showAnim)!="undefined"){
+this.showAnim=_8b3.showAnim;
 }
-if(typeof (_8b1.hideAnim)!="undefined"){
-this.hideAnim=_8b1.hideAnim;
+if(typeof (_8b3.hideAnim)!="undefined"){
+this.hideAnim=_8b3.hideAnim;
 }
-MochiKit.DOM.updateNodeAttributes(this,_8b0);
+MochiKit.DOM.updateNodeAttributes(this,_8b2);
 };
 MochiKit.Widget.Popup.prototype.show=function(){
 if(this.isHidden()){
@@ -8683,19 +8698,19 @@ this._delayTimer=setTimeout(MochiKit.Base.bind("hide",this),this.delay);
 MochiKit.Widget.Popup.prototype.selectedChild=function(){
 return MochiKit.DOM.childNode(this,this.selectedIndex);
 };
-MochiKit.Widget.Popup.prototype.selectChild=function(_8b2){
+MochiKit.Widget.Popup.prototype.selectChild=function(_8b4){
 var node=this.selectedChild();
 if(node!=null){
 MochiKit.DOM.removeElementClass(node,"selected");
 }
-var node=MochiKit.DOM.childNode(this,_8b2);
-if(typeof (_8b2)=="number"){
-var _8b4=_8b2;
+var node=MochiKit.DOM.childNode(this,_8b4);
+if(typeof (_8b4)=="number"){
+var _8b6=_8b4;
 }else{
-var _8b4=MochiKit.Base.findIdentical(this.childNodes,node);
+var _8b6=MochiKit.Base.findIdentical(this.childNodes,node);
 }
-if(_8b4>=0&&node!=null){
-this.selectedIndex=_8b4;
+if(_8b6>=0&&node!=null){
+this.selectedIndex=_8b6;
 MochiKit.DOM.addElementClass(node,"selected");
 var box={y:node.offsetTop,h:node.offsetHeight+5};
 MochiKit.Style.adjustScrollOffset(this,box);
@@ -8704,15 +8719,15 @@ this.selectedIndex=-1;
 }
 return this.selectedIndex;
 };
-MochiKit.Widget.Popup.prototype.selectMove=function(_8b6){
-var _8b7=this.selectedIndex+_8b6;
-if(_8b7>=this.childNodes.length){
-_8b7=0;
+MochiKit.Widget.Popup.prototype.selectMove=function(_8b8){
+var _8b9=this.selectedIndex+_8b8;
+if(_8b9>=this.childNodes.length){
+_8b9=0;
 }
-if(_8b7<0){
-_8b7=this.childNodes.length-1;
+if(_8b9<0){
+_8b9=this.childNodes.length-1;
 }
-return this.selectChild(_8b7);
+return this.selectChild(_8b9);
 };
 MochiKit.Widget.Popup.prototype._handleMouseMove=function(evt){
 this.show();
@@ -8731,64 +8746,64 @@ this.selectChild(node);
 this.selectChild(-1);
 }
 };
-MochiKit.Widget.ProgressBar=function(_8bc){
+MochiKit.Widget.ProgressBar=function(_8be){
 var cls=arguments.callee;
 if(!(this instanceof cls)){
-return new cls(_8bc,MochiKit.Base.extend(null,arguments,1));
+return new cls(_8be,MochiKit.Base.extend(null,arguments,1));
 }
-var _8be=MochiKit.DOM.DIV({"class":"widgetProgressBarMeter"});
+var _8c0=MochiKit.DOM.DIV({"class":"widgetProgressBarMeter"});
 var text=MochiKit.DOM.DIV({"class":"widgetProgressBarText"});
-var o=MochiKit.DOM.DIV({},_8be,text);
+var o=MochiKit.DOM.DIV({},_8c0,text);
 MochiKit.Base.updatetree(o,this);
 o.addClass("widget","widgetProgressBar");
-o.setAttrs(MochiKit.Base.update({min:0,max:100},_8bc));
+o.setAttrs(MochiKit.Base.update({min:0,max:100},_8be));
 o.setValue(0);
 return o;
 };
 MochiKit.Widget.ProgressBar.prototype=MochiKit.Base.clone(MochiKit.Widget.prototype);
-MochiKit.Widget.ProgressBar.prototype.setAttrs=function(_8c1){
-_8c1=MochiKit.Base.update({},_8c1);
-var _8c2=MochiKit.Base.mask(_8c1,["min","max"]);
-if(typeof (_8c2.min)!="undefined"||typeof (_8c2.max)!="undefined"){
-this.minValue=parseInt(_8c2.min)||0;
-this.maxValue=parseInt(_8c2.max)||100;
+MochiKit.Widget.ProgressBar.prototype.setAttrs=function(_8c3){
+_8c3=MochiKit.Base.update({},_8c3);
+var _8c4=MochiKit.Base.mask(_8c3,["min","max"]);
+if(typeof (_8c4.min)!="undefined"||typeof (_8c4.max)!="undefined"){
+this.minValue=parseInt(_8c4.min)||0;
+this.maxValue=parseInt(_8c4.max)||100;
 this.startTime=new Date().getTime();
 this.lastTime=this.startTime;
 this.timeLeft=null;
 }
-MochiKit.DOM.updateNodeAttributes(this,_8c1);
+MochiKit.DOM.updateNodeAttributes(this,_8c3);
 };
-MochiKit.Widget.ProgressBar.prototype.setValue=function(_8c3,text){
-_8c3=Math.min(Math.max(_8c3,this.minValue),this.maxValue);
-var pos=_8c3-this.minValue;
-var _8c6=this.maxValue-this.minValue;
-var str=pos+" of "+_8c6;
+MochiKit.Widget.ProgressBar.prototype.setValue=function(_8c5,text){
+_8c5=Math.min(Math.max(_8c5,this.minValue),this.maxValue);
+var pos=_8c5-this.minValue;
+var _8c8=this.maxValue-this.minValue;
+var str=pos+" of "+_8c8;
 if(typeof (text)=="string"&&text!=""){
 str+=" \u2014 "+text;
 }
-this.setRatio(pos/_8c6,str);
+this.setRatio(pos/_8c8,str);
 };
-MochiKit.Widget.ProgressBar.prototype.setRatio=function(_8c8,text){
-var _8ca=Math.round(_8c8*1000)/10;
-MochiKit.Style.setElementDimensions(this.firstChild,{w:_8ca},"%");
-if(_8ca<66){
+MochiKit.Widget.ProgressBar.prototype.setRatio=function(_8ca,text){
+var _8cc=Math.round(_8ca*1000)/10;
+MochiKit.Style.setElementDimensions(this.firstChild,{w:_8cc},"%");
+if(_8cc<66){
 this.lastChild.className="widgetProgressBarText";
 }else{
 this.lastChild.className="widgetProgressBarTextInverse";
 }
 if(typeof (text)=="string"&&text!=""){
-text=Math.round(_8ca)+"% \u2014 "+text;
+text=Math.round(_8cc)+"% \u2014 "+text;
 }else{
-text=Math.round(_8ca)+"%";
+text=Math.round(_8cc)+"%";
 }
-var _8cb=new Date().getTime();
-if(_8cb-this.lastTime>1000){
-this.lastTime=_8cb;
-var _8cc=_8cb-this.startTime;
-_8cc=Math.max(Math.round(_8cc/_8c8-_8cc),0);
-this.timeLeft=MochiKit.DateTime.toApproxPeriod(_8cc);
+var _8cd=new Date().getTime();
+if(_8cd-this.lastTime>1000){
+this.lastTime=_8cd;
+var _8ce=_8cd-this.startTime;
+_8ce=Math.max(Math.round(_8ce/_8ca-_8ce),0);
+this.timeLeft=MochiKit.DateTime.toApproxPeriod(_8ce);
 }
-if(this.timeLeft!=null&&_8ca>0&&_8ca<100){
+if(this.timeLeft!=null&&_8cc>0&&_8cc<100){
 text+=" \u2014 "+this.timeLeft+" left";
 }
 this.setText(text);
@@ -8796,18 +8811,18 @@ this.setText(text);
 MochiKit.Widget.ProgressBar.prototype.setText=function(text){
 MochiKit.DOM.replaceChildNodes(this.lastChild,text);
 };
-MochiKit.Widget.TabContainer=function(_8ce){
+MochiKit.Widget.TabContainer=function(_8d0){
 var cls=arguments.callee;
 if(!(this instanceof cls)){
-return new cls(_8ce,MochiKit.Base.extend(null,arguments,1));
+return new cls(_8d0,MochiKit.Base.extend(null,arguments,1));
 }
-var _8d0=MochiKit.DOM.DIV({"class":"widgetTabContainerLabels"});
-var _8d1=MochiKit.DOM.DIV({"class":"widgetTabContainerContent"});
-var o=MochiKit.DOM.DIV(_8ce,_8d0,_8d1);
+var _8d2=MochiKit.DOM.DIV({"class":"widgetTabContainerLabels"});
+var _8d3=MochiKit.DOM.DIV({"class":"widgetTabContainerContent"});
+var o=MochiKit.DOM.DIV(_8d0,_8d2,_8d3);
 MochiKit.Base.updatetree(o,this);
 o.addClass("widget","widgetTabContainer");
-MochiKit.Style.registerSizeConstraints(_8d1,"100% - 22","100% - 47");
-_8d1.resizeContent=MochiKit.Base.noop;
+MochiKit.Style.registerSizeConstraints(_8d3,"100% - 22","100% - 47");
+_8d3.resizeContent=MochiKit.Base.noop;
 o._selectedIndex=-1;
 o.addAll(MochiKit.Base.extend(null,arguments,1));
 return o;
@@ -8816,141 +8831,141 @@ MochiKit.Widget.TabContainer.prototype=MochiKit.Base.clone(MochiKit.Widget.proto
 MochiKit.Widget.TabContainer.prototype.getChildNodes=function(){
 return MochiKit.Base.extend([],this.lastChild.childNodes);
 };
-MochiKit.Widget.TabContainer.prototype.addChildNode=function(_8d3){
-if(!MochiKit.Widget.isWidget(_8d3,"Pane")){
-_8d3=new MochiKit.Widget.Pane(null,_8d3);
+MochiKit.Widget.TabContainer.prototype.addChildNode=function(_8d5){
+if(!MochiKit.Widget.isWidget(_8d5,"Pane")){
+_8d5=new MochiKit.Widget.Pane(null,_8d5);
 }
-MochiKit.Style.registerSizeConstraints(_8d3,"100%","100%");
-_8d3.hide();
-var text=MochiKit.DOM.SPAN(null,_8d3.pageTitle);
-if(_8d3.pageCloseable){
+MochiKit.Style.registerSizeConstraints(_8d5,"100%","100%");
+_8d5.hide();
+var text=MochiKit.DOM.SPAN(null,_8d5.pageTitle);
+if(_8d5.pageCloseable){
 var icon=new MochiKit.Widget.Icon({ref:"CLOSE"});
-MochiKit.Signal.connect(icon,"onclick",MochiKit.Base.bind("_handleClose",this,_8d3));
+MochiKit.Signal.connect(icon,"onclick",MochiKit.Base.bind("_handleClose",this,_8d5));
 }
-var _8d6=MochiKit.DOM.DIV({"class":"widgetTabContainerLabel"},MochiKit.DOM.DIV({},text,icon));
-MochiKit.Signal.connect(_8d6,"onclick",MochiKit.Base.bind("selectChild",this,_8d3));
-this.firstChild.appendChild(_8d6);
-this.lastChild.appendChild(_8d3);
+var _8d8=MochiKit.DOM.DIV({"class":"widgetTabContainerLabel"},MochiKit.DOM.DIV({},text,icon));
+MochiKit.Signal.connect(_8d8,"onclick",MochiKit.Base.bind("selectChild",this,_8d5));
+this.firstChild.appendChild(_8d8);
+this.lastChild.appendChild(_8d5);
 if(this._selectedIndex<0){
 this.selectChild(0);
 }
 };
-MochiKit.Widget.TabContainer.prototype.removeChildNode=function(_8d7){
-var _8d8=this.getChildNodes();
-var _8d9=MochiKit.Base.findIdentical(_8d8,_8d7);
-if(_8d9<0){
+MochiKit.Widget.TabContainer.prototype.removeChildNode=function(_8d9){
+var _8da=this.getChildNodes();
+var _8db=MochiKit.Base.findIdentical(_8da,_8d9);
+if(_8db<0){
 throw new Error("Cannot remove DOM node that is not a TabContainer child");
 }
-if(this._selectedIndex==_8d9){
-_8d7._handleExit();
+if(this._selectedIndex==_8db){
+_8d9._handleExit();
 this._selectedIndex=-1;
 }
-MochiKit.Widget.destroyWidget(this.firstChild.childNodes[_8d9]);
-MochiKit.DOM.removeElement(_8d7);
-MochiKit.Widget.emitSignal(_8d7,"onclose");
+MochiKit.Widget.destroyWidget(this.firstChild.childNodes[_8db]);
+MochiKit.DOM.removeElement(_8d9);
+MochiKit.Widget.emitSignal(_8d9,"onclose");
 if(this._selectedIndex<0&&this.getChildNodes().length>0){
-this.selectChild((_8d9==0)?0:_8d9-1);
+this.selectChild((_8db==0)?0:_8db-1);
 }
 };
 MochiKit.Widget.TabContainer.prototype.selectedIndex=function(){
 return this._selectedIndex;
 };
 MochiKit.Widget.TabContainer.prototype.selectedChild=function(){
-var _8da=this.getChildNodes();
-return (this._selectedIndex<0)?null:_8da[this._selectedIndex];
-};
-MochiKit.Widget.TabContainer.prototype.selectChild=function(_8db){
 var _8dc=this.getChildNodes();
+return (this._selectedIndex<0)?null:_8dc[this._selectedIndex];
+};
+MochiKit.Widget.TabContainer.prototype.selectChild=function(_8dd){
+var _8de=this.getChildNodes();
 if(this._selectedIndex>=0){
-var _8dd=this.firstChild.childNodes[this._selectedIndex];
-MochiKit.DOM.removeElementClass(_8dd,"selected");
-_8dc[this._selectedIndex]._handleExit();
+var _8df=this.firstChild.childNodes[this._selectedIndex];
+MochiKit.DOM.removeElementClass(_8df,"selected");
+_8de[this._selectedIndex]._handleExit();
 }
-var _8de=-1;
-if(_8db==null){
-_8de=this._selectedIndex;
+var _8e0=-1;
+if(_8dd==null){
+_8e0=this._selectedIndex;
 }else{
-if(typeof (_8db)=="number"){
-_8de=_8db;
+if(typeof (_8dd)=="number"){
+_8e0=_8dd;
 }else{
-_8de=MochiKit.Base.findIdentical(_8dc,_8db);
+_8e0=MochiKit.Base.findIdentical(_8de,_8dd);
 }
 }
-this._selectedIndex=(_8de<0||_8de>=_8dc.length)?-1:_8de;
+this._selectedIndex=(_8e0<0||_8e0>=_8de.length)?-1:_8e0;
 if(this._selectedIndex>=0){
-var _8dd=this.firstChild.childNodes[this._selectedIndex];
-MochiKit.DOM.addElementClass(_8dd,"selected");
-_8dc[this._selectedIndex]._handleEnter();
+var _8df=this.firstChild.childNodes[this._selectedIndex];
+MochiKit.DOM.addElementClass(_8df,"selected");
+_8de[this._selectedIndex]._handleEnter();
 }
 };
 MochiKit.Widget.TabContainer.prototype.resizeContent=function(){
 MochiKit.Style.resizeElements(this.lastChild);
-var _8df=this.selectedChild();
-if(_8df!=null){
-MochiKit.Style.resizeElements(_8df);
+var _8e1=this.selectedChild();
+if(_8e1!=null){
+MochiKit.Style.resizeElements(_8e1);
 }
 };
-MochiKit.Widget.TabContainer.prototype._handleClose=function(_8e0,evt){
+MochiKit.Widget.TabContainer.prototype._handleClose=function(_8e2,evt){
 evt.stop();
-this.removeChildNode(_8e0);
+this.removeChildNode(_8e2);
 };
-MochiKit.Widget.Table=function(_8e2){
+MochiKit.Widget.Table=function(_8e4){
 var cls=arguments.callee;
 if(!(this instanceof cls)){
-return new cls(_8e2,MochiKit.Base.extend(null,arguments,1));
+return new cls(_8e4,MochiKit.Base.extend(null,arguments,1));
 }
-var _8e4=MochiKit.DOM.THEAD({},MochiKit.DOM.TR());
-var _8e5=MochiKit.DOM.TBODY();
-_8e5.resizeContent=MochiKit.Base.noop;
-var _8e6=MochiKit.DOM.TABLE({"class":"widgetTable"},_8e4,_8e5);
-var o=MochiKit.DOM.DIV({},_8e6);
+var _8e6=MochiKit.DOM.THEAD({},MochiKit.DOM.TR());
+var _8e7=MochiKit.DOM.TBODY();
+_8e7.resizeContent=MochiKit.Base.noop;
+var _8e8=MochiKit.DOM.TABLE({"class":"widgetTable"},_8e6,_8e7);
+var o=MochiKit.DOM.DIV({},_8e8);
 MochiKit.Base.updatetree(o,this);
 o.addClass("widget","widgetTable");
-o.setAttrs(MochiKit.Base.update({multiple:false},_8e2));
+o.setAttrs(MochiKit.Base.update({multiple:false},_8e4));
 o._rows=[];
 o._data=null;
 o._keyField=null;
 o._selected=[];
 o.addAll(MochiKit.Base.extend(null,arguments,1));
-MochiKit.Signal.connect(_8e5,"onmousedown",o,"_handleSelect");
+MochiKit.Signal.connect(_8e7,"onmousedown",o,"_handleSelect");
 return o;
 };
 MochiKit.Widget.Table.prototype=MochiKit.Base.clone(MochiKit.Widget.prototype);
-MochiKit.Widget.Table.prototype.setAttrs=function(_8e8){
-_8e8=MochiKit.Base.update({},_8e8);
-var _8e9=MochiKit.Base.mask(_8e8,["multiple"]);
-if(typeof (_8e9.multiple)!="undefined"){
-this.multiple=!MochiKit.Base.isFalse(_8e9.multiple);
+MochiKit.Widget.Table.prototype.setAttrs=function(_8ea){
+_8ea=MochiKit.Base.update({},_8ea);
+var _8eb=MochiKit.Base.mask(_8ea,["multiple"]);
+if(typeof (_8eb.multiple)!="undefined"){
+this.multiple=!MochiKit.Base.isFalse(_8eb.multiple);
 }
-MochiKit.DOM.updateNodeAttributes(this,_8e8);
+MochiKit.DOM.updateNodeAttributes(this,_8ea);
 };
 MochiKit.Widget.Table.prototype.getChildNodes=function(){
-var _8ea=this.firstChild;
-var _8eb=_8ea.firstChild;
-var tr=_8eb.firstChild;
+var _8ec=this.firstChild;
+var _8ed=_8ec.firstChild;
+var tr=_8ed.firstChild;
 return MochiKit.Base.extend([],tr.childNodes);
 };
-MochiKit.Widget.Table.prototype.addChildNode=function(_8ed){
-if(!MochiKit.Widget.isWidget(_8ed,"TableColumn")){
+MochiKit.Widget.Table.prototype.addChildNode=function(_8ef){
+if(!MochiKit.Widget.isWidget(_8ef,"TableColumn")){
 throw new Error("Table widget can only have TableColumn children");
 }
 this.clear();
-var _8ee=this.firstChild;
-var _8ef=_8ee.firstChild;
-var tr=_8ef.firstChild;
-tr.appendChild(_8ed);
+var _8f0=this.firstChild;
+var _8f1=_8f0.firstChild;
+var tr=_8f1.firstChild;
+tr.appendChild(_8ef);
 };
-MochiKit.Widget.Table.prototype.removeChildNode=function(_8f1){
+MochiKit.Widget.Table.prototype.removeChildNode=function(_8f3){
 this.clear();
-var _8f2=this.firstChild;
-var _8f3=_8f2.firstChild;
-var tr=_8f3.firstChild;
-tr.removeChild(_8f1);
+var _8f4=this.firstChild;
+var _8f5=_8f4.firstChild;
+var tr=_8f5.firstChild;
+tr.removeChild(_8f3);
 };
-MochiKit.Widget.Table.prototype.getColumnIndex=function(_8f5){
+MochiKit.Widget.Table.prototype.getColumnIndex=function(_8f7){
 var cols=this.getChildNodes();
 for(var i=0;i<cols.length;i++){
-if(cols[i].field===_8f5){
+if(cols[i].field===_8f7){
 return i;
 }
 }
@@ -8988,9 +9003,9 @@ return null;
 };
 MochiKit.Widget.Table.prototype.getCellElem=function(row,col){
 try{
-var _901=this.firstChild;
-var _902=_901.lastChild;
-return _902.childNodes[row].childNodes[col];
+var _903=this.firstChild;
+var _904=_903.lastChild;
+return _904.childNodes[row].childNodes[col];
 }
 catch(e){
 return null;
@@ -9004,7 +9019,7 @@ return this._data;
 };
 MochiKit.Widget.Table.prototype.setData=function(data){
 var cols=this.getChildNodes();
-var _905=this.getSelectedIds();
+var _907=this.getSelectedIds();
 MochiKit.Widget.emitSignal(this,"onclear");
 this._data=data;
 this._rows=[];
@@ -9026,35 +9041,35 @@ this.sortData(key);
 this._renderRows();
 }
 if(this.getIdKey()!=null){
-this._addSelectedIds(_905);
+this._addSelectedIds(_907);
 }
 };
-MochiKit.Widget.Table.prototype.sortData=function(_90a,_90b){
+MochiKit.Widget.Table.prototype.sortData=function(_90c,_90d){
 var cols=this.getChildNodes();
-var _90d=this.getSelectedIds();
+var _90f=this.getSelectedIds();
 this._selected=[];
 for(var i=0;i<cols.length;i++){
-if(cols[i].field===_90a){
+if(cols[i].field===_90c){
 if(cols[i].sort=="none"){
 return;
 }else{
-if(_90b==null){
-_90b=cols[i].sort||"asc";
+if(_90d==null){
+_90d=cols[i].sort||"asc";
 }
 }
-cols[i].setAttrs({sort:_90b});
+cols[i].setAttrs({sort:_90d});
 }else{
 if(cols[i].sort!="none"){
 cols[i].setAttrs({sort:null});
 }
 }
 }
-this._rows.sort(MochiKit.Base.keyComparator(_90a));
-if(_90b=="desc"){
+this._rows.sort(MochiKit.Base.keyComparator(_90c));
+if(_90d=="desc"){
 this._rows.reverse();
 }
 this._renderRows();
-this._addSelectedIds(_90d);
+this._addSelectedIds(_90f);
 };
 MochiKit.Widget.Table.prototype.redraw=function(){
 var cols=this.getChildNodes();
@@ -9071,8 +9086,8 @@ this._markSelection(this._selected[i]);
 };
 MochiKit.Widget.Table.prototype._renderRows=function(){
 var cols=this.getChildNodes();
-var _914=this.firstChild.lastChild;
-MochiKit.DOM.replaceChildNodes(_914);
+var _916=this.firstChild.lastChild;
+MochiKit.DOM.replaceChildNodes(_916);
 for(var i=0;i<this._rows.length;i++){
 var tr=MochiKit.DOM.TR();
 if(i%2==1){
@@ -9082,10 +9097,10 @@ for(var j=0;j<cols.length;j++){
 tr.appendChild(cols[j]._render(this._rows[i]));
 }
 tr.rowNo=i;
-_914.appendChild(tr);
+_916.appendChild(tr);
 }
 if(this._rows.length==0){
-_914.appendChild(MochiKit.DOM.TR());
+_916.appendChild(MochiKit.DOM.TR());
 }
 };
 MochiKit.Widget.Table.prototype.getSelectedIds=function(){
@@ -9168,18 +9183,18 @@ this._markSelection(row);
 }
 }else{
 if(evt.modifier().shift){
-var _929=row;
+var _92b=row;
 if(this._selected.length>0){
-_929=this._selected[0];
+_92b=this._selected[0];
 }
 this._unmarkSelection();
 this._selected=[];
-if(row>=_929){
-for(var i=_929;i<=row;i++){
+if(row>=_92b){
+for(var i=_92b;i<=row;i++){
 this._selected.push(i);
 }
 }else{
-for(var i=_929;i>=row;i--){
+for(var i=_92b;i>=row;i--){
 this._selected.push(i);
 }
 }
@@ -9199,63 +9214,63 @@ evt.stop();
 MochiKit.Widget.emitSignal(this,"onselect");
 return false;
 };
-MochiKit.Widget.Table.prototype._markSelection=function(_92b){
-if(_92b==null){
+MochiKit.Widget.Table.prototype._markSelection=function(_92d){
+if(_92d==null){
 for(var i=0;i<this._selected.length;i++){
 this._markSelection(this._selected[i]);
 }
 }else{
-var _92d=this.firstChild.lastChild;
-var tr=_92d.childNodes[_92b];
+var _92f=this.firstChild.lastChild;
+var tr=_92f.childNodes[_92d];
 MochiKit.DOM.addElementClass(tr,"selected");
 }
 };
-MochiKit.Widget.Table.prototype._unmarkSelection=function(_92f){
-if(_92f==null){
+MochiKit.Widget.Table.prototype._unmarkSelection=function(_931){
+if(_931==null){
 for(var i=0;i<this._selected.length;i++){
 this._unmarkSelection(this._selected[i]);
 }
 }else{
-var _931=this.firstChild.lastChild;
-var tr=_931.childNodes[_92f];
+var _933=this.firstChild.lastChild;
+var tr=_933.childNodes[_931];
 MochiKit.DOM.removeElementClass(tr,"selected");
 }
 };
-MochiKit.Widget.TableColumn=function(_933){
+MochiKit.Widget.TableColumn=function(_935){
 var cls=arguments.callee;
 if(!(this instanceof cls)){
-return new cls(_933,MochiKit.Base.extend(null,arguments,1));
+return new cls(_935,MochiKit.Base.extend(null,arguments,1));
 }
-if(_933.field==null){
+if(_935.field==null){
 throw new Error("The 'field' attribute cannot be null for a TableColumn");
 }
 var o=MochiKit.DOM.TH();
 MochiKit.Base.updatetree(o,this);
 o.addClass("widget","widgetTableColumn");
-o.setAttrs(MochiKit.Base.update({title:_933.field,type:"string",key:false},_933));
+o.setAttrs(MochiKit.Base.update({title:_935.field,type:"string",key:false},_935));
 MochiKit.Signal.connect(o,"onclick",o,"_handleClick");
 return o;
 };
 MochiKit.Widget.TableColumn.prototype=MochiKit.Base.clone(MochiKit.Widget.prototype);
-MochiKit.Widget.TableColumn.prototype.setAttrs=function(_936){
-_936=MochiKit.Base.update({},_936);
-var _937=MochiKit.Base.mask(_936,["title","field","type","sort","maxLength","key","tooltip"]);
-if(typeof (_937.title)!="undefined"){
-MochiKit.DOM.replaceChildNodes(this,_937.title);
+MochiKit.Widget.TableColumn.prototype.setAttrs=function(_938){
+_938=MochiKit.Base.update({},_938);
+var _939=MochiKit.Base.mask(_938,["title","field","type","sort","maxLength","key","tooltip"]);
+if(typeof (_939.title)!="undefined"){
+MochiKit.DOM.replaceChildNodes(this,_939.title);
 }
-if(typeof (_937.field)!="undefined"){
-this.field=_937.field;
+if(typeof (_939.field)!="undefined"){
+this.field=_939.field;
 }
-if(typeof (_937.type)!="undefined"){
-this.type=_937.type;
+if(typeof (_939.type)!="undefined"){
+this.type=_939.type;
 }
-if(typeof (_937.sort)!="undefined"){
-this.sort=_937.sort;
-if(_937.sort==null||_937.sort=="none"){
+if(typeof (_939.sort)!="undefined"){
+this.sort=_939.sort;
+if(_939.sort==null||_939.sort=="none"){
 MochiKit.DOM.removeElementClass(this,"sortAsc");
 MochiKit.DOM.removeElementClass(this,"sortDesc");
 }else{
-if(_937.sort=="desc"){
+if(_939.sort=="desc"){
 MochiKit.DOM.removeElementClass(this,"sortAsc");
 MochiKit.DOM.addElementClass(this,"sortDesc");
 }else{
@@ -9264,85 +9279,85 @@ MochiKit.DOM.addElementClass(this,"sortAsc");
 }
 }
 }
-if(typeof (_937.maxLength)!="undefined"){
-this.maxLength=parseInt(_937.maxLength);
+if(typeof (_939.maxLength)!="undefined"){
+this.maxLength=parseInt(_939.maxLength);
 }
-if(typeof (_937.key)!="undefined"){
-this.key=!MochiKit.Base.isFalse(_937.key);
+if(typeof (_939.key)!="undefined"){
+this.key=!MochiKit.Base.isFalse(_939.key);
 }
-if(typeof (_937.tooltip)!="undefined"){
-this.title=_937.tooltip;
+if(typeof (_939.tooltip)!="undefined"){
+this.title=_939.tooltip;
 }
-MochiKit.DOM.updateNodeAttributes(this,_936);
+MochiKit.DOM.updateNodeAttributes(this,_938);
 };
 MochiKit.Widget.TableColumn.prototype._map=function(src,dst){
-var _93a=src[this.field];
-if(_93a!=null){
+var _93c=src[this.field];
+if(_93c!=null){
 if(this._key){
-dst.$id=_93a;
+dst.$id=_93c;
 }
 switch(this.type){
 case "number":
-if(_93a instanceof Number){
-_93a=_93a.valueOf();
+if(_93c instanceof Number){
+_93c=_93c.valueOf();
 }else{
-if(typeof (_93a)!="number"){
-_93a=parseFloat(_93a);
+if(typeof (_93c)!="number"){
+_93c=parseFloat(_93c);
 }
 }
 break;
 case "date":
-if(_93a instanceof Date){
-_93a=MochiKit.DateTime.toISODate(_93a);
+if(_93c instanceof Date){
+_93c=MochiKit.DateTime.toISODate(_93c);
 }else{
-_93a=MochiKit.Format.truncate(_93a,10);
+_93c=MochiKit.Format.truncate(_93c,10);
 }
 break;
 case "datetime":
-if(_93a instanceof Date){
-_93a=MochiKit.DateTime.toISOTimestamp(_93a);
+if(_93c instanceof Date){
+_93c=MochiKit.DateTime.toISOTimestamp(_93c);
 }else{
-_93a=MochiKit.Format.truncate(_93a,19);
+_93c=MochiKit.Format.truncate(_93c,19);
 }
 break;
 case "time":
-if(_93a instanceof Date){
-_93a=MochiKit.DateTime.toISOTime(_93a);
+if(_93c instanceof Date){
+_93c=MochiKit.DateTime.toISOTime(_93c);
 }else{
-if(typeof (_93a)!="string"){
-_93a=_93a.toString();
+if(typeof (_93c)!="string"){
+_93c=_93c.toString();
 }
-if(_93a.length>8){
-_93a=_93a.substring(_93a.length-8);
+if(_93c.length>8){
+_93c=_93c.substring(_93c.length-8);
 }
 }
 break;
 default:
-if(typeof (_93a)!="string"){
-_93a=_93a.toString();
+if(typeof (_93c)!="string"){
+_93c=_93c.toString();
 }
 }
 }
-dst[this.field]=_93a;
+dst[this.field]=_93c;
 };
 MochiKit.Widget.TableColumn.prototype._render=function(obj){
 var td=MochiKit.DOM.TD();
-var _93d=obj[this.field];
-if(_93d==null){
-_93d="";
+var _93f=obj[this.field];
+if(_93f==null){
+_93f="";
 }else{
-if(typeof (_93d)!="string"){
-_93d=_93d.toString();
+if(typeof (_93f)!="string"){
+_93f=_93f.toString();
 }
 }
-if(this.maxLength&&this.maxLength<_93d.length){
-td.title=_93d;
-_93d=MochiKit.Format.truncate(_93d,this.maxLength,"...");
+if(this.maxLength&&this.maxLength<_93f.length){
+td.title=_93f;
+_93f=MochiKit.Format.truncate(_93f,this.maxLength,"...");
 }
 if(this.type=="html"){
-td.innerHTML=_93d;
+td.innerHTML=_93f;
 }else{
-td.appendChild(MochiKit.DOM.createTextNode(_93d));
+td.appendChild(MochiKit.DOM.createTextNode(_93f));
 }
 return td;
 };
@@ -9350,41 +9365,41 @@ MochiKit.Widget.TableColumn.prototype._handleClick=function(){
 if(this.parentNode!=null){
 var dir=(this.sort=="asc")?"desc":"asc";
 var tr=this.parentNode;
-var _940=tr.parentNode;
-var _941=_940.parentNode;
-_941.parentNode.sortData(this.field,dir);
+var _942=tr.parentNode;
+var _943=_942.parentNode;
+_943.parentNode.sortData(this.field,dir);
 }
 };
-MochiKit.Widget.TextArea=function(_942){
+MochiKit.Widget.TextArea=function(_944){
 var cls=arguments.callee;
 if(!(this instanceof cls)){
-return new cls(_942,MochiKit.Base.extend(null,arguments,1));
+return new cls(_944,MochiKit.Base.extend(null,arguments,1));
 }
 var o=MochiKit.DOM.TEXTAREA();
 MochiKit.Base.updatetree(o,this);
 o.addClass("widget","widgetTextArea");
 o.focused=false;
-o.setAttrs(MochiKit.Base.update({helpText:""},_942));
+o.setAttrs(MochiKit.Base.update({helpText:""},_944));
 o.addAll(MochiKit.Base.extend(null,arguments,1));
 MochiKit.Signal.connect(o,"onfocus",o,"_handleFocus");
 MochiKit.Signal.connect(o,"onblur",o,"_handleFocus");
 return o;
 };
 MochiKit.Widget.TextArea.prototype=MochiKit.Base.clone(MochiKit.Widget.prototype);
-MochiKit.Widget.TextArea.prototype.setAttrs=function(_945){
-_945=MochiKit.Base.update({},_945);
-var _946=MochiKit.Base.mask(_945,["helpText","value"]);
-if(typeof (_946.helpText)!="undefined"){
-this.helpText=_946.helpText;
+MochiKit.Widget.TextArea.prototype.setAttrs=function(_947){
+_947=MochiKit.Base.update({},_947);
+var _948=MochiKit.Base.mask(_947,["helpText","value"]);
+if(typeof (_948.helpText)!="undefined"){
+this.helpText=_948.helpText;
 }
-if(typeof (_946.value)!="undefined"){
-this.value=this.storedValue=_946.value;
+if(typeof (_948.value)!="undefined"){
+this.value=this.storedValue=_948.value;
 }
 if(!this.focused&&MochiKit.Format.strip(this.value)==""){
 this.value=this.helpText;
 this.addClass("widgetTextAreaHelp");
 }
-MochiKit.DOM.updateNodeAttributes(this,_945);
+MochiKit.DOM.updateNodeAttributes(this,_947);
 };
 MochiKit.Widget.TextArea.prototype.reset=function(){
 this.setAttrs({value:this.defaultValue});
@@ -9408,14 +9423,14 @@ this.addClass("widgetTextAreaHelp");
 }
 }
 };
-MochiKit.Widget.TextField=function(_948){
+MochiKit.Widget.TextField=function(_94a){
 var cls=arguments.callee;
 if(!(this instanceof cls)){
-return new cls(_948,MochiKit.Base.extend(null,arguments,1));
+return new cls(_94a,MochiKit.Base.extend(null,arguments,1));
 }
 var text="";
-if(_948!=null&&_948.value!=null){
-text=_948.value;
+if(_94a!=null&&_94a.value!=null){
+text=_94a.value;
 }
 for(var i=1;i<arguments.length;i++){
 text+=arguments[i].toString();
@@ -9425,26 +9440,26 @@ MochiKit.Base.updatetree(o,this);
 o.addClass("widget","widgetTextField");
 o.focused=false;
 o._popupCreated=false;
-o.setAttrs(MochiKit.Base.update({helpText:"",value:text},_948));
+o.setAttrs(MochiKit.Base.update({helpText:"",value:text},_94a));
 MochiKit.Signal.connect(o,"onfocus",o,"_handleFocus");
 MochiKit.Signal.connect(o,"onblur",o,"_handleFocus");
 return o;
 };
 MochiKit.Widget.TextField.prototype=MochiKit.Base.clone(MochiKit.Widget.prototype);
-MochiKit.Widget.TextField.prototype.setAttrs=function(_94d){
-_94d=MochiKit.Base.update({},_94d);
-var _94e=MochiKit.Base.mask(_94d,["helpText","value"]);
-if(typeof (_94e.helpText)!="undefined"){
-this.helpText=_94e.helpText;
+MochiKit.Widget.TextField.prototype.setAttrs=function(_94f){
+_94f=MochiKit.Base.update({},_94f);
+var _950=MochiKit.Base.mask(_94f,["helpText","value"]);
+if(typeof (_950.helpText)!="undefined"){
+this.helpText=_950.helpText;
 }
-if(typeof (_94e.value)!="undefined"){
-this.value=this.storedValue=_94e.value;
+if(typeof (_950.value)!="undefined"){
+this.value=this.storedValue=_950.value;
 }
 if(!this.focused&&MochiKit.Format.strip(this.value)==""){
 this.value=this.helpText;
 this.addClass("widgetTextFieldHelp");
 }
-MochiKit.DOM.updateNodeAttributes(this,_94d);
+MochiKit.DOM.updateNodeAttributes(this,_94f);
 };
 MochiKit.Widget.TextField.prototype.reset=function(){
 this.setAttrs({value:this.defaultValue});
@@ -9452,38 +9467,38 @@ this.setAttrs({value:this.defaultValue});
 MochiKit.Widget.TextField.prototype.getValue=function(){
 return (this.focused)?this.value:this.storedValue;
 };
-MochiKit.Widget.TextField.prototype.popup=function(_94f){
-if(!this._popupCreated&&_94f){
+MochiKit.Widget.TextField.prototype.popup=function(_951){
+if(!this._popupCreated&&_951){
 this.autocomplete="off";
 this._popupCreated=true;
-var _950={"max-height":"300px","width":"300px"};
-var _951=new MochiKit.Widget.Popup({style:_950});
-MochiKit.DOM.insertSiblingNodesAfter(this,_951);
+var _952={"max-height":"300px","width":"300px"};
+var _953=new MochiKit.Widget.Popup({style:_952});
+MochiKit.DOM.insertSiblingNodesAfter(this,_953);
 MochiKit.DOM.makePositioned(this.parentNode);
 var pos={x:this.offsetLeft+1,y:this.offsetTop+this.offsetHeight+1};
-MochiKit.Style.setElementPosition(_951,pos);
+MochiKit.Style.setElementPosition(_953,pos);
 MochiKit.Signal.connect(this,"onkeydown",this,"_handleKeyDown");
-MochiKit.Signal.connect(_951,"onclick",this,"_handleClick");
+MochiKit.Signal.connect(_953,"onclick",this,"_handleClick");
 }
 return (this._popupCreated)?this.nextSibling:null;
 };
-MochiKit.Widget.TextField.prototype.showPopup=function(_953,_954){
-var _955=this.popup(true);
-if(_954){
-_955.hide();
-MochiKit.DOM.replaceChildNodes(_955);
-for(var i=0;i<_954.length;i++){
-if(typeof (_954[i])=="string"){
-var node=MochiKit.DOM.DIV({"class":"widgetPopupItem"},"\xbb "+_954[i]);
-_955.appendChild(node);
+MochiKit.Widget.TextField.prototype.showPopup=function(_955,_956){
+var _957=this.popup(true);
+if(_956){
+_957.hide();
+MochiKit.DOM.replaceChildNodes(_957);
+for(var i=0;i<_956.length;i++){
+if(typeof (_956[i])=="string"){
+var node=MochiKit.DOM.DIV({"class":"widgetPopupItem"},"\xbb "+_956[i]);
+_957.appendChild(node);
 }else{
-MochiKit.DOM.appendChildNodes(_955,_954[i]);
+MochiKit.DOM.appendChildNodes(_957,_956[i]);
 }
 }
 }
-if(_955.childNodes.length>0){
-_955.setAttrs(MochiKit.Base.update({delay:30000},_953));
-_955.show();
+if(_957.childNodes.length>0){
+_957.setAttrs(MochiKit.Base.update({delay:30000},_955));
+_957.show();
 }
 };
 MochiKit.Widget.TextField.prototype._handleFocus=function(evt){
@@ -9499,18 +9514,18 @@ if(MochiKit.Format.strip(this.value)==""){
 this.value=this.helpText;
 this.addClass("widgetTextFieldHelp");
 }
-var _959=this.popup();
-if(_959!=null&&!_959.isHidden()){
-_959.setAttrs({delay:250});
+var _95b=this.popup();
+if(_95b!=null&&!_95b.isHidden()){
+_95b.setAttrs({delay:250});
 }
 }
 }
 };
 MochiKit.Widget.TextField.prototype._handleKeyDown=function(evt){
-var _95b=this.popup(false);
-if(_95b!=null){
-_95b.resetDelay();
-if(_95b.isHidden()){
+var _95d=this.popup(false);
+if(_95d!=null){
+_95d.resetDelay();
+if(_95d.isHidden()){
 switch(evt.key().string){
 case "KEY_ESCAPE":
 evt.stop();
@@ -9518,7 +9533,7 @@ break;
 case "KEY_ARROW_UP":
 case "KEY_ARROW_DOWN":
 this.showPopup();
-_95b.selectChild(0);
+_95d.selectChild(0);
 evt.stop();
 break;
 }
@@ -9526,19 +9541,19 @@ break;
 switch(evt.key().string){
 case "KEY_TAB":
 case "KEY_ENTER":
-_95b.hide();
+_95d.hide();
 evt.stop();
-if(_95b.selectedChild()!=null){
+if(_95d.selectedChild()!=null){
 MochiKit.Widget.emitSignal(this,"onpopupselect");
 }
 break;
 case "KEY_ESCAPE":
-_95b.hide();
+_95d.hide();
 evt.stop();
 break;
 case "KEY_ARROW_UP":
 case "KEY_ARROW_DOWN":
-_95b.selectMove(evt.key().string=="KEY_ARROW_UP"?-1:1);
+_95d.selectMove(evt.key().string=="KEY_ARROW_UP"?-1:1);
 evt.stop();
 break;
 }
@@ -9550,12 +9565,12 @@ this.blur();
 this.focus();
 MochiKit.Widget.emitSignal(this,"onpopupselect");
 };
-MochiKit.Widget.Tree=function(_95d){
+MochiKit.Widget.Tree=function(_95f){
 var cls=arguments.callee;
 if(!(this instanceof cls)){
-return new cls(_95d,MochiKit.Base.extend(null,arguments,1));
+return new cls(_95f,MochiKit.Base.extend(null,arguments,1));
 }
-var o=MochiKit.DOM.DIV(_95d);
+var o=MochiKit.DOM.DIV(_95f);
 MochiKit.Base.updatetree(o,this);
 o.addClass("widget","widgetTree");
 o.resizeContent=MochiKit.Base.noop;
@@ -9564,17 +9579,17 @@ o.addAll(MochiKit.Base.extend(null,arguments,1));
 return o;
 };
 MochiKit.Widget.Tree.prototype=MochiKit.Base.clone(MochiKit.Widget.prototype);
-MochiKit.Widget.Tree.prototype.addChildNode=function(_960){
-if(!MochiKit.Widget.isWidget(_960,"TreeNode")){
+MochiKit.Widget.Tree.prototype.addChildNode=function(_962){
+if(!MochiKit.Widget.isWidget(_962,"TreeNode")){
 throw new Error("Tree widget can only have TreeNode children");
 }
-this.appendChild(_960);
+this.appendChild(_962);
 };
 MochiKit.Widget.Tree.prototype.findRoot=function(name){
-var _962=this.getChildNodes();
-for(var i=0;i<_962.length;i++){
-if(_962[i].name==name){
-return _962[i];
+var _964=this.getChildNodes();
+for(var i=0;i<_964.length;i++){
+if(_964[i].name==name){
+return _964[i];
 }
 }
 return null;
@@ -9613,22 +9628,22 @@ MochiKit.Widget.emitSignal(this,"onselect",node);
 MochiKit.Widget.Tree.prototype._emitExpand=function(node){
 MochiKit.Widget.emitSignal(this,"onexpand",node);
 };
-MochiKit.Widget.Tree.prototype.expandAll=function(_969){
-if(typeof (_969)!=="number"){
-_969=10;
+MochiKit.Widget.Tree.prototype.expandAll=function(_96b){
+if(typeof (_96b)!=="number"){
+_96b=10;
 }
-var _96a=this.getChildNodes();
-for(var i=0;_969>0&&i<_96a.length;i++){
-_96a[i].expandAll(_969-1);
+var _96c=this.getChildNodes();
+for(var i=0;_96b>0&&i<_96c.length;i++){
+_96c[i].expandAll(_96b-1);
 }
 };
-MochiKit.Widget.Tree.prototype.collapseAll=function(_96c){
-if(typeof (_96c)!=="number"){
-_96c=0;
+MochiKit.Widget.Tree.prototype.collapseAll=function(_96e){
+if(typeof (_96e)!=="number"){
+_96e=0;
 }
-var _96d=this.getChildNodes();
-for(var i=0;i<_96d.length;i++){
-_96d[i].collapseAll(_96c-1);
+var _96f=this.getChildNodes();
+for(var i=0;i<_96f.length;i++){
+_96f[i].collapseAll(_96e-1);
 }
 };
 MochiKit.Widget.Tree.prototype.addPath=function(path){
@@ -9641,137 +9656,137 @@ node=new MochiKit.Widget.TreeNode({name:path[0]});
 this.addChildNode(node);
 }
 for(var i=1;i<path.length;i++){
-var _972=node.findChild(path[i]);
-if(_972==null){
-_972=new MochiKit.Widget.TreeNode({name:path[i]});
-node.addChildNode(_972);
+var _974=node.findChild(path[i]);
+if(_974==null){
+_974=new MochiKit.Widget.TreeNode({name:path[i]});
+node.addChildNode(_974);
 }
-node=_972;
+node=_974;
 }
 return node;
 };
-MochiKit.Widget.TreeNode=function(_973){
+MochiKit.Widget.TreeNode=function(_975){
 var cls=arguments.callee;
 if(!(this instanceof cls)){
-return new cls(_973,MochiKit.Base.extend(null,arguments,1));
+return new cls(_975,MochiKit.Base.extend(null,arguments,1));
 }
 var icon=MochiKit.Widget.Icon({ref:"BLANK"});
-var _976=MochiKit.DOM.SPAN({"class":"widgetTreeNodeText"});
-var div=MochiKit.DOM.DIV({"class":"widgetTreeNodeLabel"},icon,_976);
+var _978=MochiKit.DOM.SPAN({"class":"widgetTreeNodeText"});
+var div=MochiKit.DOM.DIV({"class":"widgetTreeNodeLabel"},icon,_978);
 var o=MochiKit.DOM.DIV({},div);
 MochiKit.Base.updatetree(o,this);
 o.addClass("widget","widgetTreeNode");
-_973=MochiKit.Base.update({name:"Tree Node",folder:false},_973);
-if(typeof (_973.icon)=="undefined"){
-_973.icon=_973.folder?"FOLDER":"DOCUMENT";
+_975=MochiKit.Base.update({name:"Tree Node",folder:false},_975);
+if(typeof (_975.icon)=="undefined"){
+_975.icon=_975.folder?"FOLDER":"DOCUMENT";
 }
-o.setAttrs(_973);
+o.setAttrs(_975);
 o.addAll(MochiKit.Base.extend(null,arguments,1));
 MochiKit.Signal.connect(icon,"onclick",o,"toggle");
 MochiKit.Signal.connect(div,"onclick",o,"select");
 return o;
 };
 MochiKit.Widget.TreeNode.prototype=MochiKit.Base.clone(MochiKit.Widget.prototype);
-MochiKit.Widget.TreeNode.prototype._container=function(_979){
-var _97a=this.lastChild;
-if(MochiKit.DOM.hasElementClass(_97a,"widgetTreeNodeContainer")){
-return _97a;
+MochiKit.Widget.TreeNode.prototype._container=function(_97b){
+var _97c=this.lastChild;
+if(MochiKit.DOM.hasElementClass(_97c,"widgetTreeNodeContainer")){
+return _97c;
 }else{
-if(_979){
-_97a=MochiKit.DOM.DIV({"class":"widgetTreeNodeContainer widgetHidden"});
-this.appendChild(_97a);
-var _97b=this.firstChild.firstChild;
-_97b.setAttrs({ref:"PLUS"});
+if(_97b){
+_97c=MochiKit.DOM.DIV({"class":"widgetTreeNodeContainer widgetHidden"});
+this.appendChild(_97c);
+var _97d=this.firstChild.firstChild;
+_97d.setAttrs({ref:"PLUS"});
 this.setAttrs({icon:"FOLDER"});
-return _97a;
+return _97c;
 }else{
 return null;
 }
 }
 };
-MochiKit.Widget.TreeNode.prototype.setAttrs=function(_97c){
-_97c=MochiKit.Base.update({},_97c);
-var _97d=MochiKit.Base.mask(_97c,["name","folder","icon"]);
-if(typeof (_97d.name)!="undefined"){
-this.name=_97d.name;
+MochiKit.Widget.TreeNode.prototype.setAttrs=function(_97e){
+_97e=MochiKit.Base.update({},_97e);
+var _97f=MochiKit.Base.mask(_97e,["name","folder","icon"]);
+if(typeof (_97f.name)!="undefined"){
+this.name=_97f.name;
 var node=this.firstChild.firstChild;
 while(!MochiKit.DOM.hasElementClass(node,"widgetTreeNodeText")){
 node=node.nextSibling;
 }
-MochiKit.DOM.replaceChildNodes(node,_97d.name);
+MochiKit.DOM.replaceChildNodes(node,_97f.name);
 }
-if(!MochiKit.Base.isFalse(_97d.folder)){
+if(!MochiKit.Base.isFalse(_97f.folder)){
 this._container(true);
 }
-if(typeof (_97d.icon)!="undefined"){
-var _97f=this.firstChild.firstChild;
-var _980=_97f.nextSibling;
-if(!MochiKit.Widget.isWidget(_980,"Icon")){
-_980=null;
+if(typeof (_97f.icon)!="undefined"){
+var _981=this.firstChild.firstChild;
+var _982=_981.nextSibling;
+if(!MochiKit.Widget.isWidget(_982,"Icon")){
+_982=null;
 }
-if(_980==null&&_97d.icon!=null){
-if(typeof (_97d.icon)==="string"){
-_97d.icon=new MochiKit.Widget.Icon({ref:_97d.icon});
+if(_982==null&&_97f.icon!=null){
+if(typeof (_97f.icon)==="string"){
+_97f.icon=new MochiKit.Widget.Icon({ref:_97f.icon});
 }else{
-if(!MochiKit.Widget.isWidget(_97d.icon,"Icon")){
-_97d.icon=new MochiKit.Widget.Icon(_97d.icon);
+if(!MochiKit.Widget.isWidget(_97f.icon,"Icon")){
+_97f.icon=new MochiKit.Widget.Icon(_97f.icon);
 }
 }
-MochiKit.DOM.insertSiblingNodesAfter(_97f,_97d.icon);
+MochiKit.DOM.insertSiblingNodesAfter(_981,_97f.icon);
 }else{
-if(_980!=null&&_97d.icon!=null){
-if(MochiKit.Widget.isWidget(_97d.icon,"Icon")){
-MochiKit.DOM.swapDOM(_980,_97d.icon);
+if(_982!=null&&_97f.icon!=null){
+if(MochiKit.Widget.isWidget(_97f.icon,"Icon")){
+MochiKit.DOM.swapDOM(_982,_97f.icon);
 }else{
-if(typeof (_97d.icon)==="string"){
-_980.setAttrs({ref:_97d.icon});
+if(typeof (_97f.icon)==="string"){
+_982.setAttrs({ref:_97f.icon});
 }else{
-_980.setAttrs(_97d.icon);
+_982.setAttrs(_97f.icon);
 }
 }
 }else{
-if(_980!=null&&_97d.icon==null){
-MochiKit.Widget.destroyWidget(_980);
+if(_982!=null&&_97f.icon==null){
+MochiKit.Widget.destroyWidget(_982);
 }
 }
 }
 }
-MochiKit.DOM.updateNodeAttributes(this,_97c);
+MochiKit.DOM.updateNodeAttributes(this,_97e);
 };
 MochiKit.Widget.TreeNode.prototype.getChildNodes=function(){
-var _981=this._container();
-if(_981==null){
+var _983=this._container();
+if(_983==null){
 return [];
 }else{
-return MochiKit.Base.extend([],_981.childNodes);
+return MochiKit.Base.extend([],_983.childNodes);
 }
 };
-MochiKit.Widget.TreeNode.prototype.addChildNode=function(_982){
-if(!MochiKit.Widget.isWidget(_982,"TreeNode")){
+MochiKit.Widget.TreeNode.prototype.addChildNode=function(_984){
+if(!MochiKit.Widget.isWidget(_984,"TreeNode")){
 throw new Error("TreeNode widget can only have TreeNode children");
 }
-this._container(true).appendChild(_982);
+this._container(true).appendChild(_984);
 };
-MochiKit.Widget.TreeNode.prototype.removeChildNode=function(_983){
-var _984=this._container();
-if(_984!=null){
-_984.removeChild(_983);
+MochiKit.Widget.TreeNode.prototype.removeChildNode=function(_985){
+var _986=this._container();
+if(_986!=null){
+_986.removeChild(_985);
 }
 };
 MochiKit.Widget.TreeNode.prototype.isFolder=function(){
 return this._container()!=null;
 };
 MochiKit.Widget.TreeNode.prototype.isExpanded=function(){
-var _985=this._container();
-return _985!=null&&!MochiKit.DOM.hasElementClass(_985,"widgetHidden");
+var _987=this._container();
+return _987!=null&&!MochiKit.DOM.hasElementClass(_987,"widgetHidden");
 };
 MochiKit.Widget.TreeNode.prototype.isSelected=function(){
 return MochiKit.DOM.hasElementClass(this.firstChild,"selected");
 };
 MochiKit.Widget.TreeNode.prototype.tree=function(){
-var _986=this.parent();
-if(_986!=null){
-return _986.tree();
+var _988=this.parent();
+if(_988!=null){
+return _988.tree();
 }
 if(MochiKit.Widget.isWidget(this.parentNode,"Tree")){
 return this.parentNode;
@@ -9788,20 +9803,20 @@ return null;
 }
 };
 MochiKit.Widget.TreeNode.prototype.path=function(){
-var _988=this.parent();
-if(_988==null){
+var _98a=this.parent();
+if(_98a==null){
 return [this.name];
 }else{
-var path=_988.path();
+var path=_98a.path();
 path.push(this.name);
 return path;
 }
 };
 MochiKit.Widget.TreeNode.prototype.findChild=function(name){
-var _98b=this.getChildNodes();
-for(var i=0;i<_98b.length;i++){
-if(_98b[i].name==name){
-return _98b[i];
+var _98d=this.getChildNodes();
+for(var i=0;i<_98d.length;i++){
+if(_98d[i].name==name){
+return _98d[i];
 }
 }
 return null;
@@ -9831,53 +9846,53 @@ tree._handleSelect(null);
 }
 };
 MochiKit.Widget.TreeNode.prototype.expand=function(){
-var _992=this.parent();
-if(_992!=null&&!_992.isExpanded()){
-_992.expand();
+var _994=this.parent();
+if(_994!=null&&!_994.isExpanded()){
+_994.expand();
 }
-var _993=this._container();
-if(_993!=null&&!this.isExpanded()){
-var _994=this.firstChild.firstChild;
-_994.setAttrs({ref:"MINUS"});
-MochiKit.DOM.removeElementClass(_993,"widgetHidden");
+var _995=this._container();
+if(_995!=null&&!this.isExpanded()){
+var _996=this.firstChild.firstChild;
+_996.setAttrs({ref:"MINUS"});
+MochiKit.DOM.removeElementClass(_995,"widgetHidden");
 var tree=this.tree();
 if(tree!=null){
 tree._emitExpand(this);
 }
 }
 };
-MochiKit.Widget.TreeNode.prototype.expandAll=function(_996){
-if(typeof (_996)!=="number"){
-_996=10;
+MochiKit.Widget.TreeNode.prototype.expandAll=function(_998){
+if(typeof (_998)!=="number"){
+_998=10;
 }
 this.expand();
-var _997=this.getChildNodes();
-for(var i=0;_996>0&&i<_997.length;i++){
-_997[i].expandAll(_996-1);
+var _999=this.getChildNodes();
+for(var i=0;_998>0&&i<_999.length;i++){
+_999[i].expandAll(_998-1);
 }
 };
 MochiKit.Widget.TreeNode.prototype.collapse=function(){
-var _999=this._container();
-if(_999!=null&&this.isExpanded()){
-var _99a=this.firstChild.firstChild;
-_99a.setAttrs({ref:"PLUS"});
-MochiKit.DOM.addElementClass(_999,"widgetHidden");
+var _99b=this._container();
+if(_99b!=null&&this.isExpanded()){
+var _99c=this.firstChild.firstChild;
+_99c.setAttrs({ref:"PLUS"});
+MochiKit.DOM.addElementClass(_99b,"widgetHidden");
 var tree=this.tree();
 if(tree!=null){
 tree._emitExpand(this);
 }
 }
 };
-MochiKit.Widget.TreeNode.prototype.collapseAll=function(_99c){
-if(typeof (_99c)!=="number"){
-_99c=0;
+MochiKit.Widget.TreeNode.prototype.collapseAll=function(_99e){
+if(typeof (_99e)!=="number"){
+_99e=0;
 }
-if(_99c<=0){
+if(_99e<=0){
 this.collapse();
 }
-var _99d=this.getChildNodes();
-for(var i=0;i<_99d.length;i++){
-_99d[i].collapseAll(_99c-1);
+var _99f=this.getChildNodes();
+for(var i=0;i<_99f.length;i++){
+_99f[i].collapseAll(_99e-1);
 }
 };
 MochiKit.Widget.TreeNode.prototype.toggle=function(evt){
@@ -9890,26 +9905,26 @@ this.collapse();
 this.expand();
 }
 };
-MochiKit.Widget.Wizard=function(_9a0){
+MochiKit.Widget.Wizard=function(_9a2){
 var cls=arguments.callee;
 if(!(this instanceof cls)){
-return new cls(_9a0,MochiKit.Base.extend(null,arguments,1));
+return new cls(_9a2,MochiKit.Base.extend(null,arguments,1));
 }
-var o=MochiKit.DOM.DIV(_9a0);
+var o=MochiKit.DOM.DIV(_9a2);
 MochiKit.Base.updatetree(o,this);
 o.addClass("widget","widgetWizard");
 o._selectedIndex=-1;
 o.appendChild(MochiKit.DOM.H3({"class":"widgetWizardTitle"}));
-var _9a3=MochiKit.Widget.Button({style:{"margin-right":"10px"}},MochiKit.Widget.Icon({ref:"CANCEL"})," Cancel");
-var _9a4=MochiKit.Widget.Button({style:{"margin-right":"10px"}},MochiKit.Widget.Icon({ref:"PREVIOUS"})," Previous");
-var _9a5=MochiKit.Widget.Button({},"Next ",MochiKit.Widget.Icon({ref:"NEXT"}));
-var _9a6=MochiKit.Widget.Button({highlight:true},MochiKit.Widget.Icon({ref:"OK"})," Finish");
-_9a3.hide();
-o.appendChild(MochiKit.DOM.DIV({"class":"widgetWizardButtons"},_9a3,_9a4,_9a5,_9a6));
-MochiKit.Signal.connect(_9a3,"onclick",o,"cancel");
-MochiKit.Signal.connect(_9a4,"onclick",o,"previous");
-MochiKit.Signal.connect(_9a5,"onclick",o,"next");
-MochiKit.Signal.connect(_9a6,"onclick",o,"done");
+var _9a5=MochiKit.Widget.Button({style:{"margin-right":"10px"}},MochiKit.Widget.Icon({ref:"CANCEL"})," Cancel");
+var _9a6=MochiKit.Widget.Button({style:{"margin-right":"10px"}},MochiKit.Widget.Icon({ref:"PREVIOUS"})," Previous");
+var _9a7=MochiKit.Widget.Button({},"Next ",MochiKit.Widget.Icon({ref:"NEXT"}));
+var _9a8=MochiKit.Widget.Button({highlight:true},MochiKit.Widget.Icon({ref:"OK"})," Finish");
+_9a5.hide();
+o.appendChild(MochiKit.DOM.DIV({"class":"widgetWizardButtons"},_9a5,_9a6,_9a7,_9a8));
+MochiKit.Signal.connect(_9a5,"onclick",o,"cancel");
+MochiKit.Signal.connect(_9a6,"onclick",o,"previous");
+MochiKit.Signal.connect(_9a7,"onclick",o,"next");
+MochiKit.Signal.connect(_9a8,"onclick",o,"done");
 o._updateStatus();
 o.addAll(MochiKit.Base.extend(null,arguments,1));
 return o;
@@ -9918,13 +9933,13 @@ MochiKit.Widget.Wizard.prototype=MochiKit.Base.clone(MochiKit.Widget.prototype);
 MochiKit.Widget.Wizard.prototype.getChildNodes=function(){
 return MochiKit.Base.extend([],this.childNodes,2);
 };
-MochiKit.Widget.Wizard.prototype.addChildNode=function(_9a7){
-if(!MochiKit.Widget.isWidget(_9a7,"Pane")){
-_9a7=new MochiKit.Widget.Pane(null,_9a7);
+MochiKit.Widget.Wizard.prototype.addChildNode=function(_9a9){
+if(!MochiKit.Widget.isWidget(_9a9,"Pane")){
+_9a9=new MochiKit.Widget.Pane(null,_9a9);
 }
-MochiKit.Style.registerSizeConstraints(_9a7,"100%","100%-65");
-_9a7.hide();
-this.appendChild(_9a7);
+MochiKit.Style.registerSizeConstraints(_9a9,"100%","100%-65");
+_9a9.hide();
+this.appendChild(_9a9);
 if(this.getChildNodes().length==1){
 this.activatePage(0);
 }else{
@@ -9933,41 +9948,41 @@ this._updateStatus();
 };
 MochiKit.Widget.Wizard.prototype._updateStatus=function(){
 var h3=this.childNodes[0];
-var _9a9=this.childNodes[1].childNodes[0];
-var _9aa=this.childNodes[1].childNodes[1];
-var _9ab=this.childNodes[1].childNodes[2];
-var _9ac=this.childNodes[1].childNodes[3];
+var _9ab=this.childNodes[1].childNodes[0];
+var _9ac=this.childNodes[1].childNodes[1];
+var _9ad=this.childNodes[1].childNodes[2];
+var _9ae=this.childNodes[1].childNodes[3];
 var page=this.activePage();
-var _9ae=MochiKit.Widget.Pane.FORWARD;
-var _9af=null;
+var _9b0=MochiKit.Widget.Pane.FORWARD;
+var _9b1=null;
 var info="(No pages available)";
 var icon=null;
 if(page!=null){
-_9ae=page.pageStatus||MochiKit.Widget.Pane.ANY;
-_9af=page.pageTitle;
+_9b0=page.pageStatus||MochiKit.Widget.Pane.ANY;
+_9b1=page.pageTitle;
 info=" (Step "+(this._selectedIndex+1)+" of "+this.getChildNodes().length+")";
 }
-if(_9ae===MochiKit.Widget.Pane.WORKING){
-_9a9.show();
-_9aa.hide();
+if(_9b0===MochiKit.Widget.Pane.WORKING){
+_9ab.show();
+_9ac.hide();
 icon={ref:"LOADING","class":"widgetWizardWait"};
 icon=MochiKit.Widget.Icon(icon);
 }else{
-_9a9.hide();
-_9aa.show();
-}
-if(this._selectedIndex>=this.getChildNodes().length-1){
 _9ab.hide();
 _9ac.show();
-}else{
-_9ab.show();
-_9ac.hide();
 }
-_9aa.disabled=(this._selectedIndex<=0)||!_9ae.previous;
-_9ab.disabled=!_9ae.next;
-_9ac.disabled=!_9ae.next;
+if(this._selectedIndex>=this.getChildNodes().length-1){
+_9ad.hide();
+_9ae.show();
+}else{
+_9ad.show();
+_9ae.hide();
+}
+_9ac.disabled=(this._selectedIndex<=0)||!_9b0.previous;
+_9ad.disabled=!_9b0.next;
+_9ae.disabled=!_9b0.next;
 info=MochiKit.DOM.SPAN({"class":"widgetWizardInfo"},info);
-MochiKit.DOM.replaceChildNodes(h3,icon,_9af,info);
+MochiKit.DOM.replaceChildNodes(h3,icon,_9b1,info);
 };
 MochiKit.Widget.Wizard.prototype.activePage=function(){
 if(this._selectedIndex>=0){
@@ -9979,24 +9994,24 @@ return null;
 MochiKit.Widget.Wizard.prototype.activePageIndex=function(){
 return this._selectedIndex;
 };
-MochiKit.Widget.Wizard.prototype.activatePage=function(_9b2){
-if(typeof (_9b2)=="number"){
-var _9b3=_9b2;
-var page=this.childNodes[_9b3+2];
+MochiKit.Widget.Wizard.prototype.activatePage=function(_9b4){
+if(typeof (_9b4)=="number"){
+var _9b5=_9b4;
+var page=this.childNodes[_9b5+2];
 }else{
-var page=_9b2;
-var _9b3=MochiKit.Base.findIdentical(this.childNodes,page,2)-2;
+var page=_9b4;
+var _9b5=MochiKit.Base.findIdentical(this.childNodes,page,2)-2;
 }
-if(_9b3<0||_9b3>=this.getChildNodes().length){
-throw new RangeError("Page index out of bounds: "+_9b3);
+if(_9b5<0||_9b5>=this.getChildNodes().length){
+throw new RangeError("Page index out of bounds: "+_9b5);
 }
-var _9b5=this.activePage();
-if(_9b5!=null){
-if(!_9b5._handleExit({validateForm:this._selectedIndex<_9b3})){
+var _9b7=this.activePage();
+if(_9b7!=null){
+if(!_9b7._handleExit({validateForm:this._selectedIndex<_9b5})){
 return;
 }
 }
-this._selectedIndex=_9b3;
+this._selectedIndex=_9b5;
 this._updateStatus();
 page._handleEnter({validateReset:true});
 MochiKit.Widget.emitSignal(this,"onchange");
