@@ -11,7 +11,7 @@
       <ProgressBar id="progress" min="0" max="1000" style="width: 100%;" />
     </Pane>
     <Pane pageTitle="Table">
-      <Table id="table" style="width: 350px;">
+      <Table id="table" style="width: 400px;">
         <TableColumn title="#" field="id" type="number" />
         <TableColumn title="First Name" field="first" sort="asc" />
         <TableColumn title="Last Name" field="last" />
