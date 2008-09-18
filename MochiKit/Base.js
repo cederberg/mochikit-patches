@@ -150,38 +150,6 @@ MochiKit.Base.mask = function(src, keys) {
 }
 
 /**
- * Returns a truncated copy of a string or an array. If the string
- * or array is shorter than the specified maximum length, the object
- * will be returned unmodified. If an optional tail string or array
- * is specified, additional elements will be removed from the object
- * to append it to the end.
- *
- * @param {String/Array} obj the string or array to truncate
- * @param {Number} maxLength the maximum length
- * @param {String/Array} tail the optional tail to use on truncation
- *
- * @return {String/Array} the truncated string or array
- */
-MochiKit.Base.truncate = function(obj, maxLength, tail) {
-    if (obj != null && typeof(obj) != "string" && !MochiKit.Base.isArrayLike(obj)) {
-        obj = obj.toString();
-    }
-    if (obj == null || obj.length <= maxLength) {
-        return obj;
-    }
-    if (typeof(tail) == "string" || MochiKit.Base.isArrayLike(tail)) {
-        obj = obj.slice(0, maxLength - tail.length);
-        if (typeof(obj) == "string") {
-            return obj + tail;
-        } else {
-            return MochiKit.Base.extend(obj, tail);
-        }
-    } else {
-        return obj.slice(0, maxLength);
-    }
-}
-
-/**
  * Returns the name of a function. This is often useful for debugging
  * or logging purposes. If the function is anonymous or the
  * JavaScript environment doesn't provide function <code>name</code>

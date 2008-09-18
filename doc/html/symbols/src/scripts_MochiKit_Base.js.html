@@ -157,162 +157,130 @@
 <span class='line'>150</span> </span><span class="PUNC">}</span><span class="WHIT">
 <span class='line'>151</span> 
 <span class='line'>152</span> </span><span class="COMM">/**
-<span class='line'>153</span>  * Returns a truncated copy of a string or an array. If the string
-<span class='line'>154</span>  * or array is shorter than the specified maximum length, the object
-<span class='line'>155</span>  * will be returned unmodified. If an optional tail string or array
-<span class='line'>156</span>  * is specified, additional elements will be removed from the object
-<span class='line'>157</span>  * to append it to the end.
+<span class='line'>153</span>  * Returns the name of a function. This is often useful for debugging
+<span class='line'>154</span>  * or logging purposes. If the function is anonymous or the
+<span class='line'>155</span>  * JavaScript environment doesn't provide function &lt;code>name&lt;/code>
+<span class='line'>156</span>  * properties, any registered function name or undefined will be
+<span class='line'>157</span>  * returned.
 <span class='line'>158</span>  *
-<span class='line'>159</span>  * @param {String/Array} obj the string or array to truncate
-<span class='line'>160</span>  * @param {Number} maxLength the maximum length
-<span class='line'>161</span>  * @param {String/Array} tail the optional tail to use on truncation
+<span class='line'>159</span>  * @param {Function} func the function to name
+<span class='line'>160</span>  *
+<span class='line'>161</span>  * @return {String} the function name, or undefined if not available
 <span class='line'>162</span>  *
-<span class='line'>163</span>  * @return {String/Array} the truncated string or array
+<span class='line'>163</span>  * @see MochiKit.Base.registerFunctionNames
 <span class='line'>164</span>  */</span><span class="WHIT">
-<span class='line'>165</span> </span><span class="NAME">MochiKit.Base.truncate</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">obj</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">maxLength</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">tail</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>166</span>     </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">obj</span><span class="WHIT"> </span><span class="PUNC">!=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="KEYW">typeof</span><span class="PUNC">(</span><span class="NAME">obj</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">!=</span><span class="WHIT"> </span><span class="STRN">"string"</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="PUNC">!</span><span class="NAME">MochiKit.Base.isArrayLike</span><span class="PUNC">(</span><span class="NAME">obj</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>167</span>         </span><span class="NAME">obj</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">obj.toString</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>168</span>     </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>169</span>     </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">obj</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="NAME">obj.length</span><span class="WHIT"> </span><span class="PUNC">&lt;=</span><span class="WHIT"> </span><span class="NAME">maxLength</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>170</span>         </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">obj</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>171</span>     </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>172</span>     </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">typeof</span><span class="PUNC">(</span><span class="NAME">tail</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="STRN">"string"</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="NAME">MochiKit.Base.isArrayLike</span><span class="PUNC">(</span><span class="NAME">tail</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>173</span>         </span><span class="NAME">obj</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">obj.slice</span><span class="PUNC">(</span><span class="NUMB">0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">maxLength</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NAME">tail.length</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>174</span>         </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">typeof</span><span class="PUNC">(</span><span class="NAME">obj</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="STRN">"string"</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>175</span>             </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">obj</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">tail</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>176</span>         </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>177</span>             </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">MochiKit.Base.extend</span><span class="PUNC">(</span><span class="NAME">obj</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">tail</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>178</span>         </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>179</span>     </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>180</span>         </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">obj.slice</span><span class="PUNC">(</span><span class="NUMB">0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">maxLength</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>181</span>     </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>182</span> </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>183</span> 
-<span class='line'>184</span> </span><span class="COMM">/**
-<span class='line'>185</span>  * Returns the name of a function. This is often useful for debugging
-<span class='line'>186</span>  * or logging purposes. If the function is anonymous or the
-<span class='line'>187</span>  * JavaScript environment doesn't provide function &lt;code>name&lt;/code>
-<span class='line'>188</span>  * properties, any registered function name or undefined will be
-<span class='line'>189</span>  * returned.
-<span class='line'>190</span>  *
-<span class='line'>191</span>  * @param {Function} func the function to name
-<span class='line'>192</span>  *
-<span class='line'>193</span>  * @return {String} the function name, or undefined if not available
-<span class='line'>194</span>  *
-<span class='line'>195</span>  * @see MochiKit.Base.registerFunctionNames
-<span class='line'>196</span>  */</span><span class="WHIT">
-<span class='line'>197</span> </span><span class="NAME">MochiKit.Base.functionName</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">func</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>198</span>     </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">func</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>199</span>         </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>200</span>     </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">func.name</span><span class="WHIT"> </span><span class="PUNC">!=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">func.name</span><span class="WHIT"> </span><span class="PUNC">!=</span><span class="WHIT"> </span><span class="STRN">""</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>201</span>         </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">func.name</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>202</span>     </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>203</span>         </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">func.NAME</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>204</span>     </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>205</span> </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>206</span> 
-<span class='line'>207</span> </span><span class="COMM">/**
-<span class='line'>208</span>  * Registers function names for debugging or logging. This is useful
-<span class='line'>209</span>  * when using anonymous functions or inside JavaScript environments
-<span class='line'>210</span>  * that do not provide function &lt;code>name&lt;/code> properties. This
-<span class='line'>211</span>  * function will add the specified name as a new &lt;code>NAME&lt;/code>
-<span class='line'>212</span>  * property to any function that doesn't already have a name. This
-<span class='line'>213</span>  * function will also process any properties or prototype properties
-<span class='line'>214</span>  * recursively adding names like &lt;code>name.[property name]&lt;/code>.
-<span class='line'>215</span>  *
-<span class='line'>216</span>  * @param {Object} obj the function or object to register
-<span class='line'>217</span>  * @param {String} name the function or object (class) name
-<span class='line'>218</span>  * @param {Array} [stack] the object stack to avoid circular recursion
-<span class='line'>219</span>  *
-<span class='line'>220</span>  * @see MochiKit.Base.functionName
-<span class='line'>221</span>  */</span><span class="WHIT">
-<span class='line'>222</span> </span><span class="NAME">MochiKit.Base.registerFunctionNames</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">obj</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">name</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">stack</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>223</span>    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">typeof</span><span class="PUNC">(</span><span class="NAME">obj</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="STRN">"function"</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT">
-<span class='line'>224</span>        </span><span class="PUNC">(</span><span class="NAME">obj.name</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="NAME">obj.name</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="STRN">""</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT">
-<span class='line'>225</span>        </span><span class="KEYW">typeof</span><span class="PUNC">(</span><span class="NAME">obj.NAME</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="STRN">"undefined"</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>226</span>        </span><span class="NAME">obj.NAME</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">name</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>227</span>    </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>228</span>    </span><span class="NAME">stack</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">stack</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>229</span>    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">obj</span><span class="WHIT"> </span><span class="PUNC">!=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">name</span><span class="WHIT"> </span><span class="PUNC">!=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT">
-<span class='line'>230</span>        </span><span class="PUNC">(</span><span class="KEYW">typeof</span><span class="PUNC">(</span><span class="NAME">obj</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="STRN">"object"</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="KEYW">typeof</span><span class="PUNC">(</span><span class="NAME">obj</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="STRN">"function"</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT">
-<span class='line'>231</span>        </span><span class="NAME">obj</span><span class="WHIT"> </span><span class="PUNC">!==</span><span class="WHIT"> </span><span class="NAME">Object.prototype</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">obj</span><span class="WHIT"> </span><span class="PUNC">!==</span><span class="WHIT"> </span><span class="NAME">Function.prototype</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT">
-<span class='line'>232</span>        </span><span class="KEYW">typeof</span><span class="PUNC">(</span><span class="NAME">obj.nodeType</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">!==</span><span class="WHIT"> </span><span class="STRN">"number"</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT">
-<span class='line'>233</span>        </span><span class="NAME">MochiKit.Base.findIdentical</span><span class="PUNC">(</span><span class="NAME">stack</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">obj</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>234</span> 
-<span class='line'>235</span>        </span><span class="NAME">stack.push</span><span class="PUNC">(</span><span class="NAME">obj</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>236</span>        </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">prop</span><span class="WHIT"> </span><span class="KEYW">in</span><span class="WHIT"> </span><span class="NAME">obj</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>237</span>            </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">str</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">name</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">"."</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">prop</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>238</span>            </span><span class="NAME">MochiKit.Base.registerFunctionNames</span><span class="PUNC">(</span><span class="NAME">obj</span><span class="PUNC">[</span><span class="NAME">prop</span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">str</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">stack</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>239</span>        </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>240</span>        </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">str</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">name</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">".prototype"</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>241</span>        </span><span class="NAME">MochiKit.Base.registerFunctionNames</span><span class="PUNC">(</span><span class="NAME">obj.prototype</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">str</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">stack</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>242</span>        </span><span class="NAME">stack.pop</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>243</span>    </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>244</span> </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>245</span> 
-<span class='line'>246</span> </span><span class="COMM">/**
-<span class='line'>247</span>  * Returns the current execution stack trace. The stack trace is an
-<span class='line'>248</span>  * array of function names with the innermost function at the lowest
-<span class='line'>249</span>  * index (0). Due to limitations in the JavaScript API:s, the stack
-<span class='line'>250</span>  * trace will be cut if recursion is detected. The stack trace will
-<span class='line'>251</span>  * also be cut if the call depth exceeds the maximum depth or if any
-<span class='line'>252</span>  * function in the chain has an injected stack trace.
-<span class='line'>253</span>  *
-<span class='line'>254</span>  * @param {Number} [maxDepth] the maximum call depth, defaults to 20
-<span class='line'>255</span>  *
-<span class='line'>256</span>  * @return {Array} the stack trace array of function names
-<span class='line'>257</span>  *
-<span class='line'>258</span>  * @see MochiKit.Base.functionName
-<span class='line'>259</span>  * @see MochiKit.Base.injectStackTrace
-<span class='line'>260</span>  */</span><span class="WHIT">
-<span class='line'>261</span> </span><span class="NAME">MochiKit.Base.stackTrace</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">maxDepth</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>262</span>     </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">func</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">arguments.callee.caller</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>263</span>     </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">visited</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>264</span>     </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">res</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>265</span>     </span><span class="NAME">maxDepth</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">maxDepth</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="NUMB">20</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>266</span>     </span><span class="KEYW">while</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">func</span><span class="WHIT"> </span><span class="PUNC">!=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>267</span>         </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">MochiKit.Base.findIdentical</span><span class="PUNC">(</span><span class="NAME">visited</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">func</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">>=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>268</span>             </span><span class="NAME">res.push</span><span class="PUNC">(</span><span class="STRN">"...recursion..."</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>269</span>             </span><span class="KEYW">break</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>270</span>         </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>271</span>         </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">func.$stackTrace</span><span class="WHIT"> </span><span class="PUNC">!=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>272</span>             </span><span class="NAME">res</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">res.concat</span><span class="PUNC">(</span><span class="NAME">func.$stackTrace</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>273</span>             </span><span class="KEYW">break</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>274</span>         </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>275</span>         </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">name</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">MochiKit.Base.functionName</span><span class="PUNC">(</span><span class="NAME">func</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>276</span>         </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">name</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>277</span>             </span><span class="COMM">// Skip stack trace when null (but not when undefined)</span><span class="WHIT">
-<span class='line'>278</span>         </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>279</span>             </span><span class="NAME">res.push</span><span class="PUNC">(</span><span class="NAME">name</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="STRN">"&lt;anonymous>"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>280</span>         </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>281</span>         </span><span class="NAME">visited.push</span><span class="PUNC">(</span><span class="NAME">func</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>282</span>         </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">visited.length</span><span class="WHIT"> </span><span class="PUNC">>=</span><span class="WHIT"> </span><span class="NAME">maxDepth</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>283</span>             </span><span class="NAME">res.push</span><span class="PUNC">(</span><span class="STRN">"..."</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>284</span>             </span><span class="KEYW">break</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>285</span>         </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>286</span>         </span><span class="NAME">func</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">func.caller</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>287</span>     </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>288</span>     </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">res</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>289</span> </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>290</span> 
-<span class='line'>291</span> </span><span class="COMM">/**
-<span class='line'>292</span>  * Injects a stack trace for a function. This method is useful for
-<span class='line'>293</span>  * creating a fake stack trace in anonymous or callback functions. A
-<span class='line'>294</span>  * null value can be used to clear any previously injected stack
-<span class='line'>295</span>  * trace for the calling function.
-<span class='line'>296</span>  *
-<span class='line'>297</span>  * @param {Array} stackTrace the stack trace, or null to clear
-<span class='line'>298</span>  * @param {Function} [func] the function to modify, or null for the
-<span class='line'>299</span>  *            currently executing function (i.e. the caller)
-<span class='line'>300</span>  */</span><span class="WHIT">
-<span class='line'>301</span> </span><span class="NAME">MochiKit.Base.injectStackTrace</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">stackTrace</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">func</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>302</span>     </span><span class="NAME">func</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">func</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="NAME">arguments.callee.caller</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>303</span>     </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">func</span><span class="WHIT"> </span><span class="PUNC">!=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>304</span>         </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">stackTrace</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>305</span>             </span><span class="NAME">func.$stackTrace</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">stackTrace</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>306</span>         </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>307</span>             </span><span class="KEYW">delete</span><span class="WHIT"> </span><span class="NAME">func.$stackTrace</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>308</span>         </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>309</span>     </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>310</span> </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>311</span> </span></pre></body></html>
+<span class='line'>165</span> </span><span class="NAME">MochiKit.Base.functionName</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">func</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>166</span>     </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">func</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>167</span>         </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>168</span>     </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">func.name</span><span class="WHIT"> </span><span class="PUNC">!=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">func.name</span><span class="WHIT"> </span><span class="PUNC">!=</span><span class="WHIT"> </span><span class="STRN">""</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>169</span>         </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">func.name</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>170</span>     </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>171</span>         </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">func.NAME</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>172</span>     </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>173</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>174</span> 
+<span class='line'>175</span> </span><span class="COMM">/**
+<span class='line'>176</span>  * Registers function names for debugging or logging. This is useful
+<span class='line'>177</span>  * when using anonymous functions or inside JavaScript environments
+<span class='line'>178</span>  * that do not provide function &lt;code>name&lt;/code> properties. This
+<span class='line'>179</span>  * function will add the specified name as a new &lt;code>NAME&lt;/code>
+<span class='line'>180</span>  * property to any function that doesn't already have a name. This
+<span class='line'>181</span>  * function will also process any properties or prototype properties
+<span class='line'>182</span>  * recursively adding names like &lt;code>name.[property name]&lt;/code>.
+<span class='line'>183</span>  *
+<span class='line'>184</span>  * @param {Object} obj the function or object to register
+<span class='line'>185</span>  * @param {String} name the function or object (class) name
+<span class='line'>186</span>  * @param {Array} [stack] the object stack to avoid circular recursion
+<span class='line'>187</span>  *
+<span class='line'>188</span>  * @see MochiKit.Base.functionName
+<span class='line'>189</span>  */</span><span class="WHIT">
+<span class='line'>190</span> </span><span class="NAME">MochiKit.Base.registerFunctionNames</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">obj</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">name</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">stack</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>191</span>    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">typeof</span><span class="PUNC">(</span><span class="NAME">obj</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="STRN">"function"</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT">
+<span class='line'>192</span>        </span><span class="PUNC">(</span><span class="NAME">obj.name</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="NAME">obj.name</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="STRN">""</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT">
+<span class='line'>193</span>        </span><span class="KEYW">typeof</span><span class="PUNC">(</span><span class="NAME">obj.NAME</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="STRN">"undefined"</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>194</span>        </span><span class="NAME">obj.NAME</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">name</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>195</span>    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>196</span>    </span><span class="NAME">stack</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">stack</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>197</span>    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">obj</span><span class="WHIT"> </span><span class="PUNC">!=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">name</span><span class="WHIT"> </span><span class="PUNC">!=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT">
+<span class='line'>198</span>        </span><span class="PUNC">(</span><span class="KEYW">typeof</span><span class="PUNC">(</span><span class="NAME">obj</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="STRN">"object"</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="KEYW">typeof</span><span class="PUNC">(</span><span class="NAME">obj</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="STRN">"function"</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT">
+<span class='line'>199</span>        </span><span class="NAME">obj</span><span class="WHIT"> </span><span class="PUNC">!==</span><span class="WHIT"> </span><span class="NAME">Object.prototype</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">obj</span><span class="WHIT"> </span><span class="PUNC">!==</span><span class="WHIT"> </span><span class="NAME">Function.prototype</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT">
+<span class='line'>200</span>        </span><span class="KEYW">typeof</span><span class="PUNC">(</span><span class="NAME">obj.nodeType</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">!==</span><span class="WHIT"> </span><span class="STRN">"number"</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT">
+<span class='line'>201</span>        </span><span class="NAME">MochiKit.Base.findIdentical</span><span class="PUNC">(</span><span class="NAME">stack</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">obj</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>202</span> 
+<span class='line'>203</span>        </span><span class="NAME">stack.push</span><span class="PUNC">(</span><span class="NAME">obj</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>204</span>        </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">prop</span><span class="WHIT"> </span><span class="KEYW">in</span><span class="WHIT"> </span><span class="NAME">obj</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>205</span>            </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">str</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">name</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">"."</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">prop</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>206</span>            </span><span class="NAME">MochiKit.Base.registerFunctionNames</span><span class="PUNC">(</span><span class="NAME">obj</span><span class="PUNC">[</span><span class="NAME">prop</span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">str</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">stack</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>207</span>        </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>208</span>        </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">str</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">name</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">".prototype"</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>209</span>        </span><span class="NAME">MochiKit.Base.registerFunctionNames</span><span class="PUNC">(</span><span class="NAME">obj.prototype</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">str</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">stack</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>210</span>        </span><span class="NAME">stack.pop</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>211</span>    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>212</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>213</span> 
+<span class='line'>214</span> </span><span class="COMM">/**
+<span class='line'>215</span>  * Returns the current execution stack trace. The stack trace is an
+<span class='line'>216</span>  * array of function names with the innermost function at the lowest
+<span class='line'>217</span>  * index (0). Due to limitations in the JavaScript API:s, the stack
+<span class='line'>218</span>  * trace will be cut if recursion is detected. The stack trace will
+<span class='line'>219</span>  * also be cut if the call depth exceeds the maximum depth or if any
+<span class='line'>220</span>  * function in the chain has an injected stack trace.
+<span class='line'>221</span>  *
+<span class='line'>222</span>  * @param {Number} [maxDepth] the maximum call depth, defaults to 20
+<span class='line'>223</span>  *
+<span class='line'>224</span>  * @return {Array} the stack trace array of function names
+<span class='line'>225</span>  *
+<span class='line'>226</span>  * @see MochiKit.Base.functionName
+<span class='line'>227</span>  * @see MochiKit.Base.injectStackTrace
+<span class='line'>228</span>  */</span><span class="WHIT">
+<span class='line'>229</span> </span><span class="NAME">MochiKit.Base.stackTrace</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">maxDepth</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>230</span>     </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">func</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">arguments.callee.caller</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>231</span>     </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">visited</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>232</span>     </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">res</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>233</span>     </span><span class="NAME">maxDepth</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">maxDepth</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="NUMB">20</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>234</span>     </span><span class="KEYW">while</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">func</span><span class="WHIT"> </span><span class="PUNC">!=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>235</span>         </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">MochiKit.Base.findIdentical</span><span class="PUNC">(</span><span class="NAME">visited</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">func</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">>=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>236</span>             </span><span class="NAME">res.push</span><span class="PUNC">(</span><span class="STRN">"...recursion..."</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>237</span>             </span><span class="KEYW">break</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>238</span>         </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>239</span>         </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">func.$stackTrace</span><span class="WHIT"> </span><span class="PUNC">!=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>240</span>             </span><span class="NAME">res</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">res.concat</span><span class="PUNC">(</span><span class="NAME">func.$stackTrace</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>241</span>             </span><span class="KEYW">break</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>242</span>         </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>243</span>         </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">name</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">MochiKit.Base.functionName</span><span class="PUNC">(</span><span class="NAME">func</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>244</span>         </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">name</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>245</span>             </span><span class="COMM">// Skip stack trace when null (but not when undefined)</span><span class="WHIT">
+<span class='line'>246</span>         </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>247</span>             </span><span class="NAME">res.push</span><span class="PUNC">(</span><span class="NAME">name</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="STRN">"&lt;anonymous>"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>248</span>         </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>249</span>         </span><span class="NAME">visited.push</span><span class="PUNC">(</span><span class="NAME">func</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>250</span>         </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">visited.length</span><span class="WHIT"> </span><span class="PUNC">>=</span><span class="WHIT"> </span><span class="NAME">maxDepth</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>251</span>             </span><span class="NAME">res.push</span><span class="PUNC">(</span><span class="STRN">"..."</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>252</span>             </span><span class="KEYW">break</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>253</span>         </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>254</span>         </span><span class="NAME">func</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">func.caller</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>255</span>     </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>256</span>     </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">res</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>257</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>258</span> 
+<span class='line'>259</span> </span><span class="COMM">/**
+<span class='line'>260</span>  * Injects a stack trace for a function. This method is useful for
+<span class='line'>261</span>  * creating a fake stack trace in anonymous or callback functions. A
+<span class='line'>262</span>  * null value can be used to clear any previously injected stack
+<span class='line'>263</span>  * trace for the calling function.
+<span class='line'>264</span>  *
+<span class='line'>265</span>  * @param {Array} stackTrace the stack trace, or null to clear
+<span class='line'>266</span>  * @param {Function} [func] the function to modify, or null for the
+<span class='line'>267</span>  *            currently executing function (i.e. the caller)
+<span class='line'>268</span>  */</span><span class="WHIT">
+<span class='line'>269</span> </span><span class="NAME">MochiKit.Base.injectStackTrace</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">stackTrace</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">func</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>270</span>     </span><span class="NAME">func</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">func</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="NAME">arguments.callee.caller</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>271</span>     </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">func</span><span class="WHIT"> </span><span class="PUNC">!=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>272</span>         </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">stackTrace</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>273</span>             </span><span class="NAME">func.$stackTrace</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">stackTrace</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>274</span>         </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>275</span>             </span><span class="KEYW">delete</span><span class="WHIT"> </span><span class="NAME">func.$stackTrace</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>276</span>         </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>277</span>     </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>278</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>279</span> </span></pre></body></html>
