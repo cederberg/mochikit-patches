@@ -311,60 +311,76 @@ MochiKit.Format._formatParts = function(parts, values, locale) {
             // TODO: implement remaining format types (with precision)
             case "d":
             case "f":
-                var sign = (info.sign == "-") ? "" : info.sign;
-                sign = (v < 0) ? "-" : sign;
-                v = (v == null) ? 0 : Math.abs(v);
-                if (info.format == "d") {
-                    str = self.truncToFixed(v, 0);
-                } else if (info.precision >= 0) {
-                    str = self.truncToFixed(v, info.precision);
+                if (typeof(v) != "number" || isNaN(v)) {
+                    str = "";
+                } else if (v == Number.POSITIVE_INFINITY) {
+                    str = "\u221e";
+                } else if (v == Number.NEGATIVE_INFINITY) {
+                    str = "-\u221e";
                 } else {
-                    str = (v == null) ? "0" : v.toString();
+                    var sign = (info.sign == "-") ? "" : info.sign;
+                    sign = (v < 0) ? "-" : sign;
+                    v = Math.abs(v);
+                    if (info.format == "d") {
+                        str = self.truncToFixed(v, 0);
+                    } else if (info.precision >= 0) {
+                        str = self.truncToFixed(v, info.precision);
+                    } else {
+                        str = (v == null) ? "0" : v.toString();
+                    }
+                    if (info.padding == "0" ) {
+                        str = self._addZeroPadding(str, info.width - sign.length);
+                    }
+                    if (info.grouping) {
+                        str = self._addNumberGrouping(str, locale);
+                    }
+                    str = sign + str;
                 }
-                if (info.padding == "0" ) {
-                    str = self._addZeroPadding(str, info.width - sign.length);
-                }
-                if (info.grouping) {
-                    str = self._addNumberGrouping(str, locale);
-                }
-                str = sign + str;
                 break;
             case "%":
-                var sign = (info.sign == "-") ? "" : info.sign;
-                sign = (v < 0) ? "-" : sign;
-                v = (v == null) ? 0 : Math.abs(v);
-                // Avoid multiplication by 100 since it leads to
-                // problems with numeric rounding errors. Instead
-                // we just move the decimal separator. Ugly, but...
-                if (info.precision >= 0) {
-                    str = self.truncToFixed(v, info.precision + 2);
+                if (typeof(v) != "number" || isNaN(v)) {
+                    str = "";
+                } else if (v == Number.POSITIVE_INFINITY) {
+                    str = "\u221e%";
+                } else if (v == Number.NEGATIVE_INFINITY) {
+                    str = "-\u221e%";
                 } else {
-                    str = (v == null) ? "0" : v.toString();
-                }
-                var fracPos = str.indexOf(".");
-                if (fracPos < 0) {
-                    str = str + "00";
-                } else if (fracPos + 3 >= str.length) {
-                    var fraction = str.substring(fracPos + 1);
-                    while (fraction.length < 2) {
-                        fraction = fraction + "0";
+                    var sign = (info.sign == "-") ? "" : info.sign;
+                    sign = (v < 0) ? "-" : sign;
+                    v = (v == null || !isFinite(v)) ? 0 : Math.abs(v);
+                    // Avoid multiplication by 100 since it leads to
+                    // problems with numeric rounding errors. Instead
+                    // we just move the decimal separator. Ugly, but...
+                    if (info.precision >= 0) {
+                        str = self.truncToFixed(v, info.precision + 2);
+                    } else {
+                        str = (v == null) ? "0" : v.toString();
                     }
-                    str = str.substring(0, fracPos) + fraction;
-                } else {
-                    var fraction = str.substring(fracPos + 1);
-                    str = str.substring(0, fracPos) + fraction.substring(0, 2) +
-                          "." + fraction.substring(2);
+                    var fracPos = str.indexOf(".");
+                    if (fracPos < 0) {
+                        str = str + "00";
+                    } else if (fracPos + 3 >= str.length) {
+                        var fraction = str.substring(fracPos + 1);
+                        while (fraction.length < 2) {
+                            fraction = fraction + "0";
+                        }
+                        str = str.substring(0, fracPos) + fraction;
+                    } else {
+                        var fraction = str.substring(fracPos + 1);
+                        str = str.substring(0, fracPos) + fraction.substring(0, 2) +
+                              "." + fraction.substring(2);
+                    }
+                    while (str.length > 1 && str[0] == "0" && str[1] != ".") {
+                        str = str.substring(1);
+                    }
+                    if (info.padding == "0" ) {
+                        str = self._addZeroPadding(str, info.width - sign.length - 1);
+                    }
+                    if (info.grouping) {
+                        str = self._addNumberGrouping(str, locale);
+                    }
+                    str = sign + str + locale.percent;
                 }
-                while (str.length > 1 && str[0] == "0" && str[1] != ".") {
-                    str = str.substring(1);
-                }
-                if (info.padding == "0" ) {
-                    str = self._addZeroPadding(str, info.width - sign.length - 1);
-                }
-                if (info.grouping) {
-                    str = self._addNumberGrouping(str, locale);
-                }
-                str = sign + str + locale.percent;
                 break;
             case "r":
             case "s":
@@ -379,9 +395,9 @@ MochiKit.Format._formatParts = function(parts, values, locale) {
             }
             while (info.width > str.length) {
                 if (info.align == "<") {
-                    str += info.padding;
+                    str += " ";
                 } else {
-                    str = info.padding + str;
+                    str = " " + str;
                 }
             }
             result += str;

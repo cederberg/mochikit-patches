@@ -7405,9 +7405,18 @@ var str="";
 switch(info.format){
 case "d":
 case "f":
+if(typeof (v)!="number"||isNaN(v)){
+str="";
+}else{
+if(v==Number.POSITIVE_INFINITY){
+str="\u221e";
+}else{
+if(v==Number.NEGATIVE_INFINITY){
+str="-\u221e";
+}else{
 var sign=(info.sign=="-")?"":info.sign;
 sign=(v<0)?"-":sign;
-v=(v==null)?0:Math.abs(v);
+v=Math.abs(v);
 if(info.format=="d"){
 str=self.truncToFixed(v,0);
 }else{
@@ -7424,11 +7433,23 @@ if(info.grouping){
 str=self._addNumberGrouping(str,_7bb);
 }
 str=sign+str;
+}
+}
+}
 break;
 case "%":
+if(typeof (v)!="number"||isNaN(v)){
+str="";
+}else{
+if(v==Number.POSITIVE_INFINITY){
+str="\u221e%";
+}else{
+if(v==Number.NEGATIVE_INFINITY){
+str="-\u221e%";
+}else{
 var sign=(info.sign=="-")?"":info.sign;
 sign=(v<0)?"-":sign;
-v=(v==null)?0:Math.abs(v);
+v=(v==null||!isFinite(v))?0:Math.abs(v);
 if(info.precision>=0){
 str=self.truncToFixed(v,info.precision+2);
 }else{
@@ -7459,6 +7480,9 @@ if(info.grouping){
 str=self._addNumberGrouping(str,_7bb);
 }
 str=sign+str+_7bb.percent;
+}
+}
+}
 break;
 case "r":
 case "s":
@@ -7473,9 +7497,9 @@ break;
 }
 while(info.width>str.length){
 if(info.align=="<"){
-str+=info.padding;
+str+=" ";
 }else{
-str=info.padding+str;
+str=" "+str;
 }
 }
 _7bd+=str;
