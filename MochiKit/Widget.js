@@ -168,10 +168,6 @@ MochiKit.Widget._createWidgetTreeElem = function(node, ids) {
         var widget = MochiKit.Widget.createWidget(name, attrs, children);
     } else {
         var widget = MochiKit.DOM.createDOM(name, attrs, children);
-        // TODO: Remove this once MochiKit ticket #302 is resolved
-        if (attrs.value) {
-            widget.value = attrs.value;
-        }
     }
     if (locals.id) {
         if (ids) {
