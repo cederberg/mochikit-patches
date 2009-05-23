@@ -839,7 +839,7 @@ MochiKit.Widget.Field.prototype.setAttrs = function(attrs) {
         }
         var longStr = str;
         if (this.maxLength > 0) {
-            str = MochiKit.Format.truncate(str, this.maxLength, "...");
+            str = MochiKit.Text.truncate(str, this.maxLength, "...");
         }
         MochiKit.DOM.replaceChildNodes(this, str);
         this.title = (str == longStr) ? null : longStr;
@@ -2831,14 +2831,14 @@ MochiKit.Widget.TableColumn.prototype._map = function(src, dst) {
             if (value instanceof Date) {
                 value = MochiKit.DateTime.toISODate(value);
             } else {
-                value = MochiKit.Format.truncate(value, 10);
+                value = MochiKit.Text.truncate(value, 10);
             }
             break;
         case "datetime":
             if (value instanceof Date) {
                 value = MochiKit.DateTime.toISOTimestamp(value);
             } else {
-                value = MochiKit.Format.truncate(value, 19);
+                value = MochiKit.Text.truncate(value, 19);
             }
             break;
         case "time":
@@ -2879,7 +2879,7 @@ MochiKit.Widget.TableColumn.prototype._render = function(obj) {
     }
     if (this.maxLength && this.maxLength < value.length) {
         td.title = value;
-        value = MochiKit.Format.truncate(value, this.maxLength, "...");
+        value = MochiKit.Text.truncate(value, this.maxLength, "...");
     }
     if (this.type == "html") {
         td.innerHTML = value;

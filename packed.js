@@ -8979,7 +8979,7 @@ str=str.toString();
 }
 var _94d=str;
 if(this.maxLength>0){
-str=MochiKit.Format.truncate(str,this.maxLength,"...");
+str=MochiKit.Text.truncate(str,this.maxLength,"...");
 }
 MochiKit.DOM.replaceChildNodes(this,str);
 this.title=(str==_94d)?null:_94d;
@@ -10116,14 +10116,14 @@ case "date":
 if(_a29 instanceof Date){
 _a29=MochiKit.DateTime.toISODate(_a29);
 }else{
-_a29=MochiKit.Format.truncate(_a29,10);
+_a29=MochiKit.Text.truncate(_a29,10);
 }
 break;
 case "datetime":
 if(_a29 instanceof Date){
 _a29=MochiKit.DateTime.toISOTimestamp(_a29);
 }else{
-_a29=MochiKit.Format.truncate(_a29,19);
+_a29=MochiKit.Text.truncate(_a29,19);
 }
 break;
 case "time":
@@ -10158,7 +10158,7 @@ _a2c=_a2c.toString();
 }
 if(this.maxLength&&this.maxLength<_a2c.length){
 td.title=_a2c;
-_a2c=MochiKit.Format.truncate(_a2c,this.maxLength,"...");
+_a2c=MochiKit.Text.truncate(_a2c,this.maxLength,"...");
 }
 if(this.type=="html"){
 td.innerHTML=_a2c;
