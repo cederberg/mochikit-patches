@@ -10280,7 +10280,7 @@ this._popupCreated=true;
 var _a3f={"max-height":"300px","width":"300px"};
 var _a40=new MochiKit.Widget.Popup({style:_a3f});
 MochiKit.DOM.insertSiblingNodesAfter(this,_a40);
-MochiKit.DOM.makePositioned(this.parentNode);
+MochiKit.Style.makePositioned(this.parentNode);
 var pos={x:this.offsetLeft+1,y:this.offsetTop+this.offsetHeight+1};
 MochiKit.Style.setElementPosition(_a40,pos);
 MochiKit.Signal.connect(this,"onkeydown",this,"_handleKeyDown");

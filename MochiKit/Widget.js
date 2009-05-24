@@ -3107,7 +3107,7 @@ MochiKit.Widget.TextField.prototype.popup = function(create) {
         var style = { "max-height": "300px", "width": "300px" };
         var popup = new MochiKit.Widget.Popup({ style: style });
         MochiKit.DOM.insertSiblingNodesAfter(this, popup);
-        MochiKit.DOM.makePositioned(this.parentNode);
+        MochiKit.Style.makePositioned(this.parentNode);
         var pos = { x: this.offsetLeft + 1,
                     y: this.offsetTop + this.offsetHeight + 1 };
         MochiKit.Style.setElementPosition(popup, pos);
