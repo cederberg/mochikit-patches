@@ -276,3 +276,39 @@ MochiKit.Base.injectStackTrace = function(stackTrace, func) {
         }
     }
 }
+
+/**
+ * Resolves a relative URI to an absolute URI. This function will
+ * return absolute URI:s directly and traverse any "../" directory
+ * paths in the specified URI. The base URI provided must be
+ * absolute.
+ *
+ * @param {String} uri the relative URI to resolve
+ * @param {String} base the absolute base URI
+ *
+ * @return {String} the resolved absolute URI
+ */
+MochiKit.Base.resolveURI = function (uri, base) {
+    if (uri.indexOf("://") > 0) {
+        return uri;
+    } else if (uri.indexOf("#") == 0) {
+        var pos = base.lastIndexOf("#");
+        if (pos >= 0) {
+            base = base.substring(0, pos);
+        }
+        return base + uri;
+    } else if (uri.indexOf("/") == 0) {
+        var pos = base.indexOf("://");
+        base = base.substring(0, pos + 2);
+        return base + uri;
+    } else if (uri.indexOf("../") == 0) {
+        var pos = base.lastIndexOf("/");
+        base = base.substring(0, pos);
+        uri = uri.substring(3);
+        return MochiKit.Base.resolveURI(uri, base);
+    } else {
+        var pos = base.lastIndexOf("/");
+        base = base.substring(0, pos + 1);
+        return base + uri;
+    }
+}
