@@ -20,21 +20,6 @@ if (typeof(MochiKit.Base) == "undefined") {
 }
 
 /**
- * Checks if the specified value corresponds to false. This function
- * will equate false, undefined, null, 0, "", [], "false" and "null"
- * with a boolean false value.
- *
- * @param {Object} value the value to check
- *
- * @return {Boolean} true if the value corresponds to false, or
- *         false otherwise
- */
-MochiKit.Base.isFalse = function(value) {
-    return value == false || value == null || value == 0 ||
-           value.length === 0 || value == "false" || value == "null";
-}
-
-/**
  * Returns the first function argument that is not undefined.
  *
  * @param {Object} [...] the values to check
