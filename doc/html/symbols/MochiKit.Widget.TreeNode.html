@@ -211,6 +211,8 @@ ul.inheritsList
 	
 	<li><a href="../symbols/MochiKit.Widget.Field.html">MochiKit.Widget.Field</a></li>
 	
+	<li><a href="../symbols/MochiKit.Widget.FileStreamer.html">MochiKit.Widget.FileStreamer</a></li>
+	
 	<li><a href="../symbols/MochiKit.Widget.Form.html">MochiKit.Widget.Form</a></li>
 	
 	<li><a href="../symbols/MochiKit.Widget.FormValidator.html">MochiKit.Widget.FormValidator</a></li>
@@ -300,7 +302,7 @@ ul.inheritsList
 				
 				
 				<dl class="inheritsList">
-				<dt>Fields borrowed from class <a href="../symbols/MochiKit.Widget.html#constructor">MochiKit.Widget</a>: </dt><dd><a href="../symbols/MochiKit.Widget.html#.Classes">Classes</a></dd>
+				<dt>Fields borrowed from class <a href="../symbols/MochiKit.Widget.html#constructor">MochiKit.Widget</a>: </dt><dd><a href="../symbols/MochiKit.Widget.html#._id">_id</a>, <a href="../symbols/MochiKit.Widget.html#.Classes">Classes</a></dd>
 				</dl>
 				
 			
@@ -430,6 +432,15 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.TreeNode.html#markAll">markAll</a></b>()
+								</div>
+								<div class="description">Marks all tree nodes as unmodified.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.TreeNode.html#parent">parent</a></b>()
 								</div>
 								<div class="description">Returns the parent tree node widget.</div>
@@ -442,6 +453,15 @@ ul.inheritsList
 								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.TreeNode.html#path">path</a></b>()
 								</div>
 								<div class="description">Returns the path to this tree node.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.TreeNode.html#removeAllMarked">removeAllMarked</a></b>()
+								</div>
+								<div class="description">Removes all tree nodes that are marked as unmodified.</div>
 							</td>
 						</tr>
 					
@@ -505,7 +525,7 @@ ul.inheritsList
 				
 				
 				<dl class="inheritsList">
-				<dt>Methods borrowed from class <a href="../symbols/MochiKit.Widget.html#constructor">MochiKit.Widget</a>: </dt><dd><a href="../symbols/MochiKit.Widget.html#._createWidgetTreeElem">_createWidgetTreeElem</a>, <a href="../symbols/MochiKit.Widget.html#addAll">addAll</a>, <a href="../symbols/MochiKit.Widget.html#addClass">addClass</a>, <a href="../symbols/MochiKit.Widget.html#animate">animate</a>, <a href="../symbols/MochiKit.Widget.html#blurAll">blurAll</a>, <a href="../symbols/MochiKit.Widget.html#.createWidget">createWidget</a>, <a href="../symbols/MochiKit.Widget.html#.createWidgetTree">createWidgetTree</a>, <a href="../symbols/MochiKit.Widget.html#destroy">destroy</a>, <a href="../symbols/MochiKit.Widget.html#.destroyWidget">destroyWidget</a>, <a href="../symbols/MochiKit.Widget.html#.emitSignal">emitSignal</a>, <a href="../symbols/MochiKit.Widget.html#hasClass">hasClass</a>, <a href="../symbols/MochiKit.Widget.html#hide">hide</a>, <a href="../symbols/MochiKit.Widget.html#.isFormField">isFormField</a>, <a href="../symbols/MochiKit.Widget.html#isHidden">isHidden</a>, <a href="../symbols/MochiKit.Widget.html#.isWidget">isWidget</a>, <a href="../symbols/MochiKit.Widget.html#removeAll">removeAll</a>, <a href="../symbols/MochiKit.Widget.html#removeClass">removeClass</a>, <a href="../symbols/MochiKit.Widget.html#setStyle">setStyle</a>, <a href="../symbols/MochiKit.Widget.html#show">show</a>, <a href="../symbols/MochiKit.Widget.html#toggleClass">toggleClass</a></dd>
+				<dt>Methods borrowed from class <a href="../symbols/MochiKit.Widget.html#constructor">MochiKit.Widget</a>: </dt><dd><a href="../symbols/MochiKit.Widget.html#_animQueueId">_animQueueId</a>, <a href="../symbols/MochiKit.Widget.html#._createWidgetTreeElem">_createWidgetTreeElem</a>, <a href="../symbols/MochiKit.Widget.html#._eventHandler">_eventHandler</a>, <a href="../symbols/MochiKit.Widget.html#._widgetMixin">_widgetMixin</a>, <a href="../symbols/MochiKit.Widget.html#addAll">addAll</a>, <a href="../symbols/MochiKit.Widget.html#addClass">addClass</a>, <a href="../symbols/MochiKit.Widget.html#animate">animate</a>, <a href="../symbols/MochiKit.Widget.html#blurAll">blurAll</a>, <a href="../symbols/MochiKit.Widget.html#.createWidget">createWidget</a>, <a href="../symbols/MochiKit.Widget.html#.createWidgetTree">createWidgetTree</a>, <a href="../symbols/MochiKit.Widget.html#destroy">destroy</a>, <a href="../symbols/MochiKit.Widget.html#.destroyWidget">destroyWidget</a>, <a href="../symbols/MochiKit.Widget.html#.emitSignal">emitSignal</a>, <a href="../symbols/MochiKit.Widget.html#hasClass">hasClass</a>, <a href="../symbols/MochiKit.Widget.html#hide">hide</a>, <a href="../symbols/MochiKit.Widget.html#.isFormField">isFormField</a>, <a href="../symbols/MochiKit.Widget.html#isHidden">isHidden</a>, <a href="../symbols/MochiKit.Widget.html#.isWidget">isWidget</a>, <a href="../symbols/MochiKit.Widget.html#removeAll">removeAll</a>, <a href="../symbols/MochiKit.Widget.html#removeClass">removeClass</a>, <a href="../symbols/MochiKit.Widget.html#setStyle">setStyle</a>, <a href="../symbols/MochiKit.Widget.html#show">show</a>, <a href="../symbols/MochiKit.Widget.html#toggleClass">toggleClass</a></dd>
 				</dl>
 				
 			
@@ -557,6 +577,12 @@ ul.inheritsList
 							</dt>
 								<dd>the icon reference to use, defaults
            to "FOLDER" for folders and "DOCUMENT" otherwise</dd>
+						
+							<dt>
+								<span class="light fixedFont">{String}</span>  <b>attrs.tooltip</b>
+								<i>Optional</i>
+							</dt>
+								<dd>the tooltip text when hovering</dd>
 						
 							<dt>
 								<span class="light fixedFont">{Widget}</span>  <b>...</b>
@@ -1017,6 +1043,36 @@ array is a real JavaScript array, not a dynamic NodeList.
 
 					<hr />
 				
+					<a name="markAll"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>markAll</b>()
+					
+					</div>
+					<div class="description">
+						Marks all tree nodes as unmodified. When adding or updating nodes,
+they (and their parent nodes) are automatically marked as
+modified. This function makes tree pruning possible, by initially
+marking all tree nodes (clearing any previous modified flag),
+touching all nodes to be kept, and finally calling the
+removeAllMarked() method to remove the remaining nodes.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
 					<a name="parent"> </a>
 					<div class="fixedFont">
 					
@@ -1076,6 +1132,36 @@ array is a real JavaScript array, not a dynamic NodeList.
 								<dd><span class="light fixedFont">{Array}</span> the tree node path, i.e an array of node names</dd>
 							
 							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="removeAllMarked"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>removeAllMarked</b>()
+					
+					</div>
+					<div class="description">
+						Removes all tree nodes that are marked as unmodified. When adding
+or updating nodes, they (and their parent nodes) are automatically
+marked as modified. This function makes tree pruning possible, by
+initially marking all tree nodes as unmodified (clearing any
+previous modified flag), touching all nodes to be kept, and
+finally calling this method to remove the remaining nodes.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
 						
 						
 						
@@ -1187,6 +1273,12 @@ array is a real JavaScript array, not a dynamic NodeList.
 								</dt>
 								<dd>icon the icon to set, or
            null to remove</dd>
+							
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>attrs.tooltip</b>
+									<i>Optional</i>
+								</dt>
+								<dd>the tooltip text when hovering</dd>
 							
 							</dl>
 						
@@ -1301,7 +1393,7 @@ array is a real JavaScript array, not a dynamic NodeList.
 <!-- ============================== footer ================================= -->
 		<div class="fineprint" style="clear:both">
 			
-			Documentation generated by <a href="http://www.jsdoctoolkit.org/" target="_blank">JsDoc Toolkit</a> 2.0.2 on Wed Dec 17 2008 13:29:36 GMT+0100 (CET)
+			Documentation generated by <a href="http://www.jsdoctoolkit.org/" target="_blank">JsDoc Toolkit</a> 2.0.2 on Sun May 24 2009 13:01:17 GMT+0200 (CEST)
 		</div>
 	</body>
 </html>

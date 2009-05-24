@@ -211,6 +211,8 @@ ul.inheritsList
 	
 	<li><a href="../symbols/MochiKit.Widget.Field.html">MochiKit.Widget.Field</a></li>
 	
+	<li><a href="../symbols/MochiKit.Widget.FileStreamer.html">MochiKit.Widget.FileStreamer</a></li>
+	
 	<li><a href="../symbols/MochiKit.Widget.Form.html">MochiKit.Widget.Form</a></li>
 	
 	<li><a href="../symbols/MochiKit.Widget.FormValidator.html">MochiKit.Widget.FormValidator</a></li>
@@ -303,7 +305,7 @@ ul.inheritsList
 				
 				
 				<dl class="inheritsList">
-				<dt>Fields borrowed from class <a href="../symbols/MochiKit.Widget.html#constructor">MochiKit.Widget</a>: </dt><dd><a href="../symbols/MochiKit.Widget.html#.Classes">Classes</a></dd>
+				<dt>Fields borrowed from class <a href="../symbols/MochiKit.Widget.html#constructor">MochiKit.Widget</a>: </dt><dd><a href="../symbols/MochiKit.Widget.html#._id">_id</a>, <a href="../symbols/MochiKit.Widget.html#.Classes">Classes</a></dd>
 				</dl>
 				
 			
@@ -524,6 +526,15 @@ was set.</div>
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.Table.html#setSelectedIds">setSelectedIds</a></b>()
+								</div>
+								<div class="description">Sets the selection to the specified row id values.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.Table.html#sortData">sortData</a></b>(field, direction)
 								</div>
 								<div class="description">Sorts the table data by field and direction.</div>
@@ -536,7 +547,7 @@ was set.</div>
 				
 				
 				<dl class="inheritsList">
-				<dt>Methods borrowed from class <a href="../symbols/MochiKit.Widget.html#constructor">MochiKit.Widget</a>: </dt><dd><a href="../symbols/MochiKit.Widget.html#._createWidgetTreeElem">_createWidgetTreeElem</a>, <a href="../symbols/MochiKit.Widget.html#addAll">addAll</a>, <a href="../symbols/MochiKit.Widget.html#addClass">addClass</a>, <a href="../symbols/MochiKit.Widget.html#animate">animate</a>, <a href="../symbols/MochiKit.Widget.html#blurAll">blurAll</a>, <a href="../symbols/MochiKit.Widget.html#.createWidget">createWidget</a>, <a href="../symbols/MochiKit.Widget.html#.createWidgetTree">createWidgetTree</a>, <a href="../symbols/MochiKit.Widget.html#destroy">destroy</a>, <a href="../symbols/MochiKit.Widget.html#.destroyWidget">destroyWidget</a>, <a href="../symbols/MochiKit.Widget.html#.emitSignal">emitSignal</a>, <a href="../symbols/MochiKit.Widget.html#hasClass">hasClass</a>, <a href="../symbols/MochiKit.Widget.html#hide">hide</a>, <a href="../symbols/MochiKit.Widget.html#.isFormField">isFormField</a>, <a href="../symbols/MochiKit.Widget.html#isHidden">isHidden</a>, <a href="../symbols/MochiKit.Widget.html#.isWidget">isWidget</a>, <a href="../symbols/MochiKit.Widget.html#removeAll">removeAll</a>, <a href="../symbols/MochiKit.Widget.html#removeClass">removeClass</a>, <a href="../symbols/MochiKit.Widget.html#setStyle">setStyle</a>, <a href="../symbols/MochiKit.Widget.html#show">show</a>, <a href="../symbols/MochiKit.Widget.html#toggleClass">toggleClass</a></dd>
+				<dt>Methods borrowed from class <a href="../symbols/MochiKit.Widget.html#constructor">MochiKit.Widget</a>: </dt><dd><a href="../symbols/MochiKit.Widget.html#_animQueueId">_animQueueId</a>, <a href="../symbols/MochiKit.Widget.html#._createWidgetTreeElem">_createWidgetTreeElem</a>, <a href="../symbols/MochiKit.Widget.html#._eventHandler">_eventHandler</a>, <a href="../symbols/MochiKit.Widget.html#._widgetMixin">_widgetMixin</a>, <a href="../symbols/MochiKit.Widget.html#addAll">addAll</a>, <a href="../symbols/MochiKit.Widget.html#addClass">addClass</a>, <a href="../symbols/MochiKit.Widget.html#animate">animate</a>, <a href="../symbols/MochiKit.Widget.html#blurAll">blurAll</a>, <a href="../symbols/MochiKit.Widget.html#.createWidget">createWidget</a>, <a href="../symbols/MochiKit.Widget.html#.createWidgetTree">createWidgetTree</a>, <a href="../symbols/MochiKit.Widget.html#destroy">destroy</a>, <a href="../symbols/MochiKit.Widget.html#.destroyWidget">destroyWidget</a>, <a href="../symbols/MochiKit.Widget.html#.emitSignal">emitSignal</a>, <a href="../symbols/MochiKit.Widget.html#hasClass">hasClass</a>, <a href="../symbols/MochiKit.Widget.html#hide">hide</a>, <a href="../symbols/MochiKit.Widget.html#.isFormField">isFormField</a>, <a href="../symbols/MochiKit.Widget.html#isHidden">isHidden</a>, <a href="../symbols/MochiKit.Widget.html#.isWidget">isWidget</a>, <a href="../symbols/MochiKit.Widget.html#removeAll">removeAll</a>, <a href="../symbols/MochiKit.Widget.html#removeClass">removeClass</a>, <a href="../symbols/MochiKit.Widget.html#setStyle">setStyle</a>, <a href="../symbols/MochiKit.Widget.html#show">show</a>, <a href="../symbols/MochiKit.Widget.html#toggleClass">toggleClass</a></dd>
 				</dl>
 				
 			
@@ -559,6 +570,14 @@ was set.</div>
 				
 				
 				
+				<pre class="code">&lt;Table id="exTable" w="50%" h="100%"&gt;
+  &lt;TableColumn title="Id" field="id" key="true" type="number" /&gt;
+  &lt;TableColumn title="Name" field="name" sort="asc" /&gt;
+  &lt;TableColumn title="Creation Date" field="created" type="date" /&gt;
+&lt;/Table&gt;</pre>
+				
+				
+				
 				
 					
 						<dl class="detailList">
@@ -571,11 +590,18 @@ was set.</div>
 								<dd>the widget and node attributes</dd>
 						
 							<dt>
-								<span class="light fixedFont">{Boolean}</span>  <b>attrs.multiple</b>
+								<span class="light fixedFont">{String}</span>  <b>attrs.select</b>
 								<i>Optional</i>
 							</dt>
-								<dd>the multiple row selection flag,
-           defaults to false</dd>
+								<dd>the row selection mode ('none', 'one' or
+           'multiple'), defaults to 'one'</dd>
+						
+							<dt>
+								<span class="light fixedFont">{String}</span>  <b>attrs.key</b>
+								<i>Optional</i>
+							</dt>
+								<dd>the unique key identifier column field,
+           defaults to null</dd>
 						
 							<dt>
 								<span class="light fixedFont">{Widget}</span>  <b>...</b>
@@ -1325,10 +1351,17 @@ current selection is changed the select signal will be emitted.
 								<dd>the widget and node attributes to set</dd>
 							
 								<dt>
-									<span class="light fixedFont">{Boolean}</span> <b>attrs.multiple</b>
+									<span class="light fixedFont">{String}</span> <b>attrs.select</b>
 									<i>Optional</i>
 								</dt>
-								<dd>the multiple row selection flag</dd>
+								<dd>the row selection mode ('none', 'one' or
+           'multiple')</dd>
+							
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>attrs.key</b>
+									<i>Optional</i>
+								</dt>
+								<dd>the unique key identifier column field</dd>
 							
 							</dl>
 						
@@ -1357,6 +1390,15 @@ details.
 						
 						
 					</div>
+					
+					
+					
+					<pre class="code">var data = [
+    { id: 1, name: "John Doe", created: "2007-12-31" },
+    { id: 2, name: "First Last", created: "2008-03-01" },
+    { id: 3, name: "Another Name", created: "2009-01-12" }
+];
+table.setData(data);</pre>
 					
 					
 					
@@ -1419,6 +1461,50 @@ contains data.
 
 					<hr />
 				
+					<a name="setSelectedIds"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{Array}</span>
+					<b>setSelectedIds</b>()
+					
+					</div>
+					<div class="description">
+						Sets the selection to the specified row id values. If the current
+selection is changed the select signal will be emitted.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{String/Array}</span> <b>...</b>
+									<i>Optional</i>
+								</dt>
+								<dd>the row ids or array with ids to select</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Array}</span> an array with the row ids actually modified</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
 					<a name="sortData"> </a>
 					<div class="fixedFont">
 					
@@ -1470,7 +1556,7 @@ contains data.
 <!-- ============================== footer ================================= -->
 		<div class="fineprint" style="clear:both">
 			
-			Documentation generated by <a href="http://www.jsdoctoolkit.org/" target="_blank">JsDoc Toolkit</a> 2.0.2 on Wed Dec 17 2008 13:29:36 GMT+0100 (CET)
+			Documentation generated by <a href="http://www.jsdoctoolkit.org/" target="_blank">JsDoc Toolkit</a> 2.0.2 on Sun May 24 2009 13:01:16 GMT+0200 (CEST)
 		</div>
 	</body>
 </html>

@@ -5,7 +5,7 @@
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<meta name="generator" content="JsDoc Toolkit" />
 		
-		<title>JsDoc Reference - MochiKit.Widget.Popup</title>
+		<title>JsDoc Reference - MochiKit.Widget.FileStreamer</title>
 
 		<style type="text/css">
 			/* default.css */
@@ -252,7 +252,7 @@ ul.inheritsList
 <!-- ============================== class title ============================ -->
 			<h1 class="classTitle">
 				
-				Class MochiKit.Widget.Popup
+				Class MochiKit.Widget.FileStreamer
 			</h1>
 
 <!-- ============================== class summary ========================== -->			
@@ -261,13 +261,16 @@ ul.inheritsList
 					<a href="../symbols/MochiKit.Widget.html#constructor">MochiKit.Widget</a>.<br />
 				
 			
-				The popup widget class. Used to provide a popup menu or
-    information area, using a &lt;div&gt; HTML element. The Popup
-    widget will automatically disappear after a configurable
-    amount of time, unless the user performs keyboard or mouse
-    actions related to the popup. In addition to standard HTML
-    events, the "onshow" and "onhide" events are triggered when
-    the menu has been shown or hidden.
+				The file streamer widget class. This widget is used to
+    provide a file upload (file input) control that can stream the
+    selected file to the server. The file data is always sent
+    asynchronously (i.e. in the background) to allow the rest of
+    the web page to remain active also during the potentially long
+    delays caused by sending large amounts of data. The widget
+    creates its own IFRAME HTML element inside which the actual
+    FORM and INPUT elements are created automatically. In addition
+    to standard HTML events, the "onselect" and "onupload" events
+    are also triggered.
 				
 				
 					<br /><i>Defined in: </i> <a href="../symbols/src/scripts_MochiKit_Widget.js.html">Widget.js</a>.
@@ -276,7 +279,7 @@ ul.inheritsList
 
 <!-- ============================== constructor summary ==================== -->			
 			
-			<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class MochiKit.Widget.Popup.">
+			<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class MochiKit.Widget.FileStreamer.">
 				<caption>Class Summary</caption>
 				<thead>
 					<tr>
@@ -289,9 +292,9 @@ ul.inheritsList
 						<td class="attributes">&nbsp;</td>
 						<td class="nameDescription" >
 							<div class="fixedFont">
-								<b><a href="../symbols/MochiKit.Widget.Popup.html#constructor">MochiKit.Widget.Popup</a></b>(attrs)
+								<b><a href="../symbols/MochiKit.Widget.FileStreamer.html#constructor">MochiKit.Widget.FileStreamer</a></b>(attrs)
 							</div>
-							<div class="description">Creates a new popup widget.</div>
+							<div class="description">Creates a new file streamer widget.</div>
 						</td>
 					</tr>
 				</tbody>
@@ -314,7 +317,7 @@ ul.inheritsList
 			
 				
 				
-				<table class="summaryTable" cellspacing="0" summary="A summary of the methods documented in the class MochiKit.Widget.Popup.">
+				<table class="summaryTable" cellspacing="0" summary="A summary of the methods documented in the class MochiKit.Widget.FileStreamer.">
 					<caption>Method Summary</caption>
 					<thead>
 						<tr>
@@ -327,81 +330,36 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.Popup.html#_handleMouseClick">_handleMouseClick</a></b>(evt)
+								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.FileStreamer.html#_handleChange">_handleChange</a></b>()
 								</div>
-								<div class="description">Handles mouse click events on the popup.</div>
+								<div class="description">Handles the file input onchange event.</div>
 							</td>
 						</tr>
 					
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.Popup.html#_handleMouseMove">_handleMouseMove</a></b>(evt)
+								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.FileStreamer.html#_handleLoad">_handleLoad</a></b>()
 								</div>
-								<div class="description">Handles mouse move events over the popup.</div>
+								<div class="description">Handles the iframe onload event.</div>
 							</td>
 						</tr>
 					
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.Popup.html#hide">hide</a></b>()
+								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.FileStreamer.html#_initDocument">_initDocument</a></b>()
 								</div>
-								<div class="description">Hides the popup.</div>
+								<div class="description">Creates the document form and file input element.</div>
 							</td>
 						</tr>
 					
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.Popup.html#resetDelay">resetDelay</a></b>()
-								</div>
-								<div class="description">Resets the popup auto-hide timer.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.Popup.html#selectChild">selectChild</a></b>(indexOrNode)
-								</div>
-								<div class="description">Marks a popup child as selected.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.Popup.html#selectedChild">selectedChild</a></b>()
-								</div>
-								<div class="description">Returns the currently selected child node.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.Popup.html#selectMove">selectMove</a></b>(offset)
-								</div>
-								<div class="description">Moves the current selection by a numeric offset.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.Popup.html#setAttrs">setAttrs</a></b>(attrs)
+								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.FileStreamer.html#setAttrs">setAttrs</a></b>(attrs)
 								</div>
 								<div class="description">Updates the widget or HTML DOM node attributes.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.Popup.html#show">show</a></b>()
-								</div>
-								<div class="description">Shows the popup.</div>
 							</td>
 						</tr>
 					
@@ -411,7 +369,7 @@ ul.inheritsList
 				
 				
 				<dl class="inheritsList">
-				<dt>Methods borrowed from class <a href="../symbols/MochiKit.Widget.html#constructor">MochiKit.Widget</a>: </dt><dd><a href="../symbols/MochiKit.Widget.html#_animQueueId">_animQueueId</a>, <a href="../symbols/MochiKit.Widget.html#._createWidgetTreeElem">_createWidgetTreeElem</a>, <a href="../symbols/MochiKit.Widget.html#._eventHandler">_eventHandler</a>, <a href="../symbols/MochiKit.Widget.html#._widgetMixin">_widgetMixin</a>, <a href="../symbols/MochiKit.Widget.html#addAll">addAll</a>, <a href="../symbols/MochiKit.Widget.html#addChildNode">addChildNode</a>, <a href="../symbols/MochiKit.Widget.html#addClass">addClass</a>, <a href="../symbols/MochiKit.Widget.html#animate">animate</a>, <a href="../symbols/MochiKit.Widget.html#blurAll">blurAll</a>, <a href="../symbols/MochiKit.Widget.html#.createWidget">createWidget</a>, <a href="../symbols/MochiKit.Widget.html#.createWidgetTree">createWidgetTree</a>, <a href="../symbols/MochiKit.Widget.html#destroy">destroy</a>, <a href="../symbols/MochiKit.Widget.html#.destroyWidget">destroyWidget</a>, <a href="../symbols/MochiKit.Widget.html#.emitSignal">emitSignal</a>, <a href="../symbols/MochiKit.Widget.html#getChildNodes">getChildNodes</a>, <a href="../symbols/MochiKit.Widget.html#hasClass">hasClass</a>, <a href="../symbols/MochiKit.Widget.html#.isFormField">isFormField</a>, <a href="../symbols/MochiKit.Widget.html#isHidden">isHidden</a>, <a href="../symbols/MochiKit.Widget.html#.isWidget">isWidget</a>, <a href="../symbols/MochiKit.Widget.html#removeAll">removeAll</a>, <a href="../symbols/MochiKit.Widget.html#removeChildNode">removeChildNode</a>, <a href="../symbols/MochiKit.Widget.html#removeClass">removeClass</a>, <a href="../symbols/MochiKit.Widget.html#setStyle">setStyle</a>, <a href="../symbols/MochiKit.Widget.html#toggleClass">toggleClass</a></dd>
+				<dt>Methods borrowed from class <a href="../symbols/MochiKit.Widget.html#constructor">MochiKit.Widget</a>: </dt><dd><a href="../symbols/MochiKit.Widget.html#_animQueueId">_animQueueId</a>, <a href="../symbols/MochiKit.Widget.html#._createWidgetTreeElem">_createWidgetTreeElem</a>, <a href="../symbols/MochiKit.Widget.html#._eventHandler">_eventHandler</a>, <a href="../symbols/MochiKit.Widget.html#._widgetMixin">_widgetMixin</a>, <a href="../symbols/MochiKit.Widget.html#addAll">addAll</a>, <a href="../symbols/MochiKit.Widget.html#addChildNode">addChildNode</a>, <a href="../symbols/MochiKit.Widget.html#addClass">addClass</a>, <a href="../symbols/MochiKit.Widget.html#animate">animate</a>, <a href="../symbols/MochiKit.Widget.html#blurAll">blurAll</a>, <a href="../symbols/MochiKit.Widget.html#.createWidget">createWidget</a>, <a href="../symbols/MochiKit.Widget.html#.createWidgetTree">createWidgetTree</a>, <a href="../symbols/MochiKit.Widget.html#destroy">destroy</a>, <a href="../symbols/MochiKit.Widget.html#.destroyWidget">destroyWidget</a>, <a href="../symbols/MochiKit.Widget.html#.emitSignal">emitSignal</a>, <a href="../symbols/MochiKit.Widget.html#getChildNodes">getChildNodes</a>, <a href="../symbols/MochiKit.Widget.html#hasClass">hasClass</a>, <a href="../symbols/MochiKit.Widget.html#hide">hide</a>, <a href="../symbols/MochiKit.Widget.html#.isFormField">isFormField</a>, <a href="../symbols/MochiKit.Widget.html#isHidden">isHidden</a>, <a href="../symbols/MochiKit.Widget.html#.isWidget">isWidget</a>, <a href="../symbols/MochiKit.Widget.html#removeAll">removeAll</a>, <a href="../symbols/MochiKit.Widget.html#removeChildNode">removeChildNode</a>, <a href="../symbols/MochiKit.Widget.html#removeClass">removeClass</a>, <a href="../symbols/MochiKit.Widget.html#setStyle">setStyle</a>, <a href="../symbols/MochiKit.Widget.html#show">show</a>, <a href="../symbols/MochiKit.Widget.html#toggleClass">toggleClass</a></dd>
 				</dl>
 				
 			
@@ -424,13 +382,22 @@ ul.inheritsList
 				</div>
 				
 				<div class="fixedFont">
-						<b>MochiKit.Widget.Popup</b>(attrs)
+						<b>MochiKit.Widget.FileStreamer</b>(attrs)
 				</div>
 				
 				<div class="description">
-					Creates a new popup widget.
+					Creates a new file streamer widget.
 					
 				</div>
+				
+				
+				
+				<pre class="code">var file = MochiKit.Widget.FileStreamer({ url: "rapidcontext/upload/myid" });
+form.addAll(file);
+MochiKit.Signal.connect(file, "onselect", function () {
+    file.hide();
+    // add code to show progress bar
+});</pre>
 				
 				
 				
@@ -446,31 +413,24 @@ ul.inheritsList
 								<dd>the widget and node attributes</dd>
 						
 							<dt>
-								<span class="light fixedFont">{Number}</span>  <b>attrs.delay</b>
+								<span class="light fixedFont">{String}</span>  <b>attrs.url</b>
 								<i>Optional</i>
 							</dt>
-								<dd>the widget auto-hide delay in
-           milliseconds, defaults to 5000</dd>
+								<dd>the URL to post the data to, defaults
+           to window.location.href</dd>
 						
 							<dt>
-								<span class="light fixedFont">{Object}</span>  <b>attrs.showAnim</b>
+								<span class="light fixedFont">{String}</span>  <b>attrs.name</b>
 								<i>Optional</i>
 							</dt>
-								<dd>the optional animation options
-              when showing the popup, defaults to none</dd>
+								<dd>the file input field name,
+           defaults to 'file'</dd>
 						
 							<dt>
-								<span class="light fixedFont">{Object}</span>  <b>attrs.hideAnim</b>
+								<span class="light fixedFont">{String}</span>  <b>attrs.size</b>
 								<i>Optional</i>
 							</dt>
-								<dd>the optional animation options
-           when hiding the popup, defaults to none</dd>
-						
-							<dt>
-								<span class="light fixedFont">{Widget}</span>  <b>...</b>
-								<i>Optional</i>
-							</dt>
-								<dd>the child widgets or DOM nodes</dd>
+								<dd>the file input size, defaults to '30'</dd>
 						
 						</dl>
 					
@@ -500,87 +460,15 @@ ul.inheritsList
 					Method Detail
 				</div>
 				
-					<a name="_handleMouseClick"> </a>
+					<a name="_handleChange"> </a>
 					<div class="fixedFont">
 					
 					
-					<b>_handleMouseClick</b>(evt)
+					<b>_handleChange</b>()
 					
 					</div>
 					<div class="description">
-						Handles mouse click events on the popup.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{Event}</span> <b>evt</b>
-									
-								</dt>
-								<dd>the MochiKit.Signal.Event object</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="_handleMouseMove"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>_handleMouseMove</b>(evt)
-					
-					</div>
-					<div class="description">
-						Handles mouse move events over the popup.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{Event}</span> <b>evt</b>
-									
-								</dt>
-								<dd>the MochiKit.Signal.Event object</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="hide"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>hide</b>()
-					
-					</div>
-					<div class="description">
-						Hides the popup.
+						Handles the file input onchange event.
 						
 						
 					</div>
@@ -597,16 +485,15 @@ ul.inheritsList
 
 					<hr />
 				
-					<a name="resetDelay"> </a>
+					<a name="_handleLoad"> </a>
 					<div class="fixedFont">
 					
 					
-					<b>resetDelay</b>()
+					<b>_handleLoad</b>()
 					
 					</div>
 					<div class="description">
-						Resets the popup auto-hide timer. Might be called manually when
-receiving events on other widgets related to this one.
+						Handles the iframe onload event.
 						
 						
 					</div>
@@ -623,61 +510,15 @@ receiving events on other widgets related to this one.
 
 					<hr />
 				
-					<a name="selectChild"> </a>
+					<a name="_initDocument"> </a>
 					<div class="fixedFont">
 					
 					
-					<b>selectChild</b>(indexOrNode)
+					<b>_initDocument</b>()
 					
 					</div>
 					<div class="description">
-						Marks a popup child as selected. The currently selected child will
-automatically be unselected by this method.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{Number/Node}</span> <b>indexOrNode</b>
-									
-								</dt>
-								<dd>the child node index or DOM node,
-           use a negative value to unselect</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd>the index of the newly selected child, or
-        -1 if none was selected</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name="selectedChild"> </a>
-					<div class="fixedFont">
-					
-					<span class="light">{Node}</span>
-					<b>selectedChild</b>()
-					
-					</div>
-					<div class="description">
-						Returns the currently selected child node.
+						Creates the document form and file input element.
 						
 						
 					</div>
@@ -688,59 +529,6 @@ automatically be unselected by this method.
 						
 						
 						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd><span class="light fixedFont">{Node}</span> the currently selected child node, or
-        null if no node is selected</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name="selectMove"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>selectMove</b>(offset)
-					
-					</div>
-					<div class="description">
-						Moves the current selection by a numeric offset.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{Number}</span> <b>offset</b>
-									
-								</dt>
-								<dd>the selection offset (a positive or
-           negative number)</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd>the index of the newly selected child, or
-        -1 if none was selected</dd>
-							
-							</dl>
 						
 						
 						
@@ -773,52 +561,24 @@ automatically be unselected by this method.
 								<dd>the widget and node attributes to set</dd>
 							
 								<dt>
-									<span class="light fixedFont">{Number}</span> <b>attrs.delay</b>
+									<span class="light fixedFont">{String}</span> <b>attrs.url</b>
 									<i>Optional</i>
 								</dt>
-								<dd>the widget auto-hide delay in
-           milliseconds, defaults to 5000</dd>
+								<dd>the URL to post the data to</dd>
 							
 								<dt>
-									<span class="light fixedFont">{Object}</span> <b>attrs.showAnim</b>
+									<span class="light fixedFont">{String}</span> <b>attrs.name</b>
 									<i>Optional</i>
 								</dt>
-								<dd>the optional animation options
-              when showing the popup, defaults to none</dd>
+								<dd>the file input field name</dd>
 							
 								<dt>
-									<span class="light fixedFont">{Object}</span> <b>attrs.hideAnim</b>
+									<span class="light fixedFont">{String}</span> <b>attrs.size</b>
 									<i>Optional</i>
 								</dt>
-								<dd>the optional animation options
-           when hiding the popup, defaults to none</dd>
+								<dd>the file input size</dd>
 							
 							</dl>
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="show"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>show</b>()
-					
-					</div>
-					<div class="description">
-						Shows the popup.
-						
-						
-					</div>
-					
-					
-					
 						
 						
 						

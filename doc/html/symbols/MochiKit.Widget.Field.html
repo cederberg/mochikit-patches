@@ -211,6 +211,8 @@ ul.inheritsList
 	
 	<li><a href="../symbols/MochiKit.Widget.Field.html">MochiKit.Widget.Field</a></li>
 	
+	<li><a href="../symbols/MochiKit.Widget.FileStreamer.html">MochiKit.Widget.FileStreamer</a></li>
+	
 	<li><a href="../symbols/MochiKit.Widget.Form.html">MochiKit.Widget.Form</a></li>
 	
 	<li><a href="../symbols/MochiKit.Widget.FormValidator.html">MochiKit.Widget.FormValidator</a></li>
@@ -299,7 +301,7 @@ ul.inheritsList
 				
 				
 				<dl class="inheritsList">
-				<dt>Fields borrowed from class <a href="../symbols/MochiKit.Widget.html#constructor">MochiKit.Widget</a>: </dt><dd><a href="../symbols/MochiKit.Widget.html#.Classes">Classes</a></dd>
+				<dt>Fields borrowed from class <a href="../symbols/MochiKit.Widget.html#constructor">MochiKit.Widget</a>: </dt><dd><a href="../symbols/MochiKit.Widget.html#._id">_id</a>, <a href="../symbols/MochiKit.Widget.html#.Classes">Classes</a></dd>
 				</dl>
 				
 			
@@ -321,6 +323,15 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.Field.html#reset">reset</a></b>()
+								</div>
+								<div class="description">Resets the field value to the initial value.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.Field.html#setAttrs">setAttrs</a></b>(attrs)
 								</div>
 								<div class="description">Updates the widget or HTML DOM node attributes.</div>
@@ -333,7 +344,7 @@ ul.inheritsList
 				
 				
 				<dl class="inheritsList">
-				<dt>Methods borrowed from class <a href="../symbols/MochiKit.Widget.html#constructor">MochiKit.Widget</a>: </dt><dd><a href="../symbols/MochiKit.Widget.html#._createWidgetTreeElem">_createWidgetTreeElem</a>, <a href="../symbols/MochiKit.Widget.html#addAll">addAll</a>, <a href="../symbols/MochiKit.Widget.html#addChildNode">addChildNode</a>, <a href="../symbols/MochiKit.Widget.html#addClass">addClass</a>, <a href="../symbols/MochiKit.Widget.html#animate">animate</a>, <a href="../symbols/MochiKit.Widget.html#blurAll">blurAll</a>, <a href="../symbols/MochiKit.Widget.html#.createWidget">createWidget</a>, <a href="../symbols/MochiKit.Widget.html#.createWidgetTree">createWidgetTree</a>, <a href="../symbols/MochiKit.Widget.html#destroy">destroy</a>, <a href="../symbols/MochiKit.Widget.html#.destroyWidget">destroyWidget</a>, <a href="../symbols/MochiKit.Widget.html#.emitSignal">emitSignal</a>, <a href="../symbols/MochiKit.Widget.html#getChildNodes">getChildNodes</a>, <a href="../symbols/MochiKit.Widget.html#hasClass">hasClass</a>, <a href="../symbols/MochiKit.Widget.html#hide">hide</a>, <a href="../symbols/MochiKit.Widget.html#.isFormField">isFormField</a>, <a href="../symbols/MochiKit.Widget.html#isHidden">isHidden</a>, <a href="../symbols/MochiKit.Widget.html#.isWidget">isWidget</a>, <a href="../symbols/MochiKit.Widget.html#removeAll">removeAll</a>, <a href="../symbols/MochiKit.Widget.html#removeChildNode">removeChildNode</a>, <a href="../symbols/MochiKit.Widget.html#removeClass">removeClass</a>, <a href="../symbols/MochiKit.Widget.html#setStyle">setStyle</a>, <a href="../symbols/MochiKit.Widget.html#show">show</a>, <a href="../symbols/MochiKit.Widget.html#toggleClass">toggleClass</a></dd>
+				<dt>Methods borrowed from class <a href="../symbols/MochiKit.Widget.html#constructor">MochiKit.Widget</a>: </dt><dd><a href="../symbols/MochiKit.Widget.html#_animQueueId">_animQueueId</a>, <a href="../symbols/MochiKit.Widget.html#._createWidgetTreeElem">_createWidgetTreeElem</a>, <a href="../symbols/MochiKit.Widget.html#._eventHandler">_eventHandler</a>, <a href="../symbols/MochiKit.Widget.html#._widgetMixin">_widgetMixin</a>, <a href="../symbols/MochiKit.Widget.html#addAll">addAll</a>, <a href="../symbols/MochiKit.Widget.html#addChildNode">addChildNode</a>, <a href="../symbols/MochiKit.Widget.html#addClass">addClass</a>, <a href="../symbols/MochiKit.Widget.html#animate">animate</a>, <a href="../symbols/MochiKit.Widget.html#blurAll">blurAll</a>, <a href="../symbols/MochiKit.Widget.html#.createWidget">createWidget</a>, <a href="../symbols/MochiKit.Widget.html#.createWidgetTree">createWidgetTree</a>, <a href="../symbols/MochiKit.Widget.html#destroy">destroy</a>, <a href="../symbols/MochiKit.Widget.html#.destroyWidget">destroyWidget</a>, <a href="../symbols/MochiKit.Widget.html#.emitSignal">emitSignal</a>, <a href="../symbols/MochiKit.Widget.html#getChildNodes">getChildNodes</a>, <a href="../symbols/MochiKit.Widget.html#hasClass">hasClass</a>, <a href="../symbols/MochiKit.Widget.html#hide">hide</a>, <a href="../symbols/MochiKit.Widget.html#.isFormField">isFormField</a>, <a href="../symbols/MochiKit.Widget.html#isHidden">isHidden</a>, <a href="../symbols/MochiKit.Widget.html#.isWidget">isWidget</a>, <a href="../symbols/MochiKit.Widget.html#removeAll">removeAll</a>, <a href="../symbols/MochiKit.Widget.html#removeChildNode">removeChildNode</a>, <a href="../symbols/MochiKit.Widget.html#removeClass">removeClass</a>, <a href="../symbols/MochiKit.Widget.html#setStyle">setStyle</a>, <a href="../symbols/MochiKit.Widget.html#show">show</a>, <a href="../symbols/MochiKit.Widget.html#toggleClass">toggleClass</a></dd>
 				</dl>
 				
 			
@@ -353,6 +364,12 @@ ul.inheritsList
 					Creates a new field widget.
 					
 				</div>
+				
+				
+				
+				<pre class="code">var field = MochiKit.Widget.Field({ name: "ratio", format: "Ratio: {:%}" });
+form.addAll(field);
+field.setAttrs({ value: 0.23 });</pre>
 				
 				
 				
@@ -423,6 +440,31 @@ ul.inheritsList
 					Method Detail
 				</div>
 				
+					<a name="reset"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>reset</b>()
+					
+					</div>
+					<div class="description">
+						Resets the field value to the initial value.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
 					<a name="setAttrs"> </a>
 					<div class="fixedFont">
 					
@@ -435,6 +477,10 @@ ul.inheritsList
 						
 						
 					</div>
+					
+					
+					
+					<pre class="code">field.setAttrs({ value: 0.23 });</pre>
 					
 					
 					
@@ -492,7 +538,7 @@ ul.inheritsList
 <!-- ============================== footer ================================= -->
 		<div class="fineprint" style="clear:both">
 			
-			Documentation generated by <a href="http://www.jsdoctoolkit.org/" target="_blank">JsDoc Toolkit</a> 2.0.2 on Wed Dec 17 2008 13:29:35 GMT+0100 (CET)
+			Documentation generated by <a href="http://www.jsdoctoolkit.org/" target="_blank">JsDoc Toolkit</a> 2.0.2 on Sun May 24 2009 13:01:16 GMT+0200 (CEST)
 		</div>
 	</body>
 </html>

@@ -211,6 +211,8 @@ ul.inheritsList
 	
 	<li><a href="../symbols/MochiKit.Widget.Field.html">MochiKit.Widget.Field</a></li>
 	
+	<li><a href="../symbols/MochiKit.Widget.FileStreamer.html">MochiKit.Widget.FileStreamer</a></li>
+	
 	<li><a href="../symbols/MochiKit.Widget.Form.html">MochiKit.Widget.Form</a></li>
 	
 	<li><a href="../symbols/MochiKit.Widget.FormValidator.html">MochiKit.Widget.FormValidator</a></li>
@@ -309,6 +311,16 @@ ul.inheritsList
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
 								<div class="fixedFont">
+								MochiKit.Widget.<b><a href="../symbols/MochiKit.Widget.html#._id">_id</a></b>
+								</div>
+								<div class="description">Function to return unique identifiers.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
 								MochiKit.Widget.<b><a href="../symbols/MochiKit.Widget.html#.Classes">Classes</a></b>
 								</div>
 								<div class="description">The registered widget class names and constructor functions.</div>
@@ -337,11 +349,39 @@ ul.inheritsList
 					<tbody>
 					
 						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/MochiKit.Widget.html#_animQueueId">_animQueueId</a></b>()
+								</div>
+								<div class="description">Returns the default visual effect queue identifier.</div>
+							</td>
+						</tr>
+					
+						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
 								<div class="fixedFont">MochiKit.Widget.<b><a href="../symbols/MochiKit.Widget.html#._createWidgetTreeElem">_createWidgetTreeElem</a></b>(node, ids)
 								</div>
 								<div class="description">Creates a DOM node or widget from a parsed XML element.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">MochiKit.Widget.<b><a href="../symbols/MochiKit.Widget.html#._eventHandler">_eventHandler</a></b>(className, methodName)
+								</div>
+								<div class="description">Creates an event handler function that will forward any calls to
+another function.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">MochiKit.Widget.<b><a href="../symbols/MochiKit.Widget.html#._widgetMixin">_widgetMixin</a></b>(node)
+								</div>
+								<div class="description">Adds all functions from a widget class to a DOM node.</div>
 							</td>
 						</tr>
 					
@@ -599,6 +639,28 @@ from this HTML DOM node.</div>
 					Field Detail
 				</div>
 				
+					<a name="._id"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					<span class="light">{Number}</span>
+					<span class="light">MochiKit.Widget.</span><b>_id</b>
+					
+					</div>
+					<div class="description">
+						Function to return unique identifiers.
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+
+					<hr />
+				
 					<a name=".Classes"> </a>
 					<div class="fixedFont">&lt;static&gt; 
 					
@@ -632,6 +694,38 @@ object.
 				<div class="sectionTitle">
 					Method Detail
 				</div>
+				
+					<a name="_animQueueId"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{String}</span>
+					<b>_animQueueId</b>()
+					
+					</div>
+					<div class="description">
+						Returns the default visual effect queue identifier.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{String}</span> the the default queue identifier</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
 				
 					<a name="._createWidgetTreeElem"> </a>
 					<div class="fixedFont">&lt;static&gt; 
@@ -680,6 +774,117 @@ instead of as plain attribute strings.
 							<dt class="heading">Returns:</dt>
 							
 								<dd><span class="light fixedFont">{Node/Widget}</span> the DOM node or widget created</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="._eventHandler"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					<span class="light">{Function}</span>
+					<span class="light">MochiKit.Widget.</span><b>_eventHandler</b>(className, methodName)
+					
+					</div>
+					<div class="description">
+						Creates an event handler function that will forward any calls to
+another function. The other function must exist as a property in
+a parent widget of the specified class.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>className</b>
+									
+								</dt>
+								<dd>the parent widget class name, or null
+                    to use the same node</dd>
+							
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>methodName</b>
+									
+								</dt>
+								<dd>the name of the method to call</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>...</b>
+									<i>Optional</i>
+								</dt>
+								<dd>the additional method arguments</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Function}</span> a function that forwards calls as specified</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="._widgetMixin"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					<span class="light">{Widget}</span>
+					<span class="light">MochiKit.Widget.</span><b>_widgetMixin</b>(node)
+					
+					</div>
+					<div class="description">
+						Adds all functions from a widget class to a DOM node. This will
+also convert the DOM node into a widget by adding the "widget"
+CSS class and add all the default widget functions from the
+standard Widget prototype. Functions are added with setdefault,
+ensuring that existing functions will not be overwritten.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Node}</span> <b>node</b>
+									
+								</dt>
+								<dd>the DOM node to modify</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Object/Function}</span> <b>...</b>
+									<i>Optional</i>
+								</dt>
+								<dd>the widget class or constructor</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Widget}</span> the widget DOM node</dd>
 							
 							</dl>
 						
@@ -821,6 +1026,11 @@ MochiKit.Visual function.
 					
 					
 					
+					<pre class="code">widget.animate({ effect: "fade", duration: 0.5 });
+widget.animate({ effect: "Move", transition: "spring", y: 300 });</pre>
+					
+					
+					
 						
 							<dl class="detailList">
 							<dt class="heading">Parameters:</dt>
@@ -836,6 +1046,14 @@ MochiKit.Visual function.
 									
 								</dt>
 								<dd>the MochiKit.Visual effect name</dd>
+							
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>opts.queue</b>
+									
+								</dt>
+								<dd>the MochiKit.Visual queue handling,
+           defaults to "replace" and a unique scope for each widget
+           (see MochiKit.Visual for full options)</dd>
 							
 							</dl>
 						
@@ -1037,10 +1255,10 @@ By default this method does nothing.
 					
 					</div>
 					<div class="description">
-						Destroys a widget or a DOM node. This method will remove the DOM
+						Destroys a widget or a DOM node. This function will remove the DOM
 node from the tree, disconnect all signals and call all widget
-destructor functions. This function will also be called
-recursively on all child nodes. Once destroyed, all references to
+destructor functions. The same procedure will also be applied
+recursively to all child nodes. Once destroyed, all references to
 the widget object should be cleared in order for the browser to
 be able to reclaim the memory used.
 						
@@ -1054,10 +1272,10 @@ be able to reclaim the memory used.
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<span class="light fixedFont">{Widget/Node}</span> <b>node</b>
+									<span class="light fixedFont">{Widget/Node/Array}</span> <b>node</b>
 									
 								</dt>
-								<dd>the (widget) DOM node</dd>
+								<dd>the (widget) DOM node or list</dd>
 							
 							</dl>
 						
@@ -1540,6 +1758,10 @@ first argument.
 					
 					
 					
+					<pre class="code">widget.setStyle({ "font-size": "bold", "color": "red" });</pre>
+					
+					
+					
 						
 							<dl class="detailList">
 							<dt class="heading">Parameters:</dt>
@@ -1643,7 +1865,7 @@ they will be removed. Otherwise they will be added.
 <!-- ============================== footer ================================= -->
 		<div class="fineprint" style="clear:both">
 			
-			Documentation generated by <a href="http://www.jsdoctoolkit.org/" target="_blank">JsDoc Toolkit</a> 2.0.2 on Wed Dec 17 2008 13:29:35 GMT+0100 (CET)
+			Documentation generated by <a href="http://www.jsdoctoolkit.org/" target="_blank">JsDoc Toolkit</a> 2.0.2 on Sun May 24 2009 13:01:16 GMT+0200 (CEST)
 		</div>
 	</body>
 </html>
