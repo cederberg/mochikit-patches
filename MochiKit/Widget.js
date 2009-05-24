@@ -1,8 +1,13 @@
 /*
- * Dual-licensed under the MIT License & the Academic Free License v. 2.1.
- * See the file LICENSE for more information.
+ * Copyright (c) 2007-2009 Per Cederberg & Dynabyte AB.
+ * All rights reserved.
  *
- * (c) 2007-2008 by Per Cederberg & Dynabyte AB. All rights reserved.
+ * This program is free software: you can redistribute it and/or
+ * modify it under the terms of the BSD license.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
 // Check for loaded MochiKit
@@ -15,9 +20,16 @@ if (typeof(MochiKit) == "undefined") {
  *     The Widget class shouldn't be instantiated directly, instead
  *     one of the subclasses should be instantiated.
  */
-MochiKit.Widget = function() {
+MochiKit.Widget = function () {
     throw new ReferenceError("cannot call Widget constructor");
 }
+
+/**
+ * Function to return unique identifiers.
+ *
+ * @return {Number} the next number in the sequence
+ */
+MochiKit.Widget._id = MochiKit.Base.counter();
 
 /**
  * Checks if the specified object is a widget. Any non-null object
@@ -36,7 +48,7 @@ MochiKit.Widget = function() {
  *
  * @static
  */
-MochiKit.Widget.isWidget = function(obj, className) {
+MochiKit.Widget.isWidget = function (obj, className) {
     if (className != null) {
         return MochiKit.DOM.isHTML(obj) &&
                MochiKit.DOM.hasElementClass(obj, "widget") &&
@@ -61,13 +73,40 @@ MochiKit.Widget.isWidget = function(obj, className) {
  *
  * @static
  */
-MochiKit.Widget.isFormField = function(obj) {
+MochiKit.Widget.isFormField = function (obj) {
     if (!MochiKit.DOM.isHTML(obj) || typeof(obj.tagName) !== "string") {
         return false;
     }
     var tagName = obj.tagName.toUpperCase();
-    return tagName == "INPUT" || tagName == "TEXTAREA" ||
-           tagName == "SELECT" || typeof(obj.value) !== "undefined";
+    return tagName == "INPUT" ||
+           tagName == "TEXTAREA" ||
+           tagName == "SELECT" ||
+           MochiKit.Widget.isWidget(obj, "Field");
+}
+
+/**
+ * Adds all functions from a widget class to a DOM node. This will
+ * also convert the DOM node into a widget by adding the "widget"
+ * CSS class and add all the default widget functions from the
+ * standard Widget prototype. Functions are added with setdefault,
+ * ensuring that existing functions will not be overwritten.
+ *
+ * @param {Node} node the DOM node to modify
+ * @param {Object/Function} [...] the widget class or constructor
+ *
+ * @return {Widget} the widget DOM node
+ */
+MochiKit.Widget._widgetMixin = function (node/*, objOrClass, ...*/) {
+    MochiKit.DOM.addElementClass(node, "widget");
+    for (var i = 1; i < arguments.length; i++) {
+        var obj = arguments[i];
+        if (typeof(obj) === "function") {
+            obj = obj.prototype;
+        }
+        MochiKit.Base.setdefault(node, obj);
+    }
+    MochiKit.Base.setdefault(node, MochiKit.Widget.prototype);
+    return node;
 }
 
 /**
@@ -88,17 +127,13 @@ MochiKit.Widget.isFormField = function(obj) {
  *
  * @static
  */
-MochiKit.Widget.createWidget = function(name, attrs/*, ...*/) {
+MochiKit.Widget.createWidget = function (name, attrs/*, ...*/) {
     var cls = MochiKit.Widget.Classes[name];
     if (cls == null) {
         throw new ReferenceError("failed to find widget '" + name +
                                  "' in MochiKit.Widget.Classes");
     }
-    var w = new cls(attrs);
-    for (var i = 2; i < arguments.length; i++) {
-        w.addAll(arguments[i]);
-    }
-    return w;
+    return cls.apply(this, MochiKit.Base.extend([], arguments, 1));
 }
 
 /**
@@ -115,20 +150,16 @@ MochiKit.Widget.createWidget = function(name, attrs/*, ...*/) {
  * @param {Object} [ids] the optional node id mappings
  *
  * @return {Array} an array of the root DOM nodes or widgets created,
- *         or null if no nodes could be created 
+ *         or null if no nodes could be created
  */
 MochiKit.Widget.createWidgetTree = function(node, ids) {
     if (node.documentElement) {
         return MochiKit.Widget.createWidgetTree(node.documentElement.childNodes, ids);
     } else if (typeof(node.item) != "undefined" && typeof(node.length) == "number") {
-        var res = [];
-        for (var i = 0; i < node.length; i++) {
-            var list = MochiKit.Widget.createWidgetTree(node[i], ids);
-            if (!MochiKit.Base.isUndefinedOrNull(list)) {
-                res = res.concat(list);
-            }
-        }
-        return res;
+        var iter = MochiKit.Iter.repeat(ids, node.length);
+        iter = MochiKit.Iter.imap(MochiKit.Widget.createWidgetTree, node, iter);
+        iter = MochiKit.Iter.ifilterfalse(MochiKit.Base.isUndefinedOrNull, iter);
+        return MochiKit.Iter.list(iter);
     } else if (node.nodeType === 1) { // Node.ELEMENT_NODE
         try {
             return [MochiKit.Widget._createWidgetTreeElem(node, ids)];
@@ -165,6 +196,12 @@ MochiKit.Widget._createWidgetTreeElem = function(node, ids) {
     var locals = MochiKit.Base.mask(attrs, ["id", "w", "h", "a", "class", "style"]);
     var children = MochiKit.Widget.createWidgetTree(node.childNodes, ids);
     if (MochiKit.Widget.Classes[name]) {
+         if (name == "Table" && attrs.multiple) {
+            // TODO: remove deprecated code, eventually...
+            MochiKit.Logging.logWarning("Table 'multiple' attribute is deprecated, use 'select'");
+            attrs.select = MochiKit.Base.bool(attrs.multiple) ? "multiple" : "one";
+            delete attrs.multiple;
+        }
         var widget = MochiKit.Widget.createWidget(name, attrs, children);
     } else {
         var widget = MochiKit.DOM.createDOM(name, attrs, children);
@@ -180,7 +217,7 @@ MochiKit.Widget._createWidgetTreeElem = function(node, ids) {
         MochiKit.Style.registerSizeConstraints(widget, locals.w, locals.h, locals.a);
     }
     if (locals["class"]) {
-        var classes = locals["class"].split(" ");
+        var classes = MochiKit.Format.strip(locals["class"]).split(" ");
         if (typeof(widget.addClass) == "function") {
             widget.addClass.apply(widget, classes);
         } else {
@@ -194,36 +231,73 @@ MochiKit.Widget._createWidgetTreeElem = function(node, ids) {
         var parts = locals.style.split(";");
         for (var i = 0; i < parts.length; i++) {
             var a = parts[i].split(":");
-            styles[MochiKit.Format.strip(a[0])] = MochiKit.Format.strip(a[1]);
+            var k = MochiKit.Format.strip(a[0]);
+            if (k != "" && a.length > 1) {
+                styles[k] = MochiKit.Format.strip(a[1]);
+            }
         }
-        MochiKit.Style.setStyle(widget, styles);
+        if (typeof(widget.setAttrs) == "function") {
+            widget.setAttrs({ style: styles });
+        } else {
+            MochiKit.Style.setStyle(widget, styles);
+        }
     }
     return widget;
 }
 
 /**
- * Destroys a widget or a DOM node. This method will remove the DOM
+ * Destroys a widget or a DOM node. This function will remove the DOM
  * node from the tree, disconnect all signals and call all widget
- * destructor functions. This function will also be called
- * recursively on all child nodes. Once destroyed, all references to
+ * destructor functions. The same procedure will also be applied
+ * recursively to all child nodes. Once destroyed, all references to
  * the widget object should be cleared in order for the browser to
  * be able to reclaim the memory used.
  *
- * @param {Widget/Node} node the (widget) DOM node
+ * @param {Widget/Node/Array} node the (widget) DOM node or list
  *
  * @static
  */
-MochiKit.Widget.destroyWidget = function(node) {
-    if (typeof(node.destroy) == "function") {
-        node.destroy();
+MochiKit.Widget.destroyWidget = function (node) {
+    if (node.nodeType != null) {
+        if (typeof(node.destroy) == "function") {
+            node.destroy();
+        }
+        if (node.parentNode != null) {
+            MochiKit.DOM.removeElement(node);
+        }
+        MochiKit.Signal.disconnectAll(node);
+        while (node.firstChild != null) {
+            MochiKit.Widget.destroyWidget(node.firstChild);
+        }
+    } else if (MochiKit.Base.isArrayLike(node)) {
+        for (var i = node.length - 1; i >= 0; i--) {
+            MochiKit.Widget.destroyWidget(node[i]);
+        }
     }
-    if (node.parentNode != null) {
-        MochiKit.DOM.removeElement(node);
-    }
-    MochiKit.Signal.disconnectAll(node);
-    while (node.firstChild != null) {
-        MochiKit.Widget.destroyWidget(node.firstChild);
-    }
+}
+
+/**
+ * Creates an event handler function that will forward any calls to
+ * another function. The other function must exist as a property in
+ * a parent widget of the specified class.
+ *
+ * @param {String} className the parent widget class name, or null
+ *                     to use the same node
+ * @param {String} methodName the name of the method to call
+ * @param {Object} [...] the additional method arguments
+ *
+ * @return {Function} a function that forwards calls as specified
+ */
+MochiKit.Widget._eventHandler = function (className, methodName/*, ...*/) {
+    var baseArgs = MochiKit.Base.extend([], arguments, 2);
+    return function (evt) {
+        var node = this;
+        while (!MochiKit.Widget.isWidget(node, className)) {
+            node = node.parentNode;
+        }
+        var e = new MochiKit.Signal.Event(this, evt);
+        return node[methodName].apply(node, baseArgs.concat([e]));
+    };
 }
 
 /**
@@ -241,7 +315,7 @@ MochiKit.Widget.destroyWidget = function(node) {
  * @return {Boolean} true if the signal was processed correctly, or
  *         false if an exception was thrown
  */
-MochiKit.Widget.emitSignal = function(node, sig/*, ...*/) {
+MochiKit.Widget.emitSignal = function (node, sig/*, ...*/) {
     try {
         MochiKit.Signal.signal.apply(MochiKit.Signal, arguments);
         return true;
@@ -257,7 +331,7 @@ MochiKit.Widget.emitSignal = function(node, sig/*, ...*/) {
  * be called by destroyWidget() and may be overridden by subclasses.
  * By default this method does nothing.
  */
-MochiKit.Widget.prototype.destroy = function() {
+MochiKit.Widget.prototype.destroy = function () {
     // Nothing to do by default
 }
 
@@ -268,7 +342,7 @@ MochiKit.Widget.prototype.destroy = function() {
  *
  * @param {Object} attrs the widget and node attributes to set
  */
-MochiKit.Widget.prototype.setAttrs = function(attrs) {
+MochiKit.Widget.prototype.setAttrs = function (attrs) {
     MochiKit.DOM.updateNodeAttributes(this, attrs);
 }
 
@@ -278,8 +352,11 @@ MochiKit.Widget.prototype.setAttrs = function(attrs) {
  * first argument.
  *
  * @param {Object} styles an object with the styles to set
+ *
+ * @example
+ * widget.setStyle({ "font-size": "bold", "color": "red" });
  */
-MochiKit.Widget.prototype.setStyle = function(styles) {
+MochiKit.Widget.prototype.setStyle = function (styles) {
     MochiKit.Style.setStyle(this, styles);
 }
 
@@ -293,7 +370,7 @@ MochiKit.Widget.prototype.setStyle = function(styles) {
  * @return {Boolean} true if all CSS classes were present, or
  *         false otherwise
  */
-MochiKit.Widget.prototype.hasClass = function(/* ... */) {
+MochiKit.Widget.prototype.hasClass = function (/* ... */) {
     for (var i = 0; i < arguments.length; i++) {
         if (!MochiKit.DOM.hasElementClass(this, arguments[i])) {
             return false;
@@ -307,7 +384,7 @@ MochiKit.Widget.prototype.hasClass = function(/* ... */) {
  *
  * @param {String} [...] the CSS class names to add
  */
-MochiKit.Widget.prototype.addClass = function(/* ... */) {
+MochiKit.Widget.prototype.addClass = function (/* ... */) {
     for (var i = 0; i < arguments.length; i++) {
         MochiKit.DOM.addElementClass(this, arguments[i]);
     }
@@ -318,7 +395,7 @@ MochiKit.Widget.prototype.addClass = function(/* ... */) {
  *
  * @param {String} [...] the CSS class names to remove
  */
-MochiKit.Widget.prototype.removeClass = function(/* ... */) {
+MochiKit.Widget.prototype.removeClass = function (/* ... */) {
     for (var i = 0; i < arguments.length; i++) {
         MochiKit.DOM.removeElementClass(this, arguments[i]);
     }
@@ -334,7 +411,7 @@ MochiKit.Widget.prototype.removeClass = function(/* ... */) {
  * @return {Boolean} true if the CSS classes were added, or
  *         false otherwise
  */
-MochiKit.Widget.prototype.toggleClass = function(/* ... */) {
+MochiKit.Widget.prototype.toggleClass = function (/* ... */) {
     if (this.hasClass.apply(this, arguments)) {
         this.removeClass.apply(this, arguments);
         return false;
@@ -353,7 +430,7 @@ MochiKit.Widget.prototype.toggleClass = function(/* ... */) {
  * @return {Boolean} true if the widget is hidden, or
  *         false otherwise
  */
-MochiKit.Widget.prototype.isHidden = function() {
+MochiKit.Widget.prototype.isHidden = function () {
     return this.hasClass("widgetHidden");
 }
 
@@ -363,7 +440,7 @@ MochiKit.Widget.prototype.isHidden = function() {
  * elements, since it uses a "widgetHidden" CSS class to hide nodes
  * instead of explicitly setting the CSS display property.
  */
-MochiKit.Widget.prototype.show = function() {
+MochiKit.Widget.prototype.show = function () {
     this.removeClass("widgetHidden");
 }
 
@@ -373,7 +450,7 @@ MochiKit.Widget.prototype.show = function() {
  * since it uses a "widgetHidden" CSS class to hide nodes instead of
  * explicitly setting the CSS display property.
  */
-MochiKit.Widget.prototype.hide = function() {
+MochiKit.Widget.prototype.hide = function () {
     this.addClass("widgetHidden");
 }
 
@@ -385,16 +462,37 @@ MochiKit.Widget.prototype.hide = function() {
  *
  * @param {Object} opts the visual effect options
  * @param {String} opts.effect the MochiKit.Visual effect name
+ * @param {String} opts.queue the MochiKit.Visual queue handling,
+ *            defaults to "replace" and a unique scope for each widget
+ *            (see MochiKit.Visual for full options)
+ *
+ * @example
+ * widget.animate({ effect: "fade", duration: 0.5 });
+ * widget.animate({ effect: "Move", transition: "spring", y: 300 });
  */
-MochiKit.Widget.prototype.animate = function(opts) {
-    // TODO: We should perhaps continue effects unless they do not collide
-    if (this._anim != null) {
-        this._anim.cancel();
+MochiKit.Widget.prototype.animate = function (opts) {
+    var queue = { scope: this._animQueueId(), position: "replace" };
+    opts = MochiKit.Base.updatetree({ queue: queue }, opts);
+    if (typeof(opts.queue) == "string") {
+        queue.position = opts.queue;
+        opts.queue = queue;
     }
     var func = MochiKit.Visual[opts.effect];
     if (typeof(func) == "function") {
-        this._anim = func.call(null, this, opts);
+        func.call(null, this, opts);
     }
+}
+
+/**
+ * Returns the default visual effect queue identifier.
+ *
+ * @return {String} the the default queue identifier
+ */
+MochiKit.Widget.prototype._animQueueId = function () {
+    if (this._queueId == null) {
+        this._queueId = this.id || "widget" + MochiKit.Widget._id();
+    }
+    return this._queueId;
 }
 
 /**
@@ -402,7 +500,7 @@ MochiKit.Widget.prototype.animate = function(opts) {
  * This function will recursively blur all A, BUTTON, INPUT,
  * TEXTAREA and SELECT child nodes found.
  */
-MochiKit.Widget.prototype.blurAll = function() {
+MochiKit.Widget.prototype.blurAll = function () {
     MochiKit.DOM.blurAll(this);
 }
 
@@ -414,7 +512,7 @@ MochiKit.Widget.prototype.blurAll = function() {
  *
  * @return {Array} the array of child DOM nodes
  */
-MochiKit.Widget.prototype.getChildNodes = function() {
+MochiKit.Widget.prototype.getChildNodes = function () {
     return MochiKit.Base.extend([], this.childNodes);
 }
 
@@ -425,7 +523,7 @@ MochiKit.Widget.prototype.getChildNodes = function() {
  *
  * @param {Widget/Node} child the DOM node to add
  */
-MochiKit.Widget.prototype.addChildNode = function(child) {
+MochiKit.Widget.prototype.addChildNode = function (child) {
     this.appendChild(child);
 }
 
@@ -439,7 +537,7 @@ MochiKit.Widget.prototype.addChildNode = function(child) {
  *
  * @param {Widget/Node} child the DOM node to remove
  */
-MochiKit.Widget.prototype.removeChildNode = function(child) {
+MochiKit.Widget.prototype.removeChildNode = function (child) {
     this.removeChild(child);
 }
 
@@ -453,13 +551,14 @@ MochiKit.Widget.prototype.removeChildNode = function(child) {
  *
  * @param {Object} [...] the children to add
  */
-MochiKit.Widget.prototype.addAll = function(/* ... */) {
+MochiKit.Widget.prototype.addAll = function (/* ... */) {
     var args = MochiKit.Base.flattenArray(arguments);
     for (var i = 0; i < args.length; i++) {
         if (args[i] == null) {
             // Ignore null values
         } else if (MochiKit.DOM.isDOM(args[i])) {
             this.addChildNode(args[i]);
+            // TODO: remove this call for performance
             MochiKit.Style.resizeElements(args[i]);
         } else {
             this.addChildNode(MochiKit.DOM.createTextNode(args[i]));
@@ -473,7 +572,7 @@ MochiKit.Widget.prototype.addAll = function(/* ... */) {
  * uses the getChildNodes() and removeChildNode() methods to find and
  * remove the individual child nodes.
  */
-MochiKit.Widget.prototype.removeAll = function() {
+MochiKit.Widget.prototype.removeAll = function () {
     var children = this.getChildNodes();
     for (var i = children.length - 1; i >= 0; i--) {
         this.removeChildNode(children[i]);
@@ -496,20 +595,18 @@ MochiKit.Widget.prototype.removeAll = function() {
  *     the "onclick" event is usually of interest.
  * @property {Boolean} disabled The button disabled flag.
  * @extends MochiKit.Widget
+ *
+ * @example
+ * var widget = MochiKit.Widget.Button({ highlight: true }, "Find");
  */
-MochiKit.Widget.Button = function(attrs/*, ...*/) {
-    var cls = arguments.callee;
-    if (!(this instanceof cls)) {
-        return new cls(attrs, MochiKit.Base.extend(null, arguments, 1));
-    }
+MochiKit.Widget.Button = function (attrs/*, ...*/) {
     var o = MochiKit.DOM.BUTTON();
-    MochiKit.Base.updatetree(o, this);
-    o.addClass("widget", "widgetButton");
+    MochiKit.Widget._widgetMixin(o, arguments.callee);
+    o.addClass("widgetButton");
     o.setAttrs(attrs);
     o.addAll(MochiKit.Base.extend(null, arguments, 1));
     return o;
 }
-MochiKit.Widget.Button.prototype = MochiKit.Base.clone(MochiKit.Widget.prototype);
 
 /**
  * Updates the widget or HTML DOM node attributes.
@@ -517,14 +614,14 @@ MochiKit.Widget.Button.prototype = MochiKit.Base.clone(MochiKit.Widget.prototype
  * @param {Object} attrs the widget and node attributes to set
  * @param {Boolean} [attrs.highlight] the highlight option flag
  */
-MochiKit.Widget.Button.prototype.setAttrs = function(attrs) {
+MochiKit.Widget.Button.prototype.setAttrs = function (attrs) {
     attrs = MochiKit.Base.update({}, attrs);
     var locals = MochiKit.Base.mask(attrs, ["highlight"]);
     if (typeof(locals.highlight) != "undefined") {
-        if (MochiKit.Base.isFalse(locals.highlight)) {
-            this.removeClass("widgetButtonHighlight");
-        } else {
+        if (MochiKit.Base.bool(locals.highlight)) {
             this.addClass("widgetButtonHighlight");
+        } else {
+            this.removeClass("widgetButtonHighlight");
         }
     }
     MochiKit.DOM.updateNodeAttributes(this, attrs);
@@ -538,38 +635,68 @@ MochiKit.Widget.Button.prototype.setAttrs = function(attrs) {
  * @param {String} [attrs.title] the dialog title, defaults to "Dialog"
  * @param {Boolean} [attrs.modal] the modal dialog flag, defaults to false
  * @param {Boolean} [attrs.center] the center dialog flag, defaults to true
+ * @param {Boolean} [attrs.resizeable] the resize dialog flag, defaults to true
  * @param {Object} [...] the child widgets or DOM nodes
  *
  * @return {Widget} the widget DOM node
  *
  * @class The dialog widget class. Used to provide a resizeable and
  *     moveable window within the current page. Internally it uses a
- *     number of &lt;div&gt; HTML elements. In addition to standard,
- *     HTML events, the "onshow", "onhide", "onmove" and "onresize"
- *     events are also triggered.
+ *     number of &lt;div&gt; HTML elements.
  * @extends MochiKit.Widget
+ *
+ * @example
+ * var dialog = MochiKit.Widget.Dialog({ title: "My Dialog", modal: true },
+ *                                         "...dialog content widgets here...");
+ * parent.addAll(dialog);
+ * dialog.show();
  */
-MochiKit.Widget.Dialog = function(attrs/*, ... */) {
-    var cls = arguments.callee;
-    if (!(this instanceof cls)) {
-        return new cls(attrs, MochiKit.Base.extend(null, arguments, 1));
-    }
+MochiKit.Widget.Dialog = function (attrs/*, ... */) {
     var title = MochiKit.DOM.DIV({ "class": "widgetDialogTitle" }, "Dialog");
     var close = new MochiKit.Widget.Icon({ ref: "CLOSE", "class": "widgetDialogClose" });
     var resize = new MochiKit.Widget.Icon({ ref: "RESIZE", "class": "widgetDialogResize" });
     var content = MochiKit.DOM.DIV({ "class": "widgetDialogContent" });
     MochiKit.Style.registerSizeConstraints(content, "100% - 22", "100% - 44");
     var o = MochiKit.DOM.DIV({}, title, close, resize, content);
-    MochiKit.Base.updatetree(o, this);
+    MochiKit.Widget._widgetMixin(o, arguments.callee);
+    o.addClass("widgetDialog", "widgetHidden");
     o.setAttrs(MochiKit.Base.update({ modal: false, center: true }, attrs));
-    o.addClass("widget", "widgetDialog", "widgetHidden");
     o.addAll(MochiKit.Base.extend(null, arguments, 1));
-    MochiKit.Signal.connect(title, "onmousedown", o, "_handleMoveStart");
-    MochiKit.Signal.connect(close, "onclick", o, "hide");
-    MochiKit.Signal.connect(resize, "onmousedown", o, "_handleResizeStart");
+    title.onmousedown = MochiKit.Widget._eventHandler("Dialog", "_handleMoveStart");
+    close.onclick = MochiKit.Widget._eventHandler("Dialog", "hide");
+    resize.onmousedown = MochiKit.Widget._eventHandler("Dialog", "_handleResizeStart");
     return o;
 }
-MochiKit.Widget.Dialog.prototype = MochiKit.Base.clone(MochiKit.Widget.prototype);
+
+/**
+ * Emitted when the dialog is shown.
+ *
+ * @name MochiKit.Widget.Dialog#onshow
+ * @event
+ */
+
+/**
+ * Emitted when the dialog is hidden.
+ *
+ * @name MochiKit.Widget.Dialog#onhide
+ * @event
+ */
+
+/**
+ * Emitted when the dialog is moved. The event will be sent
+ * repeatedly when moving with a mouse drag operation.
+ *
+ * @name MochiKit.Widget.Dialog#onmove
+ * @event
+ */
+
+/**
+ * Emitted when the dialog is resized. The event will be sent
+ * repeatedly when resizing with a mouse drag operation.
+ *
+ * @name MochiKit.Widget.Dialog#onresize
+ * @event
+ */
 
 /**
  * Updates the dialog or HTML DOM node attributes.
@@ -578,18 +705,27 @@ MochiKit.Widget.Dialog.prototype = MochiKit.Base.clone(MochiKit.Widget.prototype
  * @param {String} [attrs.title] the dialog title
  * @param {Boolean} [attrs.modal] the modal dialog flag
  * @param {Boolean} [attrs.center] the center dialog flag
+ * @param {Boolean} [attrs.resizeable] the resize dialog flag
  */
-MochiKit.Widget.Dialog.prototype.setAttrs = function(attrs) {
+MochiKit.Widget.Dialog.prototype.setAttrs = function (attrs) {
     attrs = MochiKit.Base.update({}, attrs);
-    var locals = MochiKit.Base.mask(attrs, ["title", "modal", "center"]);
+    var locals = MochiKit.Base.mask(attrs, ["title", "modal", "center", "resizeable"]);
     if (typeof(locals.title) != "undefined") {
         MochiKit.DOM.replaceChildNodes(this.firstChild, locals.title);
     }
     if (typeof(locals.modal) != "undefined") {
-        this.modal = !MochiKit.Base.isFalse(locals.modal);
+        this.modal = MochiKit.Base.bool(locals.modal);
     }
     if (typeof(locals.center) != "undefined") {
-        this.center = !MochiKit.Base.isFalse(locals.center);
+        this.center = MochiKit.Base.bool(locals.center);
+    }
+    if (typeof(locals.resizeable) != "undefined") {
+        var resize = this.childNodes[2];
+        if (MochiKit.Base.bool(locals.resizeable)) {
+            resize.show();
+        } else {
+            resize.hide();
+        }
     }
     MochiKit.DOM.updateNodeAttributes(this, attrs);
 }
@@ -597,7 +733,7 @@ MochiKit.Widget.Dialog.prototype.setAttrs = function(attrs) {
 /**
  * Shows the dialog.
  */
-MochiKit.Widget.Dialog.prototype.show = function() {
+MochiKit.Widget.Dialog.prototype.show = function () {
     if (this.parentNode == null) {
         throw new Error("Cannot show Dialog widget without setting a parent DOM node");
     }
@@ -619,7 +755,7 @@ MochiKit.Widget.Dialog.prototype.show = function() {
 /**
  * Hides the dialog.
  */
-MochiKit.Widget.Dialog.prototype.hide = function() {
+MochiKit.Widget.Dialog.prototype.hide = function () {
     if (this._modalNode != null) {
         MochiKit.Widget.destroyWidget(this._modalNode);
         this._modalNode = null;
@@ -635,7 +771,7 @@ MochiKit.Widget.Dialog.prototype.hide = function() {
  *
  * @return {Array} the array of child DOM nodes
  */
-MochiKit.Widget.Dialog.prototype.getChildNodes = function() {
+MochiKit.Widget.Dialog.prototype.getChildNodes = function () {
     return MochiKit.Base.extend([], this.lastChild.childNodes);
 }
 
@@ -644,7 +780,7 @@ MochiKit.Widget.Dialog.prototype.getChildNodes = function() {
  *
  * @param {Widget/Node} child the DOM node to add
  */
-MochiKit.Widget.Dialog.prototype.addChildNode = function(child) {
+MochiKit.Widget.Dialog.prototype.addChildNode = function (child) {
     this.lastChild.appendChild(child);
 }
 
@@ -653,7 +789,7 @@ MochiKit.Widget.Dialog.prototype.addChildNode = function(child) {
  *
  * @param {Widget/Node} child the DOM node to remove
  */
-MochiKit.Widget.Dialog.prototype.removeChildNode = function(child) {
+MochiKit.Widget.Dialog.prototype.removeChildNode = function (child) {
     this.lastChild.removeChild(child);
 }
 
@@ -665,7 +801,7 @@ MochiKit.Widget.Dialog.prototype.removeChildNode = function(child) {
  * @param {Number} x the horizontal position (in pixels)
  * @param {Number} y the vertical position (in pixels)
  */
-MochiKit.Widget.Dialog.prototype.moveTo = function(x, y) {
+MochiKit.Widget.Dialog.prototype.moveTo = function (x, y) {
     var parentDim = MochiKit.Style.getElementDimensions(this.parentNode);
     var dim = MochiKit.Style.getElementDimensions(this);
     var pos = { x: Math.max(0, Math.min(x, parentDim.w - dim.w - 2)),
@@ -677,7 +813,7 @@ MochiKit.Widget.Dialog.prototype.moveTo = function(x, y) {
 /**
  * Moves the dialog to the center (relative to the parent DOM node).
  */
-MochiKit.Widget.Dialog.prototype.moveToCenter = function() {
+MochiKit.Widget.Dialog.prototype.moveToCenter = function () {
     var parentDim = MochiKit.Style.getElementDimensions(this.parentNode);
     var dim = MochiKit.Style.getElementDimensions(this);
     var pos = { x: Math.round(Math.max(0, (parentDim.w - dim.w) / 2)),
@@ -693,10 +829,9 @@ MochiKit.Widget.Dialog.prototype.moveToCenter = function() {
  * @param {Number} width the width (in pixels)
  * @param {Number} height the height (in pixels)
  */
-MochiKit.Widget.Dialog.prototype.resizeTo = function(width, height) {
+MochiKit.Widget.Dialog.prototype.resizeTo = function (width, height) {
     var parentDim = MochiKit.Style.getElementDimensions(this.parentNode);
-    var pos = MochiKit.Style.getElementPosition(this.parentNode);
-    pos = MochiKit.Style.getElementPosition(this, pos);
+    var pos = MochiKit.Style.getElementPosition(this, this.parentNode);
     var dim = { w: Math.max(150, Math.min(width, parentDim.w - pos.x - 2)),
                 h: Math.max(100, Math.min(height, parentDim.h - pos.y - 2)) };
     MochiKit.Style.setElementDimensions(this, dim);
@@ -712,7 +847,7 @@ MochiKit.Widget.Dialog.prototype.resizeTo = function(width, height) {
  *
  * @param {Event} evt the MochiKit.Signal.Event object
  */
-MochiKit.Widget.Dialog.prototype._handleMoveStart = function(evt) {
+MochiKit.Widget.Dialog.prototype._handleMoveStart = function (evt) {
     var pos = MochiKit.Style.getElementPosition(this.parentNode);
     this._offsetPos = MochiKit.Style.getElementPosition(this, pos);
     this._startPos = evt.mouse().page;
@@ -726,7 +861,7 @@ MochiKit.Widget.Dialog.prototype._handleMoveStart = function(evt) {
  *
  * @param {Event} evt the MochiKit.Signal.Event object
  */
-MochiKit.Widget.Dialog.prototype._handleMove = function(evt) {
+MochiKit.Widget.Dialog.prototype._handleMove = function (evt) {
     var pos = evt.mouse().page;
     this.moveTo(this._offsetPos.x + pos.x - this._startPos.x,
                 this._offsetPos.y + pos.y - this._startPos.y);
@@ -738,14 +873,14 @@ MochiKit.Widget.Dialog.prototype._handleMove = function(evt) {
  *
  * @param {Event} evt the MochiKit.Signal.Event object
  */
-MochiKit.Widget.Dialog.prototype._handleResizeStart = function(evt) {
+MochiKit.Widget.Dialog.prototype._handleResizeStart = function (evt) {
     this._offsetDim = MochiKit.Style.getElementDimensions(this);
     this._startPos = evt.mouse().page;
     evt.stop();
     // TODO: correct handling of drag event, since IE seems to get
     //       problems when mouse enters other HTML elements
     MochiKit.Signal.connect(document, "onmousemove", this, "_handleResize");
-    MochiKit.Signal.connect(document, "onmousedown", function(evt) { evt.stop(); });
+    MochiKit.Signal.connect(document, "onmousedown", function (evt) { evt.stop(); });
     MochiKit.Signal.connect(document, "onmouseup", this, "_stopDrag");
 }
 
@@ -754,7 +889,7 @@ MochiKit.Widget.Dialog.prototype._handleResizeStart = function(evt) {
  *
  * @param {Event} evt the MochiKit.Signal.Event object
  */
-MochiKit.Widget.Dialog.prototype._handleResize = function(evt) {
+MochiKit.Widget.Dialog.prototype._handleResize = function (evt) {
     var pos = evt.mouse().page;
     this.resizeTo(this._offsetDim.w + pos.x - this._startPos.x,
                   this._offsetDim.h + pos.y - this._startPos.y);
@@ -765,7 +900,7 @@ MochiKit.Widget.Dialog.prototype._handleResize = function(evt) {
  *
  * @param {Event} evt the MochiKit.Signal.Event object
  */
-MochiKit.Widget.Dialog.prototype._stopDrag = function(evt) {
+MochiKit.Widget.Dialog.prototype._stopDrag = function (evt) {
     MochiKit.Signal.disconnectAll(document, "onmousemove");
     MochiKit.Signal.disconnectAll(document, "onmousedown");
     MochiKit.Signal.disconnectAll(document, "onmouseup");
@@ -791,20 +926,20 @@ MochiKit.Widget.Dialog.prototype._stopDrag = function(evt) {
  *     visible display of form data, using a &lt;span&gt; HTML
  *     element.
  * @extends MochiKit.Widget
+ *
+ * @example
+ * var field = MochiKit.Widget.Field({ name: "ratio", format: "Ratio: {:%}" });
+ * form.addAll(field);
+ * field.setAttrs({ value: 0.23 });
  */
-MochiKit.Widget.Field = function(attrs) {
-    var cls = arguments.callee;
-    if (!(this instanceof cls)) {
-        return new cls(attrs);
-    }
+MochiKit.Widget.Field = function (attrs) {
     var o = MochiKit.DOM.SPAN();
-    MochiKit.Base.updatetree(o, this);
-    o.addClass("widget", "widgetField");
+    MochiKit.Widget._widgetMixin(o, arguments.callee);
+    o.addClass("widgetField");
     o.setAttrs(MochiKit.Base.update({ name: "", value: "", maxLength: -1 }, attrs));
     o.defaultValue = o.value;
     return o;
 }
-MochiKit.Widget.Field.prototype = MochiKit.Base.clone(MochiKit.Widget.prototype);
 
 /**
  * Updates the widget or HTML DOM node attributes.
@@ -815,10 +950,13 @@ MochiKit.Widget.Field.prototype = MochiKit.Base.clone(MochiKit.Widget.prototype)
  * @param {String} [attrs.format] the field format string
  * @param {Number} [attrs.maxLength] the maximum data length,
  *            overflow will be displayed as a tooltip
+ *
+ * @example
+ * field.setAttrs({ value: 0.23 });
  */
-MochiKit.Widget.Field.prototype.setAttrs = function(attrs) {
+MochiKit.Widget.Field.prototype.setAttrs = function (attrs) {
     attrs = MochiKit.Base.update({}, attrs);
-    var locals = MochiKit.Base.mask(attrs, ["name", "value", "maxLength"]);
+    var locals = MochiKit.Base.mask(attrs, ["name", "value", "format", "maxLength"]);
     if (typeof(locals.name) != "undefined") {
         this.name = locals.name;
     }
@@ -831,7 +969,7 @@ MochiKit.Widget.Field.prototype.setAttrs = function(attrs) {
     if (typeof(locals.value) != "undefined") {
         var str = this.value = locals.value;
         if (this.format) {
-            str = MochiKit.Format.format(this.format, str);
+            str = MochiKit.Text.format(this.format, str);
         } else if (str == null) {
             str = "null";
         } else if (typeof(str) != "string") {
@@ -839,12 +977,154 @@ MochiKit.Widget.Field.prototype.setAttrs = function(attrs) {
         }
         var longStr = str;
         if (this.maxLength > 0) {
-            str = MochiKit.Format.truncate(str, this.maxLength, "...");
+            str = MochiKit.Text.truncate(str, this.maxLength, "...");
         }
         MochiKit.DOM.replaceChildNodes(this, str);
         this.title = (str == longStr) ? null : longStr;
     }
     MochiKit.DOM.updateNodeAttributes(this, attrs);
+}
+
+/**
+ * Resets the field value to the initial value.
+ */
+MochiKit.Widget.Field.prototype.reset = function () {
+    this.setAttrs({ value: this.defaultValue });
+}
+
+/**
+ * Creates a new file streamer widget.
+ *
+ * @constructor
+ * @param {Object} attrs the widget and node attributes
+ * @param {String} [attrs.url] the URL to post the data to, defaults
+ *            to window.location.href
+ * @param {String} [attrs.name] the file input field name,
+ *            defaults to 'file'
+ * @param {String} [attrs.size] the file input size, defaults to '30'
+ *
+ * @return {Widget} the widget DOM node
+ *
+ * @class The file streamer widget class. This widget is used to
+ *     provide a file upload (file input) control that can stream the
+ *     selected file to the server. The file data is always sent
+ *     asynchronously (i.e. in the background) to allow the rest of
+ *     the web page to remain active also during the potentially long
+ *     delays caused by sending large amounts of data. The widget
+ *     creates its own IFRAME HTML element inside which the actual
+ *     FORM and INPUT elements are created automatically. In addition
+ *     to standard HTML events, the "onselect" and "onupload" events
+ *     are also triggered.
+ * @extends MochiKit.Widget
+ *
+ * @example
+ * var file = MochiKit.Widget.FileStreamer({ url: "rapidcontext/upload/myid" });
+ * form.addAll(file);
+ * MochiKit.Signal.connect(file, "onselect", function () {
+ *     file.hide();
+ *     // add code to show progress bar
+ * });
+ */
+MochiKit.Widget.FileStreamer = function (attrs) {
+    var defs = { src: "about:blank", scrolling: "no",
+                 border: "0", frameborder: "0" };
+    var o = MochiKit.DOM.createDOM("iframe", defs);
+    MochiKit.Widget._widgetMixin(o, arguments.callee);
+    o.addClass("widgetFileStreamer");
+    o.setAttrs(MochiKit.Base.update({ url: "", name: "file", size: "30" }, attrs));
+    // TODO: create some kind of utility function for these idioms
+    var links = MochiKit.Selector.findDocElements("link[href*=widget.css]");
+    if (links.length > 0) {
+        o.cssUrl = links[0].href;
+    }
+    o.onload = o._handleLoad;
+    return o;
+}
+
+/**
+ * Updates the widget or HTML DOM node attributes.
+ *
+ * @param {Object} attrs the widget and node attributes to set
+ * @param {String} [attrs.url] the URL to post the data to
+ * @param {String} [attrs.name] the file input field name
+ * @param {String} [attrs.size] the file input size
+ */
+MochiKit.Widget.FileStreamer.prototype.setAttrs = function (attrs) {
+    attrs = MochiKit.Base.update({}, attrs);
+    var locals = MochiKit.Base.mask(attrs, ["url", "name", "size"]);
+    if (typeof(locals.url) != "undefined") {
+        this.formUrl = MochiKit.Base.resolveURI(locals.url, window.location.href);
+    }
+    if (typeof(locals.name) != "undefined") {
+        this.inputName = locals.param;
+    }
+    if (typeof(locals.size) != "undefined") {
+        this.inputSize = locals.size;
+    }
+    // TODO: update form if already created, or recreate?
+    MochiKit.DOM.updateNodeAttributes(this, attrs);
+}
+
+/**
+ * Handles the iframe onload event.
+ */
+MochiKit.Widget.FileStreamer.prototype._handleLoad = function () {
+    var doc = this.contentDocument;
+    if (doc.location.href == this.formUrl) {
+        MochiKit.Widget.emitSignal(this, "onupload");
+    }
+    MochiKit.DOM.withDocument(doc, MochiKit.Base.bind("_initDocument", this));
+}
+
+/**
+ * Handles the file input onchange event.
+ */
+MochiKit.Widget.FileStreamer.prototype._handleChange = function () {
+    MochiKit.Widget.emitSignal(this, "onselect");
+    var form = this.contentDocument.getElementsByTagName("form")[0];
+    form.submit();
+    form.appendChild(MochiKit.Widget.Overlay());
+}
+
+/**
+ * Creates the document form and file input element.
+ */
+MochiKit.Widget.FileStreamer.prototype._initDocument = function () {
+    var doc = this.contentDocument;
+    var head = doc.getElementsByTagName("head")[0];
+    var body = doc.body;
+    if (head == null) {
+        head = doc.createElement("head");
+        body.parentElement.insertBefore(head, body);
+    }
+    var attrs = { rel: "stylesheet", href: this.cssUrl, type: "text/css" };
+    var link = MochiKit.DOM.createDOM("link", attrs);
+    head.appendChild(link);
+    var attrs = { type: "file", name: this.inputName, size: this.inputSize };
+    var input = MochiKit.DOM.INPUT(attrs);
+    var attrs = { method: "POST", action: this.formUrl, enctype: "multipart/form-data" };
+    var form = MochiKit.DOM.FORM(attrs, input);
+    input.onchange = MochiKit.Base.bind("_handleChange", this);
+    body.className = "widgetFileStreamer";
+    MochiKit.DOM.replaceChildNodes(body, form);
+}
+
+/**
+ * Handles widget resize calls, so that the iframe can be adjusted
+ * to the file input field.
+ *
+ * @private
+ */
+MochiKit.Widget.FileStreamer.prototype.resizeContent = function () {
+    var doc = this.contentDocument;
+    if (doc != null && typeof(doc.getElementsByTagName) === "function") {
+        var form = doc.getElementsByTagName("form")[0];
+        if (form != null) {
+            var input = form.firstChild;
+            this.width = input.clientWidth + 2;
+            this.height = Math.max(24, input.clientHeight);
+        }
+    }
 }
 
 /**
@@ -861,19 +1141,17 @@ MochiKit.Widget.Field.prototype.setAttrs = function(attrs) {
  *     form reset, validation and data retrieval.
  * @extends MochiKit.Widget
  */
-MochiKit.Widget.Form = function(attrs/*, ...*/) {
-    var cls = arguments.callee;
-    if (!(this instanceof cls)) {
-        return new cls(attrs);
-    }
+MochiKit.Widget.Form = function (attrs/*, ...*/) {
     var o = MochiKit.DOM.FORM(attrs);
-    MochiKit.Base.updatetree(o, this);
-    o.addClass("widget", "widgetForm");
-    MochiKit.Signal.connect(o, "onsubmit", o, "_handleSubmit");
+    MochiKit.Widget._widgetMixin(o, arguments.callee);
+    // TODO: Remove this temporary bugfix when the reset() method has
+    //       been renamed or similar...
+    o.reset = MochiKit.Widget.Form.prototype.reset;
+    o.addClass("widgetForm");
+    o.onsubmit = MochiKit.Widget._eventHandler(null, "_handleSubmit");
     o.addAll(MochiKit.Base.extend(null, arguments, 1));
     return o;
 }
-MochiKit.Widget.Form.prototype = MochiKit.Base.clone(MochiKit.Widget.prototype);
 
 /**
  * Returns an array with all child DOM nodes containing form fields.
@@ -882,9 +1160,9 @@ MochiKit.Widget.Form.prototype = MochiKit.Base.clone(MochiKit.Widget.prototype);
  *
  * @return {Array} the array of form field elements
  */
-MochiKit.Widget.Form.prototype.fields = function() {
+MochiKit.Widget.Form.prototype.fields = function () {
     var fields = [];
-    MochiKit.Base.nodeWalk(this, function(elem) {
+    MochiKit.Base.nodeWalk(this, function (elem) {
         if (elem.nodeType !== 1) { // !Node.ELEMENT_NODE
             return null;
         }
@@ -905,7 +1183,7 @@ MochiKit.Widget.Form.prototype.fields = function() {
  *
  * @return {Object} the map of form field elements
  */
-MochiKit.Widget.Form.prototype.fieldMap = function() {
+MochiKit.Widget.Form.prototype.fieldMap = function () {
     var fields = this.fields();
     var map = {};
     for (var i = 0; i < fields.length; i++) {
@@ -926,7 +1204,7 @@ MochiKit.Widget.Form.prototype.fieldMap = function() {
 /**
  * Resets all fields in the form to their default values.
  */
-MochiKit.Widget.Form.prototype.reset = function() {
+MochiKit.Widget.Form.prototype.reset = function () {
     this.validateReset();
     var fields = this.fields();
     for (var i = 0; i < fields.length; i++) {
@@ -960,7 +1238,7 @@ MochiKit.Widget.Form.prototype.reset = function() {
  *
  * @return {Object} the map of form field values
  */
-MochiKit.Widget.Form.prototype.valueMap = function() {
+MochiKit.Widget.Form.prototype.valueMap = function () {
     var fields = this.fields();
     var map = {};
     for (var i = 0; i < fields.length; i++) {
@@ -999,7 +1277,7 @@ MochiKit.Widget.Form.prototype.valueMap = function() {
  *
  * @param {Object} values the map of form field values
  */
-MochiKit.Widget.Form.prototype.update = function(values) {
+MochiKit.Widget.Form.prototype.update = function (values) {
     var fields = this.fields();
     for (var i = 0; i < fields.length; i++) {
         var elem = fields[i];
@@ -1034,7 +1312,7 @@ MochiKit.Widget.Form.prototype.update = function(values) {
  *
  * @return {Array} the array of form validator widgets
  */
-MochiKit.Widget.Form.prototype.validators = function() {
+MochiKit.Widget.Form.prototype.validators = function () {
     var res = [];
     var elems = this.getElementsByTagName("SPAN");
     for (var i = 0; i < elems.length; i++) {
@@ -1053,7 +1331,7 @@ MochiKit.Widget.Form.prototype.validators = function() {
  *         or a MochiKit.Async.Deferred instance if the validation
  *         was deferred
  */
-MochiKit.Widget.Form.prototype.validate = function() {
+MochiKit.Widget.Form.prototype.validate = function () {
     var validators = this.validators();
     var fields = this.fields();
     var success = true;
@@ -1085,7 +1363,7 @@ MochiKit.Widget.Form.prototype.validate = function() {
 /**
  * Resets all form validators.
  */
-MochiKit.Widget.Form.prototype.validateReset = function() {
+MochiKit.Widget.Form.prototype.validateReset = function () {
     var validators = this.validators();
     for (var i = 0; i < validators.length; i++) {
         validators[i].reset();
@@ -1097,8 +1375,9 @@ MochiKit.Widget.Form.prototype.validateReset = function() {
  *
  * @param {Event} evt the MochiKit.Signal.Event object
  */
-MochiKit.Widget.Form.prototype._handleSubmit = function(evt) {
+MochiKit.Widget.Form.prototype._handleSubmit = function (evt) {
     evt.stop();
+    return false;
 }
 
 /**
@@ -1128,20 +1407,15 @@ MochiKit.Widget.Form.prototype._handleSubmit = function(evt) {
  * @property {Function} validator The validator function in use.
  * @extends MochiKit.Widget
  */
-MochiKit.Widget.FormValidator = function(attrs) {
-    var cls = arguments.callee;
-    if (!(this instanceof cls)) {
-        return new cls(attrs);
-    }
+MochiKit.Widget.FormValidator = function (attrs) {
     var o = MochiKit.DOM.SPAN();
-    MochiKit.Base.updatetree(o, this);
-    o.addClass("widget", "widgetFormValidator");
+    MochiKit.Widget._widgetMixin(o, arguments.callee);
+    o.addClass("widgetFormValidator");
     o.setAttrs(MochiKit.Base.update({ name: "", mandatory: true, display: "error", message: null, validator: null }, attrs));
     o.fields = [];
     o.hide();
     return o;
 }
-MochiKit.Widget.FormValidator.prototype = MochiKit.Base.clone(MochiKit.Widget.prototype);
 
 /**
  * Updates the widget or HTML DOM node attributes.
@@ -1156,14 +1430,14 @@ MochiKit.Widget.FormValidator.prototype = MochiKit.Base.clone(MochiKit.Widget.pr
  * @param {String} [attrs.message] the message to display
  * @param {Function} [attrs.validator] the validator function
  */
-MochiKit.Widget.FormValidator.prototype.setAttrs = function(attrs) {
+MochiKit.Widget.FormValidator.prototype.setAttrs = function (attrs) {
     attrs = MochiKit.Base.update({}, attrs);
     var locals = MochiKit.Base.mask(attrs, ["name", "mandatory", "regex", "display", "message", "validator"]);
     if (typeof(locals.name) != "undefined") {
         this.name = locals.name;
     }
     if (typeof(locals.mandatory) != "undefined") {
-        this.mandatory = !MochiKit.Base.isFalse(locals.mandatory);
+        this.mandatory = MochiKit.Base.bool(locals.mandatory);
     }
     if (typeof(locals.regex) != "undefined") {
         if (locals.regex instanceof RegExp) {
@@ -1194,7 +1468,7 @@ MochiKit.Widget.FormValidator.prototype.setAttrs = function(attrs) {
  * Resets this form validator. This will hide any error messages and
  * mark all invalidated fields as valid.
  */
-MochiKit.Widget.FormValidator.prototype.reset = function() {
+MochiKit.Widget.FormValidator.prototype.reset = function () {
     for (var i = 0; i < this.fields.length; i++) {
         MochiKit.DOM.removeElementClass(this.fields[i], "widgetInvalid");
     }
@@ -1217,7 +1491,7 @@ MochiKit.Widget.FormValidator.prototype.reset = function() {
  *         or a MochiKit.Async.Deferred instance if the validation
  *         was deferred
  */
-MochiKit.Widget.FormValidator.prototype.verify = function(field) {
+MochiKit.Widget.FormValidator.prototype.verify = function (field) {
     if (!field.disabled) {
         // TODO: use generic field value retrieval
         var value = "";
@@ -1241,7 +1515,7 @@ MochiKit.Widget.FormValidator.prototype.verify = function(field) {
             var res = this.validator(value);
             if (res instanceof MochiKit.Async.Deferred) {
                 var self = this;
-                res.addErrback(function(e) {
+                res.addErrback(function (e) {
                     self.addError(field, e.message);
                     return e;
                 });
@@ -1265,7 +1539,7 @@ MochiKit.Widget.FormValidator.prototype.verify = function(field) {
  * @param {Widget/Node} field the field DOM node
  * @param {String} message the validation error message
  */
-MochiKit.Widget.FormValidator.prototype.addError = function(field, message) {
+MochiKit.Widget.FormValidator.prototype.addError = function (field, message) {
     if (!MochiKit.DOM.hasElementClass(field, "widgetInvalid")) {
         this.fields.push(field);
         MochiKit.DOM.addElementClass(field, "widgetInvalid");
@@ -1299,18 +1573,13 @@ MochiKit.Widget.FormValidator.prototype.addError = function(field, message) {
  *     images for variuos purposes are available as constants.
  * @extends MochiKit.Widget
  */
-MochiKit.Widget.Icon = function(attrs) {
-    var cls = arguments.callee;
-    if (!(this instanceof cls)) {
-        return new cls(attrs);
-    }
+MochiKit.Widget.Icon = function (attrs) {
     var o = MochiKit.DOM.IMG();
-    MochiKit.Base.updatetree(o, this);
+    MochiKit.Widget._widgetMixin(o, arguments.callee);
     o.setAttrs(attrs);
-    o.addClass("widget", "widgetIcon");
+    o.addClass("widgetIcon");
     return o;
 }
-MochiKit.Widget.Icon.prototype = MochiKit.Base.clone(MochiKit.Widget.prototype);
 
 /**
  * Updates the icon or HTML DOM node attributes.
@@ -1325,7 +1594,7 @@ MochiKit.Widget.Icon.prototype = MochiKit.Base.clone(MochiKit.Widget.prototype);
  *             default icon)
  * @param {String} [attrs.tooltip] the icon tooltip text
  */
-MochiKit.Widget.Icon.prototype.setAttrs = function(attrs) {
+MochiKit.Widget.Icon.prototype.setAttrs = function (attrs) {
     attrs = MochiKit.Base.update({}, attrs);
     if (attrs.ref) {
         MochiKit.Base.setdefault(attrs,
@@ -1341,15 +1610,15 @@ MochiKit.Widget.Icon.prototype.setAttrs = function(attrs) {
         attrs.alt = locals.tooltip;
         attrs.title = locals.tooltip;
     }
-    /* XXX: Fix width and height for IE, as it seems that the
-            values set by setAttribute() are ignored. */
+    /* TODO: Fix width and height for IE, as it seems that the
+             values set by setAttribute() are ignored. */
     if (typeof(locals.width) != "undefined") {
         this.width = locals.width;
-        this.setStyle({ width: locals.width });
+        this.setStyle({ width: locals.width + "px" });
     }
     if (typeof(locals.height) != "undefined") {
         this.height = locals.height;
-        this.setStyle({ height: locals.height });
+        this.setStyle({ height: locals.height + "px" });
     }
     MochiKit.DOM.updateNodeAttributes(this, attrs);
 }
@@ -1365,7 +1634,7 @@ MochiKit.Base.update(MochiKit.Widget.Icon, {
     /** The close icon definition. */
     CLOSE: { url: "close.gif" },
     /** The resize icon definition. */
-    RESIZE: { url: "resize-handle.gif" },
+    RESIZE: { url: "resize-handle.gif", style: { cursor: "se-resize" } },
     /** The ok icon definition. */
     OK: { url: "ok.gif", tooltip: "OK" },
     /** The cancel icon definition. */
@@ -1406,6 +1675,8 @@ MochiKit.Base.update(MochiKit.Widget.Icon, {
     SELECT: { url: "select.gif", tooltip: "Select / Unselect" },
     /** The cut icon definition. */
     CUT: { url: "cut.gif", tooltip: "Cut" },
+    /** The config icon definition. */
+    DIALOG: { url: "dialog.gif", tooltip: "Open Dialog" },
     /** The export icon definition. */
     EXPORT: { url: "export.gif", tooltip: "Export" },
     /** The expand icon definition. */
@@ -1451,21 +1722,16 @@ MochiKit.Base.update(MochiKit.Widget.Icon, {
  *     operation.
  * @extends MochiKit.Widget
  */
-MochiKit.Widget.Overlay = function(attrs/*, ...*/) {
-    var cls = arguments.callee;
-    if (!(this instanceof cls)) {
-        return new cls(attrs, MochiKit.Base.extend(null, arguments, 1));
-    }
+MochiKit.Widget.Overlay = function (attrs/*, ...*/) {
     var msg = MochiKit.DOM.DIV({ "class": "widgetOverlayMessage" });
     var o = MochiKit.DOM.DIV({}, msg);
-    MochiKit.Base.updatetree(o, this);
-    o.addClass("widget", "widgetOverlay");
+    MochiKit.Widget._widgetMixin(o, arguments.callee);
+    o.addClass("widgetOverlay");
     attrs = MochiKit.Base.update({ loading: true, message: "Working..." }, attrs);
     o.setAttrs(attrs);
     o.addAll(MochiKit.Base.extend(null, arguments, 1));
     return o;
 }
-MochiKit.Widget.Overlay.prototype = MochiKit.Base.clone(MochiKit.Widget.prototype);
 
 /**
  * Updates the widget or HTML DOM node attributes.
@@ -1474,11 +1740,11 @@ MochiKit.Widget.Overlay.prototype = MochiKit.Base.clone(MochiKit.Widget.prototyp
  * @param {Boolean} [attrs.loading] the display loading icon flag
  * @param {String} [attrs.message] the overlay message text
  */
-MochiKit.Widget.Overlay.prototype.setAttrs = function(attrs) {
+MochiKit.Widget.Overlay.prototype.setAttrs = function (attrs) {
     attrs = MochiKit.Base.update({}, attrs);
     var locals = MochiKit.Base.mask(attrs, ["loading", "message"]);
     if (typeof(locals.loading) != "undefined") {
-        this.showLoading = !MochiKit.Base.isFalse(locals.loading);
+        this.showLoading = MochiKit.Base.bool(locals.loading);
     }
     if (typeof(locals.message) != "undefined") {
         this.message = locals.message;
@@ -1523,19 +1789,14 @@ MochiKit.Widget.Overlay.prototype.setAttrs = function(attrs) {
  *               closeable flag value.
  * @extends MochiKit.Widget
  */
-MochiKit.Widget.Pane = function(attrs/*, ... */) {
-    var cls = arguments.callee;
-    if (!(this instanceof cls)) {
-        return new cls(attrs, MochiKit.Base.extend(null, arguments, 1));
-    }
+MochiKit.Widget.Pane = function (attrs/*, ... */) {
     var o = MochiKit.DOM.DIV();
-    MochiKit.Base.updatetree(o, this);
-    o.addClass("widget", "widgetPane");
+    MochiKit.Widget._widgetMixin(o, arguments.callee);
+    o.addClass("widgetPane");
     o.setAttrs(MochiKit.Base.update({ pageTitle: "Page", pageStatus: "ANY", pageCloseable: false }, attrs));
     o.addAll(MochiKit.Base.extend(null, arguments, 1));
     return o;
 }
-MochiKit.Widget.Pane.prototype = MochiKit.Base.clone(MochiKit.Widget.prototype);
 
 /**
  * The default page status. Allows page transitions both to the
@@ -1590,7 +1851,7 @@ MochiKit.Widget.Pane.WORKING = { previous: false, next: false };
  * @param {Boolean} [attrs.pageCloseable] the page closeable flag
  *            used when inside some page containers
  */
-MochiKit.Widget.Pane.prototype.setAttrs = function(attrs) {
+MochiKit.Widget.Pane.prototype.setAttrs = function (attrs) {
     attrs = MochiKit.Base.update({}, attrs);
     var locals = MochiKit.Base.mask(attrs, ["pageTitle", "pageStatus", "pageCloseable"]);
     var modified = false;
@@ -1606,7 +1867,7 @@ MochiKit.Widget.Pane.prototype.setAttrs = function(attrs) {
         modified = true;
     }
     if (typeof(locals.pageCloseable) != "undefined") {
-        this.pageCloseable = !MochiKit.Base.isFalse(locals.pageCloseable);
+        this.pageCloseable = MochiKit.Base.bool(locals.pageCloseable);
         modified = true;
     }
     if (modified && this.parentNode &&
@@ -1618,17 +1879,18 @@ MochiKit.Widget.Pane.prototype.setAttrs = function(attrs) {
 
 /**
  * Handles the page enter event. This method is called by a parent
- * paged container widget (such as a TabContainer or a Wizard) and
- * will show the pane, trigger the "onenter" event and optionally
- * also perform other actions (see the opts parameter).
+ * page container widget, such as a TabContainer or a Wizard. It will
+ * reset the form validations (optional), show the pane (optional),
+ * and finally trigger the "onenter" event.
  *
  * @param {Object} opts the page transition options
+ * @param {Boolean} [opts.show] the show pane flag, defaults to true
  * @param {Boolean} [opts.validateReset] the form validation reset
  *            flag, used to clear all form validations in the pane
  */
-MochiKit.Widget.Pane.prototype._handleEnter = function(opts) {
-    opts = opts || {};
-    if (opts.validateReset) {
+MochiKit.Widget.Pane.prototype._handleEnter = function (opts) {
+    opts = MochiKit.Base.update({ show: true, validateReset: false }, opts);
+    if (MochiKit.Base.bool(opts.validateReset)) {
         var forms = this.getElementsByTagName("FORM");
         for (var i = 0; i < forms.length; i++) {
             if (typeof(forms[i].validateReset) == "function") {
@@ -1636,28 +1898,31 @@ MochiKit.Widget.Pane.prototype._handleEnter = function(opts) {
             }
         }
     }
-    this.show();
-    MochiKit.Style.resizeElements(this);
+    if (MochiKit.Base.bool(opts.show)) {
+        this.show();
+        MochiKit.Style.resizeElements(this);
+    }
     MochiKit.Widget.emitSignal(this, "onenter");
 }
 
 /**
  * Handles the page exit event. This method is called by a parent
- * paged container widget (such as a TabContainer or a Wizard) and
- * will hide the pane, trigger the "onexit" event and optionally
- * also perform other actions (see the opts parameter).
+ * page container widget, such as a TabContainer or a Wizard. It will
+ * validate the form (optional), unfocus all form fields, hide the
+ * pane (optional), and finally trigger the "onexit" event.
  *
  * @param {Object} opts the page transition options
- * @param {Boolean} [opts.validateForm] the form validation flag,
- *            used to check all forms in the page for valid entries
- *            before proceeding
+ * @param {Boolean} [opts.hide] the hide pane flag, defaults to true
+ * @param {Boolean} [opts.validate] the form validation flag, used to
+ *            check all forms in the page for valid entries before
+ *            proceeding, defaults to false
  *
  * @return {Boolean} true if the page exit event completed, or
  *         false if it was cancelled (due to validation errors)
  */
-MochiKit.Widget.Pane.prototype._handleExit = function(opts) {
-    opts = opts || {};
-    if (opts.validateForm) {
+MochiKit.Widget.Pane.prototype._handleExit = function (opts) {
+    opts = MochiKit.Base.update({ hide: true, validate: false }, opts);
+    if (MochiKit.Base.bool(opts.validate)) {
         var forms = this.getElementsByTagName("FORM");
         for (var i = 0; i < forms.length; i++) {
             if (typeof(forms[i].validate) == "function") {
@@ -1670,7 +1935,9 @@ MochiKit.Widget.Pane.prototype._handleExit = function(opts) {
         }
     }
     this.blurAll();
-    this.hide();
+    if (MochiKit.Base.bool(opts.hide)) {
+        this.hide();
+    }
     MochiKit.Widget.emitSignal(this, "onexit");
     return true;
 }
@@ -1699,14 +1966,10 @@ MochiKit.Widget.Pane.prototype._handleExit = function(opts) {
  *     the menu has been shown or hidden.
  * @extends MochiKit.Widget
  */
-MochiKit.Widget.Popup = function(attrs/*, ...*/) {
-    var cls = arguments.callee;
-    if (!(this instanceof cls)) {
-        return new cls(attrs, MochiKit.Base.extend(null, arguments, 1));
-    }
+MochiKit.Widget.Popup = function (attrs/*, ...*/) {
     var o = MochiKit.DOM.DIV();
-    MochiKit.Base.updatetree(o, this);
-    o.addClass("widget", "widgetPopup", "widgetHidden");
+    MochiKit.Widget._widgetMixin(o, arguments.callee);
+    o.addClass("widgetPopup", "widgetHidden");
     o.selectedIndex = -1;
     o._delayTimer = null;
     o.setAttrs(MochiKit.Base.update({ delay: 5000 }, attrs));
@@ -1715,7 +1978,6 @@ MochiKit.Widget.Popup = function(attrs/*, ...*/) {
     MochiKit.Signal.connect(o, "onclick", o, "_handleMouseClick");
     return o;
 }
-MochiKit.Widget.Popup.prototype = MochiKit.Base.clone(MochiKit.Widget.prototype);
 
 /**
  * Updates the widget or HTML DOM node attributes.
@@ -1728,7 +1990,7 @@ MochiKit.Widget.Popup.prototype = MochiKit.Base.clone(MochiKit.Widget.prototype)
  * @param {Object} [attrs.hideAnim] the optional animation options
  *            when hiding the popup, defaults to none
  */
-MochiKit.Widget.Popup.prototype.setAttrs = function(attrs) {
+MochiKit.Widget.Popup.prototype.setAttrs = function (attrs) {
     attrs = MochiKit.Base.update({}, attrs);
     var locals = MochiKit.Base.mask(attrs, ["delay", "showAnim", "hideAnim"]);
     if (typeof(locals.delay) != "undefined") {
@@ -1747,11 +2009,11 @@ MochiKit.Widget.Popup.prototype.setAttrs = function(attrs) {
 /**
  * Shows the popup.
  */
-MochiKit.Widget.Popup.prototype.show = function() {
+MochiKit.Widget.Popup.prototype.show = function () {
     if (this.isHidden()) {
-        this.resetDelay();
         this.selectChild(-1);
         this.removeClass("widgetHidden");
+        this.resetDelay();
         if (this.showAnim) {
             this.animate(this.showAnim);
         }
@@ -1765,7 +2027,7 @@ MochiKit.Widget.Popup.prototype.show = function() {
 /**
  * Hides the popup.
  */
-MochiKit.Widget.Popup.prototype.hide = function() {
+MochiKit.Widget.Popup.prototype.hide = function () {
     if (this.isHidden()) {
         this.resetDelay();
     } else {
@@ -1782,7 +2044,7 @@ MochiKit.Widget.Popup.prototype.hide = function() {
  * Resets the popup auto-hide timer. Might be called manually when
  * receiving events on other widgets related to this one.
  */
-MochiKit.Widget.Popup.prototype.resetDelay = function() {
+MochiKit.Widget.Popup.prototype.resetDelay = function () {
     if (this._delayTimer) {
         clearTimeout(this._delayTimer);
         this._delayTimer = null;
@@ -1798,7 +2060,7 @@ MochiKit.Widget.Popup.prototype.resetDelay = function() {
  * @return {Node} the currently selected child node, or
  *         null if no node is selected
  */
-MochiKit.Widget.Popup.prototype.selectedChild = function() {
+MochiKit.Widget.Popup.prototype.selectedChild = function () {
     return MochiKit.DOM.childNode(this, this.selectedIndex);
 }
 
@@ -1812,10 +2074,10 @@ MochiKit.Widget.Popup.prototype.selectedChild = function() {
  * @return the index of the newly selected child, or
  *         -1 if none was selected
  */
-MochiKit.Widget.Popup.prototype.selectChild = function(indexOrNode) {
+MochiKit.Widget.Popup.prototype.selectChild = function (indexOrNode) {
     var node = this.selectedChild();
     if (node != null) {
-        MochiKit.DOM.removeElementClass(node, "selected");
+        MochiKit.DOM.removeElementClass(node, "widgetPopupSelected");
     }
     var node = MochiKit.DOM.childNode(this, indexOrNode);
     if (typeof(indexOrNode) == "number") {
@@ -1825,7 +2087,7 @@ MochiKit.Widget.Popup.prototype.selectChild = function(indexOrNode) {
     }
     if (index >= 0 && node != null) {
         this.selectedIndex = index;
-        MochiKit.DOM.addElementClass(node, "selected");
+        MochiKit.DOM.addElementClass(node, "widgetPopupSelected");
         var box = { y: node.offsetTop, h: node.offsetHeight + 5 };
         MochiKit.Style.adjustScrollOffset(this, box);
     } else {
@@ -1843,7 +2105,7 @@ MochiKit.Widget.Popup.prototype.selectChild = function(indexOrNode) {
  * @return the index of the newly selected child, or
  *         -1 if none was selected
  */
-MochiKit.Widget.Popup.prototype.selectMove = function(offset) {
+MochiKit.Widget.Popup.prototype.selectMove = function (offset) {
     var index = this.selectedIndex + offset;
     if (index >= this.childNodes.length) {
         index = 0;
@@ -1859,7 +2121,7 @@ MochiKit.Widget.Popup.prototype.selectMove = function(offset) {
  *
  * @param {Event} evt the MochiKit.Signal.Event object
  */
-MochiKit.Widget.Popup.prototype._handleMouseMove = function(evt) {
+MochiKit.Widget.Popup.prototype._handleMouseMove = function (evt) {
     this.show();
     var node = MochiKit.DOM.childNode(this, evt.target());
     if (node != null && MochiKit.DOM.hasElementClass(node, "widgetPopupItem")) {
@@ -1874,7 +2136,7 @@ MochiKit.Widget.Popup.prototype._handleMouseMove = function(evt) {
  *
  * @param {Event} evt the MochiKit.Signal.Event object
  */
-MochiKit.Widget.Popup.prototype._handleMouseClick = function(evt) {
+MochiKit.Widget.Popup.prototype._handleMouseClick = function (evt) {
     var node = MochiKit.DOM.childNode(this, evt.target());
     if (node != null && MochiKit.DOM.hasElementClass(node, "widgetPopupItem")) {
         this.selectChild(node);
@@ -1900,21 +2162,16 @@ MochiKit.Widget.Popup.prototype._handleMouseClick = function(evt) {
  *     time estimation is reset.
  * @extends MochiKit.Widget
  */
-MochiKit.Widget.ProgressBar = function(attrs) {
-    var cls = arguments.callee;
-    if (!(this instanceof cls)) {
-        return new cls(attrs, MochiKit.Base.extend(null, arguments, 1));
-    }
+MochiKit.Widget.ProgressBar = function (attrs) {
     var meter = MochiKit.DOM.DIV({ "class": "widgetProgressBarMeter" });
     var text = MochiKit.DOM.DIV({ "class": "widgetProgressBarText" });
     var o = MochiKit.DOM.DIV({}, meter, text);
-    MochiKit.Base.updatetree(o, this);
-    o.addClass("widget", "widgetProgressBar");
+    MochiKit.Widget._widgetMixin(o, arguments.callee);
+    o.addClass("widgetProgressBar");
     o.setAttrs(MochiKit.Base.update({ min: 0, max: 100 }, attrs));
     o.setValue(0);
     return o;
 }
-MochiKit.Widget.ProgressBar.prototype = MochiKit.Base.clone(MochiKit.Widget.prototype);
 
 /**
  * Updates the widget or HTML DOM node attributes.
@@ -1923,7 +2180,7 @@ MochiKit.Widget.ProgressBar.prototype = MochiKit.Base.clone(MochiKit.Widget.prot
  * @param {Number} [attrs.min] the minimum range value, defaults to 0
  * @param {Number} [attrs.max] the maximum range value, defaults to 100
  */
-MochiKit.Widget.ProgressBar.prototype.setAttrs = function(attrs) {
+MochiKit.Widget.ProgressBar.prototype.setAttrs = function (attrs) {
     attrs = MochiKit.Base.update({}, attrs);
     var locals = MochiKit.Base.mask(attrs, ["min", "max"]);
     if (typeof(locals.min) != "undefined" || typeof(locals.max) != "undefined") {
@@ -1938,7 +2195,7 @@ MochiKit.Widget.ProgressBar.prototype.setAttrs = function(attrs) {
 
 /**
  * Updates the progress bar completion value. The value should be
- * within the range previosly established by the "min" and "max"
+ * within the range previuosly established by the "min" and "max"
  * attributes and is used to calculate a completion ratio. The
  * ratio is then used both for updating the progress meter and for
  * calculating an approximate remaining time. Any previous progress
@@ -1947,7 +2204,7 @@ MochiKit.Widget.ProgressBar.prototype.setAttrs = function(attrs) {
  * @param {Number} value the new progress value
  * @param {String} [text] the additional information text
  */
-MochiKit.Widget.ProgressBar.prototype.setValue = function(value, text) {
+MochiKit.Widget.ProgressBar.prototype.setValue = function (value, text) {
     value = Math.min(Math.max(value, this.minValue), this.maxValue);
     var pos = value - this.minValue;
     var total = this.maxValue - this.minValue;
@@ -1969,13 +2226,13 @@ MochiKit.Widget.ProgressBar.prototype.setValue = function(value, text) {
  *            between 0.0 and 1.0
  * @param {String} [text] the additional information text
  */
-MochiKit.Widget.ProgressBar.prototype.setRatio = function(ratio, text) {
+MochiKit.Widget.ProgressBar.prototype.setRatio = function (ratio, text) {
     var percent = Math.round(ratio * 1000) / 10;
     MochiKit.Style.setElementDimensions(this.firstChild, { w: percent }, "%");
-    if (percent < 66) {
-        this.lastChild.className = "widgetProgressBarText";
+    if (percent < 100) {
+        this.firstChild.className = "widgetProgressBarMeter animated";
     } else {
-        this.lastChild.className = "widgetProgressBarTextInverse";
+        this.firstChild.className = "widgetProgressBarMeter";
     }
     if (typeof(text) == "string" && text != "") {
         text = Math.round(percent) + "% \u2014 " + text;
@@ -2000,7 +2257,7 @@ MochiKit.Widget.ProgressBar.prototype.setRatio = function(ratio, text) {
  *
  * @param {String} text the new progress bar text
  */
-MochiKit.Widget.ProgressBar.prototype.setText = function(text) {
+MochiKit.Widget.ProgressBar.prototype.setText = function (text) {
     MochiKit.DOM.replaceChildNodes(this.lastChild, text);
 }
 
@@ -2024,16 +2281,12 @@ MochiKit.Widget.ProgressBar.prototype.setText = function(text) {
  *     from the container.
  * @extends MochiKit.Widget
  */
-MochiKit.Widget.TabContainer = function(attrs/*, ... */) {
-    var cls = arguments.callee;
-    if (!(this instanceof cls)) {
-        return new cls(attrs, MochiKit.Base.extend(null, arguments, 1));
-    }
+MochiKit.Widget.TabContainer = function (attrs/*, ... */) {
     var labels = MochiKit.DOM.DIV({ "class": "widgetTabContainerLabels" });
     var container = MochiKit.DOM.DIV({ "class": "widgetTabContainerContent" });
     var o = MochiKit.DOM.DIV(attrs, labels, container);
-    MochiKit.Base.updatetree(o, this);
-    o.addClass("widget", "widgetTabContainer");
+    MochiKit.Widget._widgetMixin(o, arguments.callee);
+    o.addClass("widgetTabContainer");
     // TODO: possibly add MSIE size fix?
     MochiKit.Style.registerSizeConstraints(container, "100% - 22", "100% - 47");
     container.resizeContent = MochiKit.Base.noop;
@@ -2041,7 +2294,6 @@ MochiKit.Widget.TabContainer = function(attrs/*, ... */) {
     o.addAll(MochiKit.Base.extend(null, arguments, 1));
     return o;
 }
-MochiKit.Widget.TabContainer.prototype = MochiKit.Base.clone(MochiKit.Widget.prototype);
 
 /**
  * Returns an array with all child pane widgets. Note that the array
@@ -2049,7 +2301,7 @@ MochiKit.Widget.TabContainer.prototype = MochiKit.Base.clone(MochiKit.Widget.pro
  *
  * @return {Array} the array of child DOM nodes
  */
-MochiKit.Widget.TabContainer.prototype.getChildNodes = function() {
+MochiKit.Widget.TabContainer.prototype.getChildNodes = function () {
     return MochiKit.Base.extend([], this.lastChild.childNodes);
 }
 
@@ -2060,23 +2312,22 @@ MochiKit.Widget.TabContainer.prototype.getChildNodes = function() {
  *
  * @param {Widget} child the page widget to add
  */
-MochiKit.Widget.TabContainer.prototype.addChildNode = function(child) {
+MochiKit.Widget.TabContainer.prototype.addChildNode = function (child) {
     if (!MochiKit.Widget.isWidget(child, "Pane")) {
         child = new MochiKit.Widget.Pane(null, child);
     }
     MochiKit.Style.registerSizeConstraints(child, "100%", "100%");
     child.hide();
-
     var text = MochiKit.DOM.SPAN(null, child.pageTitle);
     if (child.pageCloseable) {
         var icon = new MochiKit.Widget.Icon({ ref: "CLOSE" });
-        MochiKit.Signal.connect(icon, "onclick",
-                                MochiKit.Base.bind("_handleClose", this, child));
+        // TODO: potential memory leak with stale child object references
+        icon.onclick = MochiKit.Widget._eventHandler("TabContainer", "_handleClose", child);
     }
     var label = MochiKit.DOM.DIV({ "class": "widgetTabContainerLabel" },
                                  MochiKit.DOM.DIV({}, text, icon));
-    MochiKit.Signal.connect(label, "onclick",
-                            MochiKit.Base.bind("selectChild", this, child));
+    // TODO: potential memory leak with stale child object references
+    label.onclick = MochiKit.Widget._eventHandler("TabContainer", "selectChild", child);
     this.firstChild.appendChild(label);
     this.lastChild.appendChild(child);
     if (this._selectedIndex < 0) {
@@ -2094,7 +2345,7 @@ MochiKit.Widget.TabContainer.prototype.addChildNode = function(child) {
  *
  * @param {Widget/Node} child the DOM node to remove
  */
-MochiKit.Widget.TabContainer.prototype.removeChildNode = function(child) {
+MochiKit.Widget.TabContainer.prototype.removeChildNode = function (child) {
     var children = this.getChildNodes();
     var index = MochiKit.Base.findIdentical(children, child);
     if (index < 0) {
@@ -2107,6 +2358,9 @@ MochiKit.Widget.TabContainer.prototype.removeChildNode = function(child) {
     MochiKit.Widget.destroyWidget(this.firstChild.childNodes[index]);
     MochiKit.DOM.removeElement(child);
     MochiKit.Widget.emitSignal(child, "onclose");
+    if (this._selectedIndex > index) {
+        this._selectedIndex--;
+    }
     if (this._selectedIndex < 0 && this.getChildNodes().length > 0) {
         this.selectChild((index == 0) ? 0 : index - 1);
     }
@@ -2121,7 +2375,7 @@ MochiKit.Widget.TabContainer.prototype.removeChildNode = function(child) {
  * @return {Number} the index of the selected child, or
  *         -1 if no child is selected
  */
-MochiKit.Widget.TabContainer.prototype.selectedIndex = function() {
+MochiKit.Widget.TabContainer.prototype.selectedIndex = function () {
     return this._selectedIndex;
 }
 
@@ -2131,7 +2385,7 @@ MochiKit.Widget.TabContainer.prototype.selectedIndex = function() {
  * @return {Node} the child widget selected, or
  *         null if no child is selected
  */
-MochiKit.Widget.TabContainer.prototype.selectedChild = function() {
+MochiKit.Widget.TabContainer.prototype.selectedChild = function () {
     var children = this.getChildNodes();
     return (this._selectedIndex < 0) ? null : children[this._selectedIndex];
 }
@@ -2142,7 +2396,7 @@ MochiKit.Widget.TabContainer.prototype.selectedChild = function() {
  *
  * @param {Number/Node} [indexOrChild] the child index or node
  */
-MochiKit.Widget.TabContainer.prototype.selectChild = function(indexOrChild) {
+MochiKit.Widget.TabContainer.prototype.selectChild = function (indexOrChild) {
     var children = this.getChildNodes();
     if (this._selectedIndex >= 0) {
         var label = this.firstChild.childNodes[this._selectedIndex];
@@ -2172,7 +2426,7 @@ MochiKit.Widget.TabContainer.prototype.selectChild = function(indexOrChild) {
  * child nodes that are visible, i.e. the currently selected tab
  * container child.
  */
-MochiKit.Widget.TabContainer.prototype.resizeContent = function() {
+MochiKit.Widget.TabContainer.prototype.resizeContent = function () {
     MochiKit.Style.resizeElements(this.lastChild);
     var child = this.selectedChild();
     if (child != null) {
@@ -2186,7 +2440,7 @@ MochiKit.Widget.TabContainer.prototype.resizeContent = function() {
  * @param {Node} child the child DOM node
  * @param {Event} evt the MochiKit.Signal.Event object
  */
-MochiKit.Widget.TabContainer.prototype._handleClose = function(child, evt) {
+MochiKit.Widget.TabContainer.prototype._handleClose = function (child, evt) {
     evt.stop();
     this.removeChildNode(child);
 }
@@ -2196,8 +2450,10 @@ MochiKit.Widget.TabContainer.prototype._handleClose = function(child, evt) {
  *
  * @constructor
  * @param {Object} attrs the widget and node attributes
- * @param {Boolean} [attrs.multiple] the multiple row selection flag,
- *            defaults to false
+ * @param {String} [attrs.select] the row selection mode ('none', 'one' or
+ *            'multiple'), defaults to 'one'
+ * @param {String} [attrs.key] the unique key identifier column field,
+ *            defaults to null
  * @param {Widget} [...] the child table columns
  *
  * @return {Widget} the widget DOM node
@@ -2210,41 +2466,48 @@ MochiKit.Widget.TabContainer.prototype._handleClose = function(child, evt) {
  *     "onclear" and "onselect" events are triggered when data is
  *     cleared or selected in the table.
  * @extends MochiKit.Widget
+ *
+ * @example
+ * &lt;Table id="exTable" w="50%" h="100%"&gt;
+ *   &lt;TableColumn title="Id" field="id" key="true" type="number" /&gt;
+ *   &lt;TableColumn title="Name" field="name" sort="asc" /&gt;
+ *   &lt;TableColumn title="Creation Date" field="created" type="date" /&gt;
+ * &lt;/Table&gt;
  */
-MochiKit.Widget.Table = function(attrs/*, ...*/) {
-    var cls = arguments.callee;
-    if (!(this instanceof cls)) {
-        return new cls(attrs, MochiKit.Base.extend(null, arguments, 1));
-    }
+MochiKit.Widget.Table = function (attrs/*, ...*/) {
     var thead = MochiKit.DOM.THEAD({}, MochiKit.DOM.TR());
     var tbody = MochiKit.DOM.TBODY();
     tbody.resizeContent = MochiKit.Base.noop;
     var table = MochiKit.DOM.TABLE({ "class": "widgetTable" }, thead, tbody);
     var o = MochiKit.DOM.DIV({}, table);
-    MochiKit.Base.updatetree(o, this);
-    o.addClass("widget", "widgetTable");
-    o.setAttrs(MochiKit.Base.update({ multiple: false }, attrs));
+    MochiKit.Widget._widgetMixin(o, arguments.callee);
+    o.addClass("widgetTable");
     o._rows = [];
     o._data = null;
     o._keyField = null;
     o._selected = [];
+    o.setAttrs(MochiKit.Base.update({ select: "one" }, attrs));
     o.addAll(MochiKit.Base.extend(null, arguments, 1));
-    MochiKit.Signal.connect(tbody, "onmousedown", o, "_handleSelect");
+    tbody.onmousedown = MochiKit.Widget._eventHandler("Table", "_handleSelect");
     return o;
 }
-MochiKit.Widget.Table.prototype = MochiKit.Base.clone(MochiKit.Widget.prototype);
 
 /**
  * Updates the widget or HTML DOM node attributes.
  *
  * @param {Object} attrs the widget and node attributes to set
- * @param {Boolean} [attrs.multiple] the multiple row selection flag
+ * @param {String} [attrs.select] the row selection mode ('none', 'one' or
+ *            'multiple')
+ * @param {String} [attrs.key] the unique key identifier column field
  */
-MochiKit.Widget.Table.prototype.setAttrs = function(attrs) {
+MochiKit.Widget.Table.prototype.setAttrs = function (attrs) {
     attrs = MochiKit.Base.update({}, attrs);
-    var locals = MochiKit.Base.mask(attrs, ["multiple"]);
-    if (typeof(locals.multiple) != "undefined") {
-        this.multiple = !MochiKit.Base.isFalse(locals.multiple);
+    var locals = MochiKit.Base.mask(attrs, ["select", "key"]);
+    if (typeof(locals.select) != "undefined") {
+        this.select = locals.select;
+    }
+    if (typeof(locals.key) != "undefined") {
+        this.setIdKey(locals.key);
     }
     MochiKit.DOM.updateNodeAttributes(this, attrs);
 }
@@ -2255,7 +2518,7 @@ MochiKit.Widget.Table.prototype.setAttrs = function(attrs) {
  *
  * @return {Array} the array of child table column widgets
  */
-MochiKit.Widget.Table.prototype.getChildNodes = function() {
+MochiKit.Widget.Table.prototype.getChildNodes = function () {
     var table = this.firstChild;
     var thead = table.firstChild;
     var tr = thead.firstChild;
@@ -2267,7 +2530,7 @@ MochiKit.Widget.Table.prototype.getChildNodes = function() {
  *
  * @param {Widget} child the table column widget to add
  */
-MochiKit.Widget.Table.prototype.addChildNode = function(child) {
+MochiKit.Widget.Table.prototype.addChildNode = function (child) {
     if (!MochiKit.Widget.isWidget(child, "TableColumn")) {
         throw new Error("Table widget can only have TableColumn children");
     }
@@ -2284,7 +2547,7 @@ MochiKit.Widget.Table.prototype.addChildNode = function(child) {
  *
  * @param {Widget} child the table column widget to remove
  */
-MochiKit.Widget.Table.prototype.removeChildNode = function(child) {
+MochiKit.Widget.Table.prototype.removeChildNode = function (child) {
     this.clear();
     var table = this.firstChild;
     var thead = table.firstChild;
@@ -2300,7 +2563,7 @@ MochiKit.Widget.Table.prototype.removeChildNode = function(child) {
  * @return {Number} the column index, or
  *         -1 if not found
  */
-MochiKit.Widget.Table.prototype.getColumnIndex = function(field) {
+MochiKit.Widget.Table.prototype.getColumnIndex = function (field) {
     var cols = this.getChildNodes();
     for (var i = 0; i < cols.length; i++) {
         if (cols[i].field === field) {
@@ -2317,7 +2580,7 @@ MochiKit.Widget.Table.prototype.getColumnIndex = function(field) {
  * @return {String} the key column field name, or
  *         null for none
  */
-MochiKit.Widget.Table.prototype.getIdKey = function() {
+MochiKit.Widget.Table.prototype.getIdKey = function () {
     if (this._keyField) {
         return this._keyField;
     }
@@ -2337,9 +2600,9 @@ MochiKit.Widget.Table.prototype.getIdKey = function() {
  *
  * @param {String} key the new key column field name 
  */
-MochiKit.Widget.Table.prototype.setIdKey = function(key) {
+MochiKit.Widget.Table.prototype.setIdKey = function (key) {
     this._keyField = key;
-    for (var i = 0; i < this._rows.length; i++) {
+    for (var i = 0; this._rows != null && i < this._rows.length; i++) {
         var row = this._rows[i];
         if (this._keyField != null && row.$data[this._keyField] != null) {
             row.$id = row.$data[this._keyField];
@@ -2353,7 +2616,7 @@ MochiKit.Widget.Table.prototype.setIdKey = function(key) {
  * @return {String} the current sort field, or
  *         null for none
  */
-MochiKit.Widget.Table.prototype.getSortKey = function() {
+MochiKit.Widget.Table.prototype.getSortKey = function () {
     var cols = this.getChildNodes();
     for (var i = 0; i < cols.length; i++) {
         if (cols[i].sort != null && cols[i].sort != "none") {
@@ -2372,7 +2635,7 @@ MochiKit.Widget.Table.prototype.getSortKey = function() {
  * @return {Node} the table cell element node, or
  *         null if not found
  */
-MochiKit.Widget.Table.prototype.getCellElem = function(row, col) {
+MochiKit.Widget.Table.prototype.getCellElem = function (row, col) {
     try {
         var table = this.firstChild;
         var tbody = table.lastChild;
@@ -2387,7 +2650,7 @@ MochiKit.Widget.Table.prototype.getCellElem = function(row, col) {
  * affected by this method. Use removeAll() or removeChildNode() to
  * also remove columns.
  */
-MochiKit.Widget.Table.prototype.clear = function() {
+MochiKit.Widget.Table.prototype.clear = function () {
     this.setData([]);
 }
 
@@ -2398,7 +2661,7 @@ MochiKit.Widget.Table.prototype.clear = function() {
  *
  * @return {Array} an array with the data in the table
  */
-MochiKit.Widget.Table.prototype.getData = function() {
+MochiKit.Widget.Table.prototype.getData = function () {
     return this._data;
 }
 
@@ -2410,8 +2673,16 @@ MochiKit.Widget.Table.prototype.getData = function() {
  * details.
  *
  * @param {Array} data an array with data objects
+ *
+ * @example
+ * var data = [
+ *     { id: 1, name: "John Doe", created: "2007-12-31" },
+ *     { id: 2, name: "First Last", created: "2008-03-01" },
+ *     { id: 3, name: "Another Name", created: "2009-01-12" }
+ * ];
+ * table.setData(data);
  */
-MochiKit.Widget.Table.prototype.setData = function(data) {
+MochiKit.Widget.Table.prototype.setData = function (data) {
     var cols = this.getChildNodes();
     var selectedIds = this.getSelectedIds();
     MochiKit.Widget.emitSignal(this, "onclear");
@@ -2446,7 +2717,7 @@ MochiKit.Widget.Table.prototype.setData = function(data) {
  * @param {String} [direction] the sort direction, either "asc" or
  *            "desc"
  */
-MochiKit.Widget.Table.prototype.sortData = function(field, direction) {
+MochiKit.Widget.Table.prototype.sortData = function (field, direction) {
     var cols = this.getChildNodes();
     var selectedIds = this.getSelectedIds();
     this._selected = [];
@@ -2476,7 +2747,7 @@ MochiKit.Widget.Table.prototype.sortData = function(field, direction) {
  * will not add or remove rows and keeps the current row order
  * intact. For a more complete redraw of the table, use setData().
  */
-MochiKit.Widget.Table.prototype.redraw = function() {
+MochiKit.Widget.Table.prototype.redraw = function () {
     var cols = this.getChildNodes();
     for (var i = 0; i < this._rows.length; i++) {
         var row = this._rows[i];
@@ -2493,7 +2764,7 @@ MochiKit.Widget.Table.prototype.redraw = function() {
 /**
  * Renders the table rows.
  */
-MochiKit.Widget.Table.prototype._renderRows = function() {
+MochiKit.Widget.Table.prototype._renderRows = function () {
     var cols = this.getChildNodes();
     var tbody = this.firstChild.lastChild;
     MochiKit.DOM.replaceChildNodes(tbody);
@@ -2522,7 +2793,7 @@ MochiKit.Widget.Table.prototype._renderRows = function() {
  *
  * @return {Array} an array with the selected row ids
  */
-MochiKit.Widget.Table.prototype.getSelectedIds = function() {
+MochiKit.Widget.Table.prototype.getSelectedIds = function () {
     var res = [];
     for (var i = 0; i < this._selected.length; i++) {
         res.push(this._rows[this._selected[i]].$id);
@@ -2536,8 +2807,8 @@ MochiKit.Widget.Table.prototype.getSelectedIds = function() {
  * @return {Object/Array} the data row selected, or
  *         an array of selected data rows if multiple selection is enabled
  */
-MochiKit.Widget.Table.prototype.getSelectedData = function() {
-    if (this.multiple) {
+MochiKit.Widget.Table.prototype.getSelectedData = function () {
+    if (this.select === "multiple") {
         var res = [];
         for (var i = 0; i < this._selected.length; i++) {
             res.push(this._rows[this._selected[i]].$data);
@@ -2551,6 +2822,40 @@ MochiKit.Widget.Table.prototype.getSelectedData = function() {
 }
 
 /**
+ * Sets the selection to the specified row id values. If the current
+ * selection is changed the select signal will be emitted.
+ *
+ * @param {String/Array} [...] the row ids or array with ids to select
+ *
+ * @return {Array} an array with the row ids actually modified
+ */
+MochiKit.Widget.Table.prototype.setSelectedIds = function () {
+    var args = MochiKit.Base.flattenArguments(arguments);
+    var ids = MochiKit.Base.dict(args, true);
+    var oldIds = MochiKit.Base.dict(this.getSelectedIds(), true);
+    var res = [];
+    for (var i = 0; i < this._rows.length; i++) {
+        var rowId = this._rows[i].$id;
+        if (ids[rowId] && !oldIds[rowId]) {
+            this._selected.push(i);
+            this._markSelection(i);
+            res.push(rowId);
+        } else if (!ids[rowId] && oldIds[rowId]) {
+            var pos = MochiKit.Base.findIdentical(this._selected, i);
+            if (pos >= 0) {
+                this._selected.splice(pos, 1);
+                this._unmarkSelection(i);
+                res.push(rowId);
+            }
+        }
+    }
+    if (res.length > 0) {
+        MochiKit.Widget.emitSignal(this, "onselect");
+    }
+    return res;
+}
+
+/**
  * Adds the specified row id values to the selection. If the current
  * selection is changed the select signal will be emitted.
  *
@@ -2558,7 +2863,7 @@ MochiKit.Widget.Table.prototype.getSelectedData = function() {
  *
  * @return {Array} an array with the new row ids actually selected
  */
-MochiKit.Widget.Table.prototype.addSelectedIds = function() {
+MochiKit.Widget.Table.prototype.addSelectedIds = function () {
     var res = this._addSelectedIds(arguments);
     if (res.length > 0) {
         MochiKit.Widget.emitSignal(this, "onselect");
@@ -2574,7 +2879,7 @@ MochiKit.Widget.Table.prototype.addSelectedIds = function() {
  *
  * @return {Array} an array with the new row ids actually selected
  */
-MochiKit.Widget.Table.prototype._addSelectedIds = function() {
+MochiKit.Widget.Table.prototype._addSelectedIds = function () {
     var args = MochiKit.Base.flattenArguments(arguments);
     var ids = MochiKit.Base.dict(args, true);
     var res = [];
@@ -2597,7 +2902,7 @@ MochiKit.Widget.Table.prototype._addSelectedIds = function() {
  *
  * @return {Array} an array with the row ids actually unselected
  */
-MochiKit.Widget.Table.prototype.removeSelectedIds = function() {
+MochiKit.Widget.Table.prototype.removeSelectedIds = function () {
     var args = MochiKit.Base.flattenArguments(arguments);
     var ids = MochiKit.Base.dict(args, true);
     var res = [];
@@ -2605,7 +2910,7 @@ MochiKit.Widget.Table.prototype.removeSelectedIds = function() {
         if (ids[this._rows[i].$id]) {
             var pos = MochiKit.Base.findIdentical(this._selected, i);
             if (pos >= 0) {
-                this._selected.splice(i, 1);
+                this._selected.splice(pos, 1);
                 this._unmarkSelection(i);
                 res.push(this._rows[i].$id);
             }
@@ -2622,19 +2927,19 @@ MochiKit.Widget.Table.prototype.removeSelectedIds = function() {
  *
  * @param {Event} evt the MochiKit.Signal.Event object
  */
-MochiKit.Widget.Table.prototype._handleSelect = function(evt) {
+MochiKit.Widget.Table.prototype._handleSelect = function (evt) {
     var tr = MochiKit.DOM.getFirstParentByTagAndClassName(evt.target(), "TR");
     if (tr == null || tr.rowNo == null || !MochiKit.DOM.isChildNode(tr, this)) {
         evt.stop();
         return false;
     }
     var row = tr.rowNo;
-    if (this.multiple) {
+    if (this.select === "multiple") {
         if (evt.modifier().ctrl || evt.modifier().meta) {
-            if (MochiKit.Base.findIdentical(this._selected, row) >= 0) {
+            var pos = MochiKit.Base.findIdentical(this._selected, row);
+            if (pos >= 0) {
                 this._unmarkSelection(row);
-                // TODO: Remove ArrayUtil
-                ArrayUtil.removeElem(this._selected, row);
+                this._selected.splice(pos, 1);
             } else {
                 this._selected.push(row);
                 this._markSelection(row);
@@ -2661,7 +2966,7 @@ MochiKit.Widget.Table.prototype._handleSelect = function(evt) {
             this._selected = [row];
             this._markSelection(row);
         }
-    } else {
+    } else if (this.select !== "none") {
         this._unmarkSelection();
         this._selected = [row];
         this._markSelection(row);
@@ -2676,7 +2981,7 @@ MochiKit.Widget.Table.prototype._handleSelect = function(evt) {
  *
  * @param {Number} indexOrNull the row index, or null for the array
  */
-MochiKit.Widget.Table.prototype._markSelection = function(indexOrNull) {
+MochiKit.Widget.Table.prototype._markSelection = function (indexOrNull) {
     if (indexOrNull == null) {
         for (var i = 0; i < this._selected.length; i++) {
             this._markSelection(this._selected[i]);
@@ -2693,7 +2998,7 @@ MochiKit.Widget.Table.prototype._markSelection = function(indexOrNull) {
  *
  * @param {Number} indexOrNull the row index, or null for the array
  */
-MochiKit.Widget.Table.prototype._unmarkSelection = function(indexOrNull) {
+MochiKit.Widget.Table.prototype._unmarkSelection = function (indexOrNull) {
     if (indexOrNull == null) {
         for (var i = 0; i < this._selected.length; i++) {
             this._unmarkSelection(this._selected[i]);
@@ -2713,16 +3018,20 @@ MochiKit.Widget.Table.prototype._unmarkSelection = function(indexOrNull) {
  * @param {String} attrs.title the column title
  * @param {String} attrs.field the data property name
  * @param {String} [attrs.type] the data property type, one of
- *            "string", "number", "date", "time", "datetime" or
- *            "html"
- * @param {String} [attrs.sort] the initial sort direction, one of
- *            "asc", "desc" or "none" (disabled)
+ *            "string", "number", "date", "time", "datetime",
+ *            "boolean" or "object"
+ * @param {String} [attrs.sort] the sort direction, one of "asc",
+ *            "desc", "none" (disabled) or null (unsorted)
  * @param {Number} [attrs.maxLength] the maximum data length,
- *            overflow will be displayed as a tooltip
+ *            overflow will be displayed as a tooltip, only used by
+ *            the default renderer
  * @param {Boolean} [attrs.key] the unique key value flag, only to be
  *            set for a single column per table
  * @param {String} [attrs.tooltip] the tooltip text to display on the
  *            column header
+ * @param {Function} [attrs.renderer] the function that renders the
+ *            converted data value into a table cell, called with the
+ *            TD DOM node and data value as arguments (in that order)
  *
  * @return {Widget} the widget DOM node
  *
@@ -2731,22 +3040,17 @@ MochiKit.Widget.Table.prototype._unmarkSelection = function(indexOrNull) {
  *     header (and rendering data to &lt;td&gt; HTML elements).
  * @extends MochiKit.Widget
  */
-MochiKit.Widget.TableColumn = function(attrs) {
-    var cls = arguments.callee;
-    if (!(this instanceof cls)) {
-        return new cls(attrs, MochiKit.Base.extend(null, arguments, 1));
-    }
+MochiKit.Widget.TableColumn = function (attrs) {
     if (attrs.field == null) {
         throw new Error("The 'field' attribute cannot be null for a TableColumn");
     }
     var o = MochiKit.DOM.TH();
-    MochiKit.Base.updatetree(o, this);
-    o.addClass("widget", "widgetTableColumn");
+    MochiKit.Widget._widgetMixin(o, arguments.callee);
+    o.addClass("widgetTableColumn");
     o.setAttrs(MochiKit.Base.update({ title: attrs.field, type: "string", key: false }, attrs));
-    MochiKit.Signal.connect(o, "onclick", o, "_handleClick");
+    o.onclick = MochiKit.Widget._eventHandler(null, "_handleClick");
     return o;
 }
-MochiKit.Widget.TableColumn.prototype = MochiKit.Base.clone(MochiKit.Widget.prototype);
 
 /**
  * Updates the widget or HTML DOM node attributes. Note that some
@@ -2757,30 +3061,34 @@ MochiKit.Widget.TableColumn.prototype = MochiKit.Base.clone(MochiKit.Widget.prot
  * @param {String} [attrs.title] the column title
  * @param {String} [attrs.field] the data property name
  * @param {String} [attrs.type] the data property type, one of
- *            "string", "number", "date", "time", "datetime" or
- *            "html"
+ *            "string", "number", "date", "time", "datetime",
+ *            "boolean" or "object"
  * @param {String} [attrs.sort] the sort direction, one of "asc",
  *            "desc", "none" (disabled) or null (unsorted)
  * @param {Number} [attrs.maxLength] the maximum data length,
- *            overflow will be displayed as a tooltip
+ *            overflow will be displayed as a tooltip, only used by
+ *            the default renderer
  * @param {Boolean} [attrs.key] the unique key value flag, only to be
  *            set for a single column per table
  * @param {String} [attrs.tooltip] the tooltip text to display on the
  *            column header
+ * @param {Function} [attrs.renderer] the function that renders the
+ *            converted data value into a table cell, called with the
+ *            TD DOM node and data value as arguments (in that order)
  */
-MochiKit.Widget.TableColumn.prototype.setAttrs = function(attrs) {
+MochiKit.Widget.TableColumn.prototype.setAttrs = function (attrs) {
     attrs = MochiKit.Base.update({}, attrs);
-    var locals = MochiKit.Base.mask(attrs, ["title", "field", "type", "sort", "maxLength", "key", "tooltip"]);
-    if (typeof(locals.title) != "undefined") {
+    var locals = MochiKit.Base.mask(attrs, ["title", "field", "type", "sort", "maxLength", "key", "tooltip", "renderer"]);
+    if (typeof(locals.title) !== "undefined") {
         MochiKit.DOM.replaceChildNodes(this, locals.title);
     }
-    if (typeof(locals.field) != "undefined") {
+    if (typeof(locals.field) !== "undefined") {
         this.field = locals.field;
     }
-    if (typeof(locals.type) != "undefined") {
+    if (typeof(locals.type) !== "undefined") {
         this.type = locals.type;
     }
-    if (typeof(locals.sort) != "undefined") {
+    if (typeof(locals.sort) !== "undefined") {
         this.sort = locals.sort;
         if (locals.sort == null || locals.sort == "none") {
             MochiKit.DOM.removeElementClass(this, "sortAsc"); 
@@ -2793,14 +3101,17 @@ MochiKit.Widget.TableColumn.prototype.setAttrs = function(attrs) {
             MochiKit.DOM.addElementClass(this, "sortAsc");
         }
     }
-    if (typeof(locals.maxLength) != "undefined") {
+    if (typeof(locals.maxLength) !== "undefined") {
         this.maxLength = parseInt(locals.maxLength);
     }
-    if (typeof(locals.key) != "undefined") {
-        this.key = !MochiKit.Base.isFalse(locals.key);
+    if (typeof(locals.key) !== "undefined") {
+        this.key = MochiKit.Base.bool(locals.key);
     }
-    if (typeof(locals.tooltip) != "undefined") {
+    if (typeof(locals.tooltip) !== "undefined") {
         this.title = locals.tooltip;
+    }
+    if (typeof(locals.renderer) === "function") {
+        this.renderer = locals.renderer;
     }
     MochiKit.DOM.updateNodeAttributes(this, attrs);
 }
@@ -2812,11 +3123,10 @@ MochiKit.Widget.TableColumn.prototype.setAttrs = function(attrs) {
  * @param src                the source object (containing the field)
  * @param dst                the destination object
  */
-MochiKit.Widget.TableColumn.prototype._map = function(src, dst) {
+MochiKit.Widget.TableColumn.prototype._map = function (src, dst) {
     var value = src[this.field];
-
     if (value != null) {
-        if (this._key) {
+        if (this.key) {
             dst.$id = value;
         }
         switch (this.type) {
@@ -2831,21 +3141,21 @@ MochiKit.Widget.TableColumn.prototype._map = function(src, dst) {
             if (value instanceof Date) {
                 value = MochiKit.DateTime.toISODate(value);
             } else {
-                value = MochiKit.Format.truncate(value, 10);
+                value = MochiKit.Text.truncate(value, 10);
             }
             break;
         case "datetime":
             if (value instanceof Date) {
                 value = MochiKit.DateTime.toISOTimestamp(value);
             } else {
-                value = MochiKit.Format.truncate(value, 19);
+                value = MochiKit.Text.truncate(value, 19);
             }
             break;
         case "time":
             if (value instanceof Date) {
                 value = MochiKit.DateTime.toISOTime(value);
             } else {
-                if (typeof(value) != "string") {
+                if (typeof(value) !== "string") {
                     value = value.toString();
                 }
                 if (value.length > 8) {
@@ -2853,10 +3163,16 @@ MochiKit.Widget.TableColumn.prototype._map = function(src, dst) {
                 }
             }
             break;
-        default:
-            if (typeof(value) != "string") {
+        case "boolean":
+            if (typeof(value) !== "boolean") {
+                value = MochiKit.Base.bool(value);
+            }
+            break;
+        case "string":
+            if (typeof(value) !== "string") {
                 value = value.toString();
             }
+            break;
         }
     }
     dst[this.field] = value;
@@ -2869,21 +3185,21 @@ MochiKit.Widget.TableColumn.prototype._map = function(src, dst) {
  *
  * @return the table cell DOM node
  */
-MochiKit.Widget.TableColumn.prototype._render = function(obj) {
+MochiKit.Widget.TableColumn.prototype._render = function (obj) {
     var td = MochiKit.DOM.TD();
     var value = obj[this.field];
-    if (value == null) {
-        value = "";
-    } else if (typeof(value) != "string") {
-        value = value.toString();
-    }
-    if (this.maxLength && this.maxLength < value.length) {
-        td.title = value;
-        value = MochiKit.Format.truncate(value, this.maxLength, "...");
-    }
-    if (this.type == "html") {
-        td.innerHTML = value;
+    if (typeof(this.renderer) === "function") {
+        this.renderer(td, value);
     } else {
+        if (value == null || (typeof(value) == "number" && isNaN(value))) {
+            value = "";
+        } else if (typeof(value) != "string") {
+            value = value.toString();
+        }
+        if (this.maxLength && this.maxLength < value.length) {
+            td.title = value;
+            value = MochiKit.Text.truncate(value, this.maxLength, "...");
+        }
         td.appendChild(MochiKit.DOM.createTextNode(value));
     }
     return td;
@@ -2892,7 +3208,7 @@ MochiKit.Widget.TableColumn.prototype._render = function(obj) {
 /**
  * Handles click events on the column header.
  */
-MochiKit.Widget.TableColumn.prototype._handleClick = function() {
+MochiKit.Widget.TableColumn.prototype._handleClick = function () {
     if (this.parentNode != null) {
         var dir = (this.sort == "asc") ? "desc" : "asc";
         var tr = this.parentNode;
@@ -2921,23 +3237,33 @@ MochiKit.Widget.TableColumn.prototype._handleClick = function() {
  * @property {Boolean} focused The read-only widget focused flag.
  * @property {String} defaultValue The value to use on form reset.
  * @extends MochiKit.Widget
+ *
+ * @example
+ * var field = MochiKit.Widget.TextArea({ helpText: "< Enter Data >" });
  */
-MochiKit.Widget.TextArea = function(attrs/*, ...*/) {
-    var cls = arguments.callee;
-    if (!(this instanceof cls)) {
-        return new cls(attrs, MochiKit.Base.extend(null, arguments, 1));
+MochiKit.Widget.TextArea = function (attrs/*, ...*/) {
+    var text = "";
+    if (attrs != null && attrs.value != null) {
+        text = attrs.value;
     }
-    var o = MochiKit.DOM.TEXTAREA();
-    MochiKit.Base.updatetree(o, this);
-    o.addClass("widget", "widgetTextArea");
+    for (var i = 1; i < arguments.length; i++) {
+        var o = arguments[i];
+        if (MochiKit.DOM.isDOM(o)) {
+            text += MochiKit.DOM.scrapeText(o);
+        } else if (o != null) {
+            text += o.toString();
+        }
+    }
+    var o = MochiKit.DOM.TEXTAREA({ value: text });
+    MochiKit.Widget._widgetMixin(o, arguments.callee);
+    o.addClass("widgetTextArea");
     o.focused = false;
-    o.setAttrs(MochiKit.Base.update({ helpText: "" }, attrs));
-    o.addAll(MochiKit.Base.extend(null, arguments, 1));
-    MochiKit.Signal.connect(o, "onfocus", o, "_handleFocus");
-    MochiKit.Signal.connect(o, "onblur", o, "_handleFocus");
+    o.setAttrs(MochiKit.Base.update({ helpText: "", value: text }, attrs));
+    var focusHandler = MochiKit.Widget._eventHandler(null, "_handleFocus");
+    o.onfocus = focusHandler;
+    o.onblur = focusHandler;
     return o;
 }
-MochiKit.Widget.TextArea.prototype = MochiKit.Base.clone(MochiKit.Widget.prototype);
 
 /**
  * Updates the widget or HTML DOM node attributes.
@@ -2945,8 +3271,15 @@ MochiKit.Widget.TextArea.prototype = MochiKit.Base.clone(MochiKit.Widget.prototy
  * @param {Object} attrs the widget and node attributes to set
  * @param {String} [attrs.helpText] the help text shown on empty input
  * @param {String} [attrs.value] the field value
+ *
+ * @example
+ * var value = field.getValue();
+ * var lines = value.split("\n");
+ * lines = MochiKit.Base.map(MochiKit.Format.strip, lines);
+ * value = lines.join("\n");
+ * field.setAttrs({ "value": value });
  */
-MochiKit.Widget.TextArea.prototype.setAttrs = function(attrs) {
+MochiKit.Widget.TextArea.prototype.setAttrs = function (attrs) {
     attrs = MochiKit.Base.update({}, attrs);
     var locals = MochiKit.Base.mask(attrs, ["helpText", "value"]);
     if (typeof(locals.helpText) != "undefined") {
@@ -2955,17 +3288,14 @@ MochiKit.Widget.TextArea.prototype.setAttrs = function(attrs) {
     if (typeof(locals.value) != "undefined") {
         this.value = this.storedValue = locals.value;
     }
-    if (!this.focused && MochiKit.Format.strip(this.value) == "") {
-        this.value = this.helpText;
-        this.addClass("widgetTextAreaHelp");
-    }
     MochiKit.DOM.updateNodeAttributes(this, attrs);
+    this._render();
 }
 
 /**
  * Resets the text area form value to the initial value.
  */
-MochiKit.Widget.TextArea.prototype.reset = function() {
+MochiKit.Widget.TextArea.prototype.reset = function () {
     this.setAttrs({ value: this.defaultValue });
 }
 
@@ -2976,9 +3306,28 @@ MochiKit.Widget.TextArea.prototype.reset = function() {
  * displayed when the text area is empty and unfocused.
  *
  * @return {String} the field value
+ *
+ * @example
+ * var value = field.getValue();
+ * var lines = value.split("\n");
+ * lines = MochiKit.Base.map(MochiKit.Format.strip, lines);
+ * value = lines.join("\n");
+ * field.setAttrs({ "value": value });
  */
-MochiKit.Widget.TextArea.prototype.getValue = function() {
-    return (this.focused) ? this.value : this.storedValue;
+MochiKit.Widget.TextArea.prototype.getValue = function () {
+    var str = (this.focused) ? this.value : this.storedValue;
+    // This is a hack to remove multiple newlines caused by
+    // platforms inserting or failing to normalize newlines
+    // within the HTML textarea control.
+    if (/\r\n\n/.test(str)) {
+        str = str.replace(/\r\n\n/g, "\n");
+    } else if (/\n\n/.test(str) && !/.\n./.test(str)) {
+        str = str.replace(/\n\n/g, "\n");
+    }
+    if (this.focused && this.value != str) {
+        this.value = str;
+    }
+    return str;
 }
 
 /**
@@ -2986,18 +3335,30 @@ MochiKit.Widget.TextArea.prototype.getValue = function() {
  *
  * @param evt the MochiKit.Signal.Event object
  */
-MochiKit.Widget.TextArea.prototype._handleFocus = function(evt) {
+MochiKit.Widget.TextArea.prototype._handleFocus = function (evt) {
+    var str = this.getValue();
     if (evt.type() == "focus") {
         this.focused = true;
-        this.value = this.storedValue;
-        this.removeClass("widgetTextAreaHelp");
+        this.value = str
     } else if (evt.type() == "blur") {
         this.focused = false;
-        this.storedValue = this.value;
-        if (MochiKit.Format.strip(this.value) == "") {
-            this.value = this.helpText;
-            this.addClass("widgetTextAreaHelp");
-        }
+        this.storedValue = str;
+    }
+    this._render();
+}
+
+/**
+ * Updates the display of the widget content.
+ */
+MochiKit.Widget.TextArea.prototype._render = function () {
+    var strip = MochiKit.Format.strip;
+    var str = this.getValue();
+    if (!this.focused && strip(str) == "" && strip(this.helpText) != "") {
+        this.value = this.helpText;
+        this.addClass("widgetTextAreaHelp");
+    } else {
+        this.value = str;
+        this.removeClass("widgetTextAreaHelp");
     }
 }
 
@@ -3022,30 +3383,34 @@ MochiKit.Widget.TextArea.prototype._handleFocus = function(evt) {
  * @property {Boolean} focused The read-only widget focused flag.
  * @property {String} defaultValue The value to use on form reset.
  * @extends MochiKit.Widget
+ *
+ * @example
+ * var field = MochiKit.Widget.TextField({ helpText: "< Enter Data >" });
  */
-MochiKit.Widget.TextField = function(attrs/*, ...*/) {
-    var cls = arguments.callee;
-    if (!(this instanceof cls)) {
-        return new cls(attrs, MochiKit.Base.extend(null, arguments, 1));
-    }
+MochiKit.Widget.TextField = function (attrs/*, ...*/) {
     var text = "";
     if (attrs != null && attrs.value != null) {
         text = attrs.value;
-    } 
+    }
     for (var i = 1; i < arguments.length; i++) {
-        text += arguments[i].toString();
+        var o = arguments[i];
+        if (MochiKit.DOM.isDOM(o)) {
+            text += MochiKit.DOM.scrapeText(o);
+        } else if (o != null) {
+            text += o.toString();
+        }
     }
     var o = MochiKit.DOM.INPUT({ value: text });
-    MochiKit.Base.updatetree(o, this);
-    o.addClass("widget", "widgetTextField");
+    MochiKit.Widget._widgetMixin(o, arguments.callee);
+    o.addClass("widgetTextField");
     o.focused = false;
     o._popupCreated = false;
     o.setAttrs(MochiKit.Base.update({ helpText: "", value: text }, attrs));
-    MochiKit.Signal.connect(o, "onfocus", o, "_handleFocus");
-    MochiKit.Signal.connect(o, "onblur", o, "_handleFocus");
+    var focusHandler = MochiKit.Widget._eventHandler(null, "_handleFocus");
+    o.onfocus = focusHandler;
+    o.onblur = focusHandler;
     return o;
 }
-MochiKit.Widget.TextField.prototype = MochiKit.Base.clone(MochiKit.Widget.prototype);
 
 /**
  * Updates the widget or HTML DOM node attributes.
@@ -3053,8 +3418,13 @@ MochiKit.Widget.TextField.prototype = MochiKit.Base.clone(MochiKit.Widget.protot
  * @param {Object} attrs the widget and node attributes to set
  * @param {String} [attrs.helpText] the help text shown on empty input
  * @param {String} [attrs.value] the field value
+ *
+ * @example
+ * var value = field.getValue();
+ * value = MochiKit.Format.strip(value);
+ * field.setAttrs({ "value": value });
  */
-MochiKit.Widget.TextField.prototype.setAttrs = function(attrs) {
+MochiKit.Widget.TextField.prototype.setAttrs = function (attrs) {
     attrs = MochiKit.Base.update({}, attrs);
     var locals = MochiKit.Base.mask(attrs, ["helpText", "value"]);
     if (typeof(locals.helpText) != "undefined") {
@@ -3063,17 +3433,14 @@ MochiKit.Widget.TextField.prototype.setAttrs = function(attrs) {
     if (typeof(locals.value) != "undefined") {
         this.value = this.storedValue = locals.value;
     }
-    if (!this.focused && MochiKit.Format.strip(this.value) == "") {
-        this.value = this.helpText;
-        this.addClass("widgetTextFieldHelp");
-    }
+    this._render();
     MochiKit.DOM.updateNodeAttributes(this, attrs);
 }
 
 /**
  * Resets the text area form value to the initial value.
  */
-MochiKit.Widget.TextField.prototype.reset = function() {
+MochiKit.Widget.TextField.prototype.reset = function () {
     this.setAttrs({ value: this.defaultValue });
 }
 
@@ -3084,8 +3451,13 @@ MochiKit.Widget.TextField.prototype.reset = function() {
  * displayed when the text field is empty and unfocused.
  *
  * @return {String} the field value
+ *
+ * @example
+ * var value = field.getValue();
+ * value = MochiKit.Format.strip(value);
+ * field.setAttrs({ "value": value });
  */
-MochiKit.Widget.TextField.prototype.getValue = function() {
+MochiKit.Widget.TextField.prototype.getValue = function () {
     return (this.focused) ? this.value : this.storedValue;
 }
 
@@ -3100,14 +3472,14 @@ MochiKit.Widget.TextField.prototype.getValue = function() {
  * @return {Widget} the popup widget, or
  *         null if none existed or was created
  */
-MochiKit.Widget.TextField.prototype.popup = function(create) {
+MochiKit.Widget.TextField.prototype.popup = function (create) {
     if (!this._popupCreated && create) {
         this.autocomplete = "off";
         this._popupCreated = true;
         var style = { "max-height": "300px", "width": "300px" };
         var popup = new MochiKit.Widget.Popup({ style: style });
         MochiKit.DOM.insertSiblingNodesAfter(this, popup);
-        MochiKit.DOM.makePositioned(this.parentNode);
+        MochiKit.Style.makePositioned(this.parentNode);
         var pos = { x: this.offsetLeft + 1,
                     y: this.offsetTop + this.offsetHeight + 1 };
         MochiKit.Style.setElementPosition(popup, pos);
@@ -3128,7 +3500,7 @@ MochiKit.Widget.TextField.prototype.popup = function(create) {
  * @param {Array} [items] the items to show, or null to keep the
  *            previuos popup content
  */
-MochiKit.Widget.TextField.prototype.showPopup = function(attrs, items) {
+MochiKit.Widget.TextField.prototype.showPopup = function (attrs, items) {
     var popup = this.popup(true);
     if (items) {
         popup.hide();
@@ -3154,23 +3526,19 @@ MochiKit.Widget.TextField.prototype.showPopup = function(attrs, items) {
  *
  * @param evt the MochiKit.Signal.Event object
  */
-MochiKit.Widget.TextField.prototype._handleFocus = function(evt) {
+MochiKit.Widget.TextField.prototype._handleFocus = function (evt) {
     if (evt.type() == "focus") {
         this.focused = true;
         this.value = this.storedValue;
-        this.removeClass("widgetTextFieldHelp");
     } else if (evt.type() == "blur") {
         this.focused = false;
         this.storedValue = this.value;
-        if (MochiKit.Format.strip(this.value) == "") {
-            this.value = this.helpText;
-            this.addClass("widgetTextFieldHelp");
-        }
         var popup = this.popup();
         if (popup != null && !popup.isHidden()) {
             popup.setAttrs({ delay: 250 });
         }
     }
+    this._render();
 }
 
 /**
@@ -3178,7 +3546,7 @@ MochiKit.Widget.TextField.prototype._handleFocus = function(evt) {
  *
  * @param {Event} evt the MochiKit.Signal.Event object
  */
-MochiKit.Widget.TextField.prototype._handleKeyDown = function(evt) {
+MochiKit.Widget.TextField.prototype._handleKeyDown = function (evt) {
     var popup = this.popup(false);
     if (popup != null) {
         popup.resetDelay();
@@ -3223,10 +3591,25 @@ MochiKit.Widget.TextField.prototype._handleKeyDown = function(evt) {
  *
  * @param evt the MochiKit.Signal.Event object
  */
-MochiKit.Widget.TextField.prototype._handleClick = function(evt) {
+MochiKit.Widget.TextField.prototype._handleClick = function (evt) {
     this.blur();
     this.focus();
     MochiKit.Widget.emitSignal(this, "onpopupselect");
+}
+
+/**
+ * Updates the display of the widget content.
+ */
+MochiKit.Widget.TextField.prototype._render = function () {
+    var strip = MochiKit.Format.strip;
+    var str = this.getValue();
+    if (!this.focused && strip(str) == "" && strip(this.helpText) != "") {
+        this.value = this.helpText;
+        this.addClass("widgetTextFieldHelp");
+    } else {
+        this.value = str;
+        this.removeClass("widgetTextFieldHelp");
+    }
 }
 
 /**
@@ -3244,31 +3627,60 @@ MochiKit.Widget.TextField.prototype._handleClick = function(evt) {
  *     whenever a node is expanded, collapsed or selected.
  * @extends MochiKit.Widget
  */
-MochiKit.Widget.Tree = function(attrs/*, ...*/) {
-    var cls = arguments.callee;
-    if (!(this instanceof cls)) {
-        return new cls(attrs, MochiKit.Base.extend(null, arguments, 1));
-    }
+MochiKit.Widget.Tree = function (attrs/*, ...*/) {
     var o = MochiKit.DOM.DIV(attrs);
-    MochiKit.Base.updatetree(o, this);
-    o.addClass("widget", "widgetTree");
+    MochiKit.Widget._widgetMixin(o, arguments.callee);
+    o.addClass("widgetTree");
     o.resizeContent = MochiKit.Base.noop;
     o.selectedPath = null;
     o.addAll(MochiKit.Base.extend(null, arguments, 1));
     return o;
 }
-MochiKit.Widget.Tree.prototype = MochiKit.Base.clone(MochiKit.Widget.prototype);
 
 /**
  * Adds a single child tree node widget to this widget.
  *
  * @param {Widget} child the tree node widget to add
  */
-MochiKit.Widget.Tree.prototype.addChildNode = function(child) {
+MochiKit.Widget.Tree.prototype.addChildNode = function (child) {
     if (!MochiKit.Widget.isWidget(child, "TreeNode")) {
         throw new Error("Tree widget can only have TreeNode children");
     }
     this.appendChild(child);
+}
+
+/**
+ * Removes all tree nodes that are marked as unmodified. When adding
+ * or updating nodes, they (and their parent nodes) are automatically
+ * marked as modified. This function makes tree pruning possible, by
+ * initially marking all tree nodes as unmodified (clearing any
+ * previous modified flag), touching all nodes to be kept, and
+ * finally calling this method to remove the remaining nodes.
+ */
+MochiKit.Widget.Tree.prototype.removeAllMarked = function () {
+    var children = this.getChildNodes();
+    for (var i = 0; i < children.length; i++) {
+        if (children[i].marked === true) {
+            this.removeChildNode(children[i]);
+        } else {
+            children[i].removeAllMarked();
+        }
+    }
+}
+
+/**
+ * Marks all tree nodes as unmodified. When adding or updating nodes,
+ * they (and their parent nodes) are automatically marked as
+ * modified. This function makes tree pruning possible, by initially
+ * marking all tree nodes (clearing any previous modified flag),
+ * touching all nodes to be kept, and finally calling the
+ * removeAllMarked() method to remove the remaining nodes.
+ */
+MochiKit.Widget.Tree.prototype.markAll = function () {
+    var children = this.getChildNodes();
+    for (var i = 0; i < children.length; i++) {
+        children[i].markAll();
+    }
 }
 
 /**
@@ -3279,7 +3691,7 @@ MochiKit.Widget.Tree.prototype.addChildNode = function(child) {
  * @return {Widget} the root tree node found, or
  *         null if not found
  */
-MochiKit.Widget.Tree.prototype.findRoot = function(name) {
+MochiKit.Widget.Tree.prototype.findRoot = function (name) {
     var children = this.getChildNodes();
     for (var i = 0; i < children.length; i++) {
         if (children[i].name == name) {
@@ -3297,7 +3709,7 @@ MochiKit.Widget.Tree.prototype.findRoot = function(name) {
  * @return {Widget} the descendant tree node found, or
  *         null if not found
  */
-MochiKit.Widget.Tree.prototype.findByPath = function(path) {
+MochiKit.Widget.Tree.prototype.findByPath = function (path) {
     if (path == null || path.length < 1) {
         return null;
     }
@@ -3315,7 +3727,7 @@ MochiKit.Widget.Tree.prototype.findByPath = function(path) {
  * @return {Widget} the currently selected tree node, or
  *         null if no node is selected
  */
-MochiKit.Widget.Tree.prototype.selectedChild = function() {
+MochiKit.Widget.Tree.prototype.selectedChild = function () {
     if (this.selectedPath == null) {
         return null;
     } else {
@@ -3329,7 +3741,7 @@ MochiKit.Widget.Tree.prototype.selectedChild = function() {
  *
  * @param {Widget} node the new selected tree node, or null for none
  */
-MochiKit.Widget.Tree.prototype._handleSelect = function(node) {
+MochiKit.Widget.Tree.prototype._handleSelect = function (node) {
     var prev = this.selectedChild();
     if (node == null) {
         this.selectedPath = null;
@@ -3348,7 +3760,7 @@ MochiKit.Widget.Tree.prototype._handleSelect = function(node) {
  *
  * @param {Widget} node the affected tree node
  */
-MochiKit.Widget.Tree.prototype._emitExpand = function(node) {
+MochiKit.Widget.Tree.prototype._emitExpand = function (node) {
     MochiKit.Widget.emitSignal(this, "onexpand", node);
 }
 
@@ -3358,7 +3770,7 @@ MochiKit.Widget.Tree.prototype._emitExpand = function(node) {
  *
  * @param {Number} [depth] the optional maximum depth
  */
-MochiKit.Widget.Tree.prototype.expandAll = function(depth) {
+MochiKit.Widget.Tree.prototype.expandAll = function (depth) {
     if (typeof(depth) !== "number") {
         depth = 10;
     }
@@ -3374,7 +3786,7 @@ MochiKit.Widget.Tree.prototype.expandAll = function(depth) {
  *
  * @param {Number} [depth] the optional minimum depth
  */
-MochiKit.Widget.Tree.prototype.collapseAll = function(depth) {
+MochiKit.Widget.Tree.prototype.collapseAll = function (depth) {
     if (typeof(depth) !== "number") {
         depth = 0;
     }
@@ -3393,7 +3805,7 @@ MochiKit.Widget.Tree.prototype.collapseAll = function(depth) {
  *
  * @return {Widget} the last node in the path
  */
-MochiKit.Widget.Tree.prototype.addPath = function(path) {
+MochiKit.Widget.Tree.prototype.addPath = function (path) {
     if (path == null || path.length < 1) {
         return null;
     }
@@ -3402,12 +3814,14 @@ MochiKit.Widget.Tree.prototype.addPath = function(path) {
         node = new MochiKit.Widget.TreeNode({ name: path[0] });
         this.addChildNode(node);
     }
+    node.marked = false;
     for (var i = 1; i < path.length; i++) {
         var child = node.findChild(path[i]);
         if (child == null) {
             child = new MochiKit.Widget.TreeNode({ name: path[i] });
             node.addChildNode(child);
         }
+        child.marked = false;
         node = child;
     }
     return node;
@@ -3422,6 +3836,7 @@ MochiKit.Widget.Tree.prototype.addPath = function(path) {
  * @param {Boolean} [attrs.folder] the folder flag, defaults to false
  * @param {String} [attrs.icon] the icon reference to use, defaults
  *            to "FOLDER" for folders and "DOCUMENT" otherwise
+ * @param {String} [attrs.tooltip] the tooltip text when hovering
  * @param {Widget} [...] the child tree node widgets
  *
  * @return {Widget} the widget DOM node
@@ -3432,28 +3847,23 @@ MochiKit.Widget.Tree.prototype.addPath = function(path) {
  *     nodes, but rather on the tree as a whole.
  * @extends MochiKit.Widget
  */
-MochiKit.Widget.TreeNode = function(attrs/*, ...*/) {
-    var cls = arguments.callee;
-    if (!(this instanceof cls)) {
-        return new cls(attrs, MochiKit.Base.extend(null, arguments, 1));
-    }
+MochiKit.Widget.TreeNode = function (attrs/*, ...*/) {
     var icon = MochiKit.Widget.Icon({ ref: "BLANK" });
     var label = MochiKit.DOM.SPAN({ "class": "widgetTreeNodeText" });
     var div = MochiKit.DOM.DIV({ "class": "widgetTreeNodeLabel" }, icon, label);
     var o = MochiKit.DOM.DIV({}, div);
-    MochiKit.Base.updatetree(o, this);
-    o.addClass("widget", "widgetTreeNode");
+    MochiKit.Widget._widgetMixin(o, arguments.callee);
+    o.addClass("widgetTreeNode");
     attrs = MochiKit.Base.update({ name: "Tree Node", folder: false }, attrs);
     if (typeof(attrs.icon) == "undefined") {
         attrs.icon = attrs.folder ? "FOLDER" : "DOCUMENT";
     }
     o.setAttrs(attrs);
     o.addAll(MochiKit.Base.extend(null, arguments, 1));
-    MochiKit.Signal.connect(icon, "onclick", o, "toggle");
-    MochiKit.Signal.connect(div, "onclick", o, "select");
+    icon.onclick = MochiKit.Widget._eventHandler("TreeNode", "toggle");
+    div.onclick = MochiKit.Widget._eventHandler("TreeNode", "select");
     return o;
 }
-MochiKit.Widget.TreeNode.prototype = MochiKit.Base.clone(MochiKit.Widget.prototype);
 
 /**
  * Returns and/or creates the child container DOM node. If a child
@@ -3463,7 +3873,7 @@ MochiKit.Widget.TreeNode.prototype = MochiKit.Base.clone(MochiKit.Widget.prototy
  *
  * @return {Node} the child container DOM node found or created
  */
-MochiKit.Widget.TreeNode.prototype._container = function(create) {
+MochiKit.Widget.TreeNode.prototype._container = function (create) {
     var container = this.lastChild;
     if (MochiKit.DOM.hasElementClass(container, "widgetTreeNodeContainer")) {
         return container;
@@ -3488,10 +3898,12 @@ MochiKit.Widget.TreeNode.prototype._container = function(create) {
  *            reverted to false once set (implicitly or explicitly)
  * @param {Icon/Object/String} [attrs.icon] icon the icon to set, or
  *            null to remove
+ * @param {String} [attrs.tooltip] the tooltip text when hovering
  */
-MochiKit.Widget.TreeNode.prototype.setAttrs = function(attrs) {
+MochiKit.Widget.TreeNode.prototype.setAttrs = function (attrs) {
     attrs = MochiKit.Base.update({}, attrs);
-    var locals = MochiKit.Base.mask(attrs, ["name", "folder", "icon"]);
+    this.marked = false;
+    var locals = MochiKit.Base.mask(attrs, ["name", "folder", "icon", "tooltip"]);
     if (typeof(locals.name) != "undefined") {
         this.name = locals.name;
         var node = this.firstChild.firstChild;
@@ -3500,7 +3912,7 @@ MochiKit.Widget.TreeNode.prototype.setAttrs = function(attrs) {
         }
         MochiKit.DOM.replaceChildNodes(node, locals.name);
     }
-    if (!MochiKit.Base.isFalse(locals.folder)) {
+    if (MochiKit.Base.bool(locals.folder)) {
         this._container(true);
     }
     if (typeof(locals.icon) != "undefined") {
@@ -3528,6 +3940,9 @@ MochiKit.Widget.TreeNode.prototype.setAttrs = function(attrs) {
             MochiKit.Widget.destroyWidget(iconNode);
         }
     }
+    if (typeof(locals.tooltip) != "undefined") {
+        this.firstChild.title = locals.tooltip;
+    }
     MochiKit.DOM.updateNodeAttributes(this, attrs);
 }
 
@@ -3537,7 +3952,7 @@ MochiKit.Widget.TreeNode.prototype.setAttrs = function(attrs) {
  *
  * @return {Array} the array of child tree node widgets
  */
-MochiKit.Widget.TreeNode.prototype.getChildNodes = function() {
+MochiKit.Widget.TreeNode.prototype.getChildNodes = function () {
     var container = this._container();
     if (container == null) {
         return [];
@@ -3551,7 +3966,7 @@ MochiKit.Widget.TreeNode.prototype.getChildNodes = function() {
  *
  * @param {Widget} child the tree node widget to add
  */
-MochiKit.Widget.TreeNode.prototype.addChildNode = function(child) {
+MochiKit.Widget.TreeNode.prototype.addChildNode = function (child) {
     if (!MochiKit.Widget.isWidget(child, "TreeNode")) {
         throw new Error("TreeNode widget can only have TreeNode children");
     }
@@ -3563,10 +3978,45 @@ MochiKit.Widget.TreeNode.prototype.addChildNode = function(child) {
  *
  * @param {Widget} child the tree node widget to remove
  */
-MochiKit.Widget.TreeNode.prototype.removeChildNode = function(child) {
+MochiKit.Widget.TreeNode.prototype.removeChildNode = function (child) {
     var container = this._container();
     if (container != null) {
         container.removeChild(child);
+    }
+}
+
+/**
+ * Removes all tree nodes that are marked as unmodified. When adding
+ * or updating nodes, they (and their parent nodes) are automatically
+ * marked as modified. This function makes tree pruning possible, by
+ * initially marking all tree nodes as unmodified (clearing any
+ * previous modified flag), touching all nodes to be kept, and
+ * finally calling this method to remove the remaining nodes.
+ */
+MochiKit.Widget.TreeNode.prototype.removeAllMarked = function () {
+    var children = this.getChildNodes();
+    for (var i = 0; i < children.length; i++) {
+        if (children[i].marked === true) {
+            this.removeChildNode(children[i]);
+        } else {
+            children[i].removeAllMarked();
+        }
+    }
+}
+
+/**
+ * Marks all tree nodes as unmodified. When adding or updating nodes,
+ * they (and their parent nodes) are automatically marked as
+ * modified. This function makes tree pruning possible, by initially
+ * marking all tree nodes (clearing any previous modified flag),
+ * touching all nodes to be kept, and finally calling the
+ * removeAllMarked() method to remove the remaining nodes.
+ */
+MochiKit.Widget.TreeNode.prototype.markAll = function () {
+    this.marked = true;
+    var children = this.getChildNodes();
+    for (var i = 0; i < children.length; i++) {
+        children[i].markAll();
     }
 }
 
@@ -3576,7 +4026,7 @@ MochiKit.Widget.TreeNode.prototype.removeChildNode = function(child) {
  * @return {Boolean} true if this node is a folder, or
  *         false otherwise
  */
-MochiKit.Widget.TreeNode.prototype.isFolder = function() {
+MochiKit.Widget.TreeNode.prototype.isFolder = function () {
     return this._container() != null;
 }
 
@@ -3586,7 +4036,7 @@ MochiKit.Widget.TreeNode.prototype.isFolder = function() {
  * @return {Boolean} true if this node is expanded, or
  *         false otherwise
  */
-MochiKit.Widget.TreeNode.prototype.isExpanded = function() {
+MochiKit.Widget.TreeNode.prototype.isExpanded = function () {
     var container = this._container();
     return container != null &&
            !MochiKit.DOM.hasElementClass(container, "widgetHidden");
@@ -3598,7 +4048,7 @@ MochiKit.Widget.TreeNode.prototype.isExpanded = function() {
  * @return {Boolean} true if the node is selected, or
  *         false otherwise
  */
-MochiKit.Widget.TreeNode.prototype.isSelected = function() {
+MochiKit.Widget.TreeNode.prototype.isSelected = function () {
     return MochiKit.DOM.hasElementClass(this.firstChild, "selected");
 }
 
@@ -3608,7 +4058,7 @@ MochiKit.Widget.TreeNode.prototype.isSelected = function() {
  * @return {Widget} the ancestor tree widget, or
  *         null if none was found
  */
-MochiKit.Widget.TreeNode.prototype.tree = function() {
+MochiKit.Widget.TreeNode.prototype.tree = function () {
     var parent = this.parent();
     if (parent != null) {
         return parent.tree();
@@ -3626,7 +4076,7 @@ MochiKit.Widget.TreeNode.prototype.tree = function() {
  * @return {Widget} the parent tree node widget, or
  *         null if this is a root node
  */
-MochiKit.Widget.TreeNode.prototype.parent = function() {
+MochiKit.Widget.TreeNode.prototype.parent = function () {
     var node = this.parentNode;
     if (MochiKit.DOM.hasElementClass(node, "widgetTreeNodeContainer")) {
         return node.parentNode;
@@ -3640,7 +4090,7 @@ MochiKit.Widget.TreeNode.prototype.parent = function() {
  *
  * @return {Array} the tree node path, i.e an array of node names
  */
-MochiKit.Widget.TreeNode.prototype.path = function() {
+MochiKit.Widget.TreeNode.prototype.path = function () {
     var parent = this.parent();
     if (parent == null) {
         return [this.name];
@@ -3659,7 +4109,7 @@ MochiKit.Widget.TreeNode.prototype.path = function() {
  * @return {Widget} the child tree node found, or
  *         null if not found
  */
-MochiKit.Widget.TreeNode.prototype.findChild = function(name) {
+MochiKit.Widget.TreeNode.prototype.findChild = function (name) {
     var children = this.getChildNodes();
     for (var i = 0; i < children.length; i++) {
         if (children[i].name == name) {
@@ -3677,7 +4127,7 @@ MochiKit.Widget.TreeNode.prototype.findChild = function(name) {
  * @return {Widget} the descendant tree node found, or
  *         null if not found
  */
-MochiKit.Widget.TreeNode.prototype.findByPath = function(path) {
+MochiKit.Widget.TreeNode.prototype.findByPath = function (path) {
     var node = this;
 
     for (var i = 0; node != null && path != null && i < path.length; i++) {
@@ -3689,7 +4139,7 @@ MochiKit.Widget.TreeNode.prototype.findByPath = function(path) {
 /**
  * Selects this tree node.
  */
-MochiKit.Widget.TreeNode.prototype.select = function() {
+MochiKit.Widget.TreeNode.prototype.select = function () {
     MochiKit.DOM.addElementClass(this.firstChild, "selected");
     var tree = this.tree();
     if (tree != null) {
@@ -3701,7 +4151,7 @@ MochiKit.Widget.TreeNode.prototype.select = function() {
 /**
  * Unselects this tree node.
  */
-MochiKit.Widget.TreeNode.prototype.unselect = function() {
+MochiKit.Widget.TreeNode.prototype.unselect = function () {
     if (this.isSelected()) {
         MochiKit.DOM.removeElementClass(this.firstChild, "selected");
         var tree = this.tree();
@@ -3715,7 +4165,7 @@ MochiKit.Widget.TreeNode.prototype.unselect = function() {
  * Expands this node to display any child nodes. If the parent node
  * is not expanded, it will be expanded as well.
  */
-MochiKit.Widget.TreeNode.prototype.expand = function() {
+MochiKit.Widget.TreeNode.prototype.expand = function () {
     var parent = this.parent();
     if (parent != null && !parent.isExpanded()) {
         parent.expand();
@@ -3738,7 +4188,7 @@ MochiKit.Widget.TreeNode.prototype.expand = function() {
  *
  * @param {Number} [depth] the optional maximum depth
  */
-MochiKit.Widget.TreeNode.prototype.expandAll = function(depth) {
+MochiKit.Widget.TreeNode.prototype.expandAll = function (depth) {
     if (typeof(depth) !== "number") {
         depth = 10;
     }
@@ -3752,7 +4202,7 @@ MochiKit.Widget.TreeNode.prototype.expandAll = function(depth) {
 /**
  * Collapses this node to hide any child nodes.
  */
-MochiKit.Widget.TreeNode.prototype.collapse = function() {
+MochiKit.Widget.TreeNode.prototype.collapse = function () {
     var container = this._container();
     if (container != null && this.isExpanded()) {
         var imgNode = this.firstChild.firstChild;
@@ -3771,7 +4221,7 @@ MochiKit.Widget.TreeNode.prototype.collapse = function() {
  *
  * @param {Number} [depth] the optional minimum depth
  */
-MochiKit.Widget.TreeNode.prototype.collapseAll = function(depth) {
+MochiKit.Widget.TreeNode.prototype.collapseAll = function (depth) {
     if (typeof(depth) !== "number") {
         depth = 0;
     }
@@ -3787,7 +4237,7 @@ MochiKit.Widget.TreeNode.prototype.collapseAll = function(depth) {
 /**
  * Toggles expand and collapse for this node.
  */
-MochiKit.Widget.TreeNode.prototype.toggle = function(evt) {
+MochiKit.Widget.TreeNode.prototype.toggle = function (evt) {
     if (evt) {
         evt.stop();
     }
@@ -3818,15 +4268,23 @@ MochiKit.Widget.TreeNode.prototype.toggle = function(evt) {
  *     and the "onclose" event is triggered when the wizard
  *     completes.
  * @extends MochiKit.Widget
+ *
+ * @example
+ * &lt;Dialog id="exDialog" title="Example Dialog" w="80%" h="50%"&gt;
+ *   &lt;Wizard id="exWizard" style="width: 100%; height: 100%;"&gt;
+ *     &lt;Pane pageTitle="The first step"&gt;
+ *       ...
+ *     &lt;/Pane&gt;
+ *     &lt;Pane pageTitle="The second step"&gt;
+ *       ...
+ *     &lt;/Pane&gt;
+ *   &lt;/Wizard&gt;
+ * &lt;/Dialog&gt;
  */
-MochiKit.Widget.Wizard = function(attrs/*, ... */) {
-    var cls = arguments.callee;
-    if (!(this instanceof cls)) {
-        return new cls(attrs, MochiKit.Base.extend(null, arguments, 1));
-    }
+MochiKit.Widget.Wizard = function (attrs/*, ... */) {
     var o = MochiKit.DOM.DIV(attrs);
-    MochiKit.Base.updatetree(o, this);
-    o.addClass("widget", "widgetWizard");
+    MochiKit.Widget._widgetMixin(o, arguments.callee);
+    o.addClass("widgetWizard");
     o._selectedIndex = -1;
     o.appendChild(MochiKit.DOM.H3({ "class": "widgetWizardTitle" }));
     var bCancel = MochiKit.Widget.Button({ style: { "margin-right": "10px" } },
@@ -3852,7 +4310,6 @@ MochiKit.Widget.Wizard = function(attrs/*, ... */) {
     o.addAll(MochiKit.Base.extend(null, arguments, 1));
     return o;
 }
-MochiKit.Widget.Wizard.prototype = MochiKit.Base.clone(MochiKit.Widget.prototype);
 
 /**
  * Returns an array with all child pane widgets. Note that the array
@@ -3860,7 +4317,7 @@ MochiKit.Widget.Wizard.prototype = MochiKit.Base.clone(MochiKit.Widget.prototype
  *
  * @return {Array} the array of child wizard page widgets
  */
-MochiKit.Widget.Wizard.prototype.getChildNodes = function() {
+MochiKit.Widget.Wizard.prototype.getChildNodes = function () {
     return MochiKit.Base.extend([], this.childNodes, 2);
 }
 
@@ -3871,13 +4328,16 @@ MochiKit.Widget.Wizard.prototype.getChildNodes = function() {
  *
  * @param {Widget} child the page widget to add
  */
-MochiKit.Widget.Wizard.prototype.addChildNode = function(child) {
+MochiKit.Widget.Wizard.prototype.addChildNode = function (child) {
     if (!MochiKit.Widget.isWidget(child, "Pane")) {
         child = new MochiKit.Widget.Pane(null, child);
     }
     MochiKit.Style.registerSizeConstraints(child, "100%", "100%-65");
     child.hide();
     this.appendChild(child);
+    child.style.position = "absolute";
+    // TODO: remove hard-coded size here...
+    MochiKit.Style.setElementPosition(child, { x: 0, y: 24 });
     if (this.getChildNodes().length == 1) {
         this.activatePage(0);
     } else {
@@ -3891,7 +4351,7 @@ MochiKit.Widget.Wizard.prototype.addChildNode = function(child) {
  * Updates the wizard status indicators, such as the title and the
  * current buttons.
  */
-MochiKit.Widget.Wizard.prototype._updateStatus = function() {
+MochiKit.Widget.Wizard.prototype._updateStatus = function () {
     var h3 = this.childNodes[0];
     var bCancel = this.childNodes[1].childNodes[0];
     var bPrev = this.childNodes[1].childNodes[1];
@@ -3902,7 +4362,6 @@ MochiKit.Widget.Wizard.prototype._updateStatus = function() {
     var title = null;
     var info = "(No pages available)";
     var icon = null;
-
     if (page != null) {
         status = page.pageStatus || MochiKit.Widget.Pane.ANY;
         title = page.pageTitle;
@@ -3938,7 +4397,7 @@ MochiKit.Widget.Wizard.prototype._updateStatus = function() {
  * @return {Widget} the active page, or
  *         null if no pages have been added
  */
-MochiKit.Widget.Wizard.prototype.activePage = function() {
+MochiKit.Widget.Wizard.prototype.activePage = function () {
     if (this._selectedIndex >= 0) {
         return this.childNodes[this._selectedIndex + 2];
     } else {
@@ -3952,7 +4411,7 @@ MochiKit.Widget.Wizard.prototype.activePage = function() {
  * @return the active page index, or
  *         -1 if no page is active
  */
-MochiKit.Widget.Wizard.prototype.activePageIndex = function() {
+MochiKit.Widget.Wizard.prototype.activePageIndex = function () {
     return this._selectedIndex;
 }
 
@@ -3961,7 +4420,7 @@ MochiKit.Widget.Wizard.prototype.activePageIndex = function() {
  *
  * @param {Number/Widget} indexOrPage the page index or page DOM node
  */
-MochiKit.Widget.Wizard.prototype.activatePage = function(indexOrPage) {
+MochiKit.Widget.Wizard.prototype.activatePage = function (indexOrPage) {
     if (typeof(indexOrPage) == "number") {
         var index = indexOrPage;
         var page = this.childNodes[index + 2];
@@ -3972,25 +4431,39 @@ MochiKit.Widget.Wizard.prototype.activatePage = function(indexOrPage) {
     if (index < 0 || index >= this.getChildNodes().length) {
         throw new RangeError("Page index out of bounds: " + index);
     }
+    var oldIndex = this._selectedIndex;
     var oldPage = this.activePage();
-    if (oldPage != null) {
-        if (!oldPage._handleExit({ validateForm: this._selectedIndex < index })) {
+    if (oldPage != null && oldPage !== page) {
+        if (!oldPage._handleExit({ hide: false, validate: this._selectedIndex < index })) {
             // Old page blocked page transition
             return;
         }
     }
     this._selectedIndex = index;
     this._updateStatus();
-    page._handleEnter({ validateReset: true });
-    MochiKit.Widget.emitSignal(this, "onchange");
-    // TODO: MochiKit.Widget.emitSignal(this, "onchange", index, page);
+    if (oldPage != null && oldPage !== page) {
+        var dim = MochiKit.Style.getElementDimensions(this);
+        var offset = (oldIndex < index) ? dim.w : -dim.w;
+        MochiKit.Style.setElementPosition(page, { x: offset });
+        page._handleEnter({ validateReset: true });
+        var cleanup = function () {
+            oldPage.hide();
+            MochiKit.Style.setElementPosition(oldPage, { x: 0 });
+        }
+        var opts = { duration: 0.5, x: -offset, afterFinish: cleanup };
+        MochiKit.Visual.Move(oldPage, opts);
+        MochiKit.Visual.Move(page, opts);
+    } else {
+        page._handleEnter({ validateReset: true });
+    }
+        MochiKit.Widget.emitSignal(this, "onchange", index, page);
 }
 
 /**
  * Cancels the active page operation. This method will also reset
  * the page status of the currently active page to "ANY".
  */
-MochiKit.Widget.Wizard.prototype.cancel = function() {
+MochiKit.Widget.Wizard.prototype.cancel = function () {
     var page = this.activePage();
     page.setAttrs({ pageStatus: MochiKit.Widget.Pane.ANY });
     MochiKit.Widget.emitSignal(this, "oncancel");
@@ -3999,7 +4472,7 @@ MochiKit.Widget.Wizard.prototype.cancel = function() {
 /**
  * Moves the wizard backward to the previous page.
  */
-MochiKit.Widget.Wizard.prototype.previous = function() {
+MochiKit.Widget.Wizard.prototype.previous = function () {
     if (this._selectedIndex > 0) {
         this.activatePage(this._selectedIndex - 1);
     }
@@ -4009,7 +4482,7 @@ MochiKit.Widget.Wizard.prototype.previous = function() {
  * Moves the wizard forward to the next page. The page will not be
  * changed if the active page fails a validation check.
  */
-MochiKit.Widget.Wizard.prototype.next = function() {
+MochiKit.Widget.Wizard.prototype.next = function () {
     if (this._selectedIndex < this.getChildNodes().length - 1) {
         this.activatePage(this._selectedIndex + 1);
     }
@@ -4019,10 +4492,10 @@ MochiKit.Widget.Wizard.prototype.next = function() {
  * Sends the wizard onclose signal when the user presses the finish
  * button.
  */
-MochiKit.Widget.Wizard.prototype.done = function() {
+MochiKit.Widget.Wizard.prototype.done = function () {
     var page = this.activePage();
     if (page != null) {
-        if (!page._handleExit({ validateForm: true })) {
+        if (!page._handleExit({ validate: true })) {
             // Page blocked wizard completion
             return;
         }
@@ -4036,7 +4509,7 @@ MochiKit.Widget.Wizard.prototype.done = function() {
  * resized. It optimizes the resize chain by only resizing those DOM
  * child nodes that are visible.
  */
-MochiKit.Widget.Wizard.prototype.resizeContent = function() {
+MochiKit.Widget.Wizard.prototype.resizeContent = function () {
     var page = this.activePage();
     if (page != null) {
         MochiKit.Style.resizeElements(page);
@@ -4055,6 +4528,7 @@ MochiKit.Widget.Classes = {
     Button: MochiKit.Widget.Button,
     Dialog: MochiKit.Widget.Dialog,
     Field: MochiKit.Widget.Field,
+    FileStreamer: MochiKit.Widget.FileStreamer,
     Form: MochiKit.Widget.Form,
     FormValidator: MochiKit.Widget.FormValidator,
     Icon: MochiKit.Widget.Icon,
