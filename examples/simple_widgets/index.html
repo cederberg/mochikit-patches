@@ -13,6 +13,7 @@
         MochiKit.Widget.Icon.DEFAULT.baseUrl = "../../include/images/icons/";
         var tc = MochiKit.Widget.TabContainer({ style: { "padding": "10px" } },
                                               buttonExample(),
+                                              textFieldExample(),
                                               progressExample(),
                                               tableExample(),
                                               treeExample(),
@@ -40,6 +41,11 @@
         var b2 =  MochiKit.Widget.Button({}, icon("CANCEL"), " ", "Plain Icon");
         var b3 =  MochiKit.Widget.Button({}, "Plain");
         return pane("Buttons", p(b1), p(b2), p(b3));
+    }
+
+    function textFieldExample() {
+        t = MochiKit.Widget.TextField({ helpText: "field with help text" });
+        return pane("TextField", t);
     }
 
     function progressExample() {
