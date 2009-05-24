@@ -7,6 +7,9 @@
       <p><Button><Icon ref="CANCEL" /> Plain Icon</Button></p>
       <p><Button>Plain</Button></p>
     </Pane>
+    <Pane pageTitle="TextField">
+      <TextField helpText="field with help text" />
+    </Pane>
     <Pane pageTitle="Progress">
       <ProgressBar id="progress" min="0" max="1000" style="width: 100%;" />
     </Pane>
