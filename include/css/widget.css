@@ -22,8 +22,6 @@
  * Button Style
  */
 .widgetButton {
-    padding-top: 2px;
-    padding-bottom: 2px;
 }
 .widgetButtonHighlight {
     font-weight: bold;
@@ -90,6 +88,23 @@
 
 
 /**
+ * File Streamer Style
+ */
+.widgetFileStreamer {
+    margin: 0;
+    border: none;
+    padding: 0;
+}
+.widgetFileStreamer form {
+    margin: 0;
+    border: none;
+    padding: 0;
+}
+.widgetFileStreamer input {
+    margin: 0;
+}
+
+/**
  * Form Style
  */
 .widgetForm {
@@ -111,6 +126,10 @@
  */
 .widgetIcon {
     cursor: pointer;
+    vertical-align: -30%;
+}
+a .widgetIcon {
+    border: none;
 }
 
 
@@ -185,12 +204,12 @@
     font-weight: bold;
     cursor: pointer;
 }
-.widgetPopupItem.selected {
+.widgetPopupItem.widgetPopupSelected {
     background: white;
     border: 1px solid #B1CDF1;
 }
 .widgetPopupDisabled,
-.widgetPopupDisabled.widgetPopupItem.selected {
+.widgetPopupDisabled.widgetPopupItem.widgetPopupSelected {
     border: 1px solid #e3edfa;
     background: #e3edfa;
     color: #7BABDB;
@@ -206,24 +225,17 @@
     position: relative;
     height: 14px;
     width: 100%;
-    background: white;
-    border: 1px solid #ccc;
+    background: url(../images/backgrounds/progress-incomplete.gif) repeat-x;
+    border: 1px solid #cccccc;
 }
 .widgetProgressBarMeter {
     height: 14px;
     background: url(../images/backgrounds/progress-static.gif) repeat-x;
 }
-.widgetProgressBarText {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    width: 100%;
-    height: 14px;
-    color: #333;
-    font-weight: bold;
-    text-align: center;
+.widgetProgressBarMeter.animated {
+    background: url(../images/backgrounds/progress-animated.gif) repeat-x;
 }
-.widgetProgressBarTextInverse {
+.widgetProgressBarText {
     position: absolute;
     top: 0px;
     left: 0px;
@@ -267,6 +279,7 @@
     margin-left: 10px;
     margin-right: -10px;
     cursor: default;
+    vertical-align: text-bottom;
 }
 .widgetTabContainerLabel.selected {
     background: url(../images/backgrounds/tab-active-left.gif) no-repeat left top;
@@ -336,17 +349,17 @@ th.widgetTableColumn {
     padding-bottom: 2px;
     padding-left: 4px;
     padding-right: 20px;
-    background-image: url(../images/backgrounds/table-column.gif);
+    background-image: url(../images/backgrounds/tablecolumn.gif);
     background-repeat: no-repeat;
     background-position: top right;
     text-align: left;
 }
 th.widgetTableColumn.sortAsc {
-    background-image: url(../images/backgrounds/table-column-up.gif);
+    background-image: url(../images/backgrounds/tablecolumn-up.gif);
 }
 
 th.widgetTableColumn.sortDesc {
-    background-image: url(../images/backgrounds/table-column-down.gif);
+    background-image: url(../images/backgrounds/tablecolumn-down.gif);
 }
 
 
@@ -354,7 +367,7 @@ th.widgetTableColumn.sortDesc {
  * Text Area Style
  */
 .widgetTextArea {
-    font-family: Monaco, "Courier New", monospace;
+    font-family: "Courier New", Courier, monospace;
     font-size: 11px;
 }
 .widgetTextAreaHelp {
@@ -366,7 +379,7 @@ th.widgetTableColumn.sortDesc {
  * Text Field Style
  */
 .widgetTextField {
-    font-family: Monaco, "Courier New", monospace;
+    font-family: "Courier New", Courier, monospace;
     font-size: 11px;
 }
 .widgetTextFieldHelp {
@@ -399,6 +412,9 @@ th.widgetTableColumn.sortDesc {
     padding-top: 1px;
     padding-bottom: 1px;
 }
+.widgetTreeNodeLabel:hover {
+    background: #ddeeff;
+}
 .widgetTreeNodeText {
     padding-left: 3px;
 }
@@ -411,6 +427,8 @@ th.widgetTableColumn.sortDesc {
  * Wizard Style
  */
 .widgetWizard {
+    position: relative;
+    overflow: hidden;
 }
 .widgetWizardTitle {
     border-bottom: 1px solid #6290d2;
@@ -426,4 +444,5 @@ th.widgetTableColumn.sortDesc {
     position: absolute;
     bottom: 10px;
     right: 10px;
+    z-index: 1;
 }
